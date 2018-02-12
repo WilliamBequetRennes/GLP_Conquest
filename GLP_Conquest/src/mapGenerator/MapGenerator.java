@@ -2,7 +2,7 @@ package mapGenerator;
 
 import datas.Position;
 import exceptions.InvalidBiomeNumberException;
-import exceptions.InvalidSizeMapNumberException;
+import exceptions.InvalidMapSizeNumberException;
 import exceptions.InvalidSquareNumberException;
 import map.Biome;
 import map.Map;
@@ -37,7 +37,7 @@ public class MapGenerator {
 		setRng(new RandomNumberGenerator());
 	}
 	
-	public Map generate(int sizeMap) throws InvalidSizeMapNumberException{
+	public Map generate(int sizeMap) throws InvalidMapSizeNumberException{
 		Map map = null;
 		BiomeGenerator biomeGenerator = new BiomeGenerator(getBiomeStatsFile(), getBlockStatsFile());
 		int numberOfBiomes = 0;
@@ -50,7 +50,7 @@ public class MapGenerator {
 			break;
 			case(2):numberOfBiomes=BIOME_NUMBER_WIDE_MAP;
 			break;
-			default:throw new InvalidSizeMapNumberException(sizeMap);
+			default:throw new InvalidMapSizeNumberException(sizeMap);
 		}
 		biomes = new Biome[numberOfBiomes][numberOfBiomes];
 		//generate randomly the biomes
@@ -98,7 +98,7 @@ public class MapGenerator {
 		break;
 		case(2):map = new Map(WIDE_MAP_DIMENSIONS, squares);
 		break;
-		default:throw new InvalidSizeMapNumberException(sizeMap);
+		default:throw new InvalidMapSizeNumberException(sizeMap);
 		}
 		return map;
 	}

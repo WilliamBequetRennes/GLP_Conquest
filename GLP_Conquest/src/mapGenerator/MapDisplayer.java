@@ -1,6 +1,6 @@
 package mapGenerator;
 
-import exceptions.InvalidSizeMapNumberException;
+import exceptions.InvalidMapSizeNumberException;
 import map.Map;
 
 public class MapDisplayer {
@@ -9,7 +9,7 @@ public class MapDisplayer {
 			MapGenerator mapGenerator = new MapGenerator();
 			Map map = mapGenerator.generate(0);
 			System.out.println(map.toString());
-		} catch (InvalidSizeMapNumberException e) {
+		} catch (InvalidMapSizeNumberException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
