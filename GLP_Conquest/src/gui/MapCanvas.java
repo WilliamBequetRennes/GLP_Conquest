@@ -34,10 +34,9 @@ public class MapCanvas extends Canvas{
 			break;
 			default: throw new InvalidMapSizeNumberException(mapSize);
 		}
-		setMap(mapGenerator.generate(mapSize));
-			
+		setMapGenerator(new MapGenerator());
+		setMap(getMapGenerator().generate(getMapSize()));
 		setBoard(getGraphicsContext2D());
-		
 		
 	}
 

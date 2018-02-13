@@ -1,9 +1,12 @@
 package gui;
 	
+import gui_datas.ScreenSize;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import map.Map;
+import mapGenerator.MapGenerator;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,8 +23,8 @@ public class Main extends Application {
 	private static final int MEDIUM_DIMENSIONS = 45;
 	private static final int WIDE_DIMENSIONS = 63;
 	
-	private double screenWidth;
-	private double screenHeight;
+	private ScreenSize screenSize;
+	private int mapSize;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -31,17 +34,18 @@ public class Main extends Application {
 		try {
 			Pane root = new Pane();
 			Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-			setScreenWidth(screen.getWidth());
-			setScreenHeight(screen.getHeight());
+			setScreenSize(new ScreenSize(screen.getWidth(), screen.getHeight()));
 			
-			Scene scene = new Scene(root, getScreenWidth(), getScreenHeight(), Color.LIGHTSTEELBLUE);
+			Scene scene = new Scene(root, getScreenSize().getWidth(), getScreenSize().getHeight(), Color.LIGHTSTEELBLUE);
 			scene.getStylesheets().add(getClass().getResource("theme.css").toExternalForm());
 			primaryStage.setTitle("Project Conquest : Another Modern Wargame");
 
 			primaryStage.setScene(scene);
 			
-			GlobalBlock globalBlock = new GlobalBlock(getScreenWidth(), getScreenHeight());
+			setMapSize(0);
+			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), getMapSize());
 			root.getChildren().add(globalBlock);
+			
 			primaryStage.show();
 			//primaryStage.setFullScreen(true);
 		} catch(Exception e) {
@@ -49,19 +53,19 @@ public class Main extends Application {
 		}
 	}
 
-	public double getScreenWidth() {
-		return screenWidth;
+	public ScreenSize getScreenSize() {
+		return screenSize;
 	}
 
-	public void setScreenWidth(double screenWidth) {
-		this.screenWidth = screenWidth;
+	public void setScreenSize(ScreenSize screenSize) {
+		this.screenSize = screenSize;
 	}
 
-	public double getScreenHeight() {
-		return screenHeight;
+	public int getMapSize() {
+		return mapSize;
 	}
 
-	public void setScreenHeight(double screenHeight) {
-		this.screenHeight = screenHeight;
+	public void setMapSize(int mapSize) {
+		this.mapSize = mapSize;
 	}
 }

@@ -37,20 +37,20 @@ public class MapGenerator {
 		setRng(new RandomNumberGenerator());
 	}
 	
-	public Map generate(int sizeMap) throws InvalidMapSizeNumberException{
+	public Map generate(int mapSize) throws InvalidMapSizeNumberException{
 		Map map = null;
 		BiomeGenerator biomeGenerator = new BiomeGenerator(getBiomeStatsFile(), getBlockStatsFile());
 		int numberOfBiomes = 0;
 		Biome[][] biomes = null;
 		//define the size of the map
-		switch(sizeMap) {
+		switch(mapSize) {
 			case(0):numberOfBiomes=BIOME_NUMBER_LITTLE_MAP;
 			break;
 			case(1):numberOfBiomes=BIOME_NUMBER_MEDIUM_MAP;
 			break;
 			case(2):numberOfBiomes=BIOME_NUMBER_WIDE_MAP;
 			break;
-			default:throw new InvalidMapSizeNumberException(sizeMap);
+			default:throw new InvalidMapSizeNumberException(mapSize);
 		}
 		biomes = new Biome[numberOfBiomes][numberOfBiomes];
 		//generate randomly the biomes
@@ -58,7 +58,7 @@ public class MapGenerator {
 			for(int i = 0; i<numberOfBiomes; i++) {
 				for(int j = 0; j<numberOfBiomes; j++) {
 					int biomeType = getRng().generate(5, 0);
-					if(sizeMap==0) {
+					if(mapSize==0) {
 						if ((i==0 || i==2) && (j==0 || j==2)) {
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
@@ -66,7 +66,7 @@ public class MapGenerator {
 							biomes[i][j] = biomeGenerator.generate(biomeType, false);	
 						}
 					}
-					else if(sizeMap==1) {
+					else if(mapSize==1) {
 						if ((i==1 || i==3) && (j==1 || j==3)) {
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
@@ -74,7 +74,7 @@ public class MapGenerator {
 							biomes[i][j] = biomeGenerator.generate(biomeType, false);	
 						}
 					}
-					else if(sizeMap==2) {
+					else if(mapSize==2) {
 						if ((i==1 || i==5) && (j==1 || j==5)) {
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
@@ -91,14 +91,14 @@ public class MapGenerator {
 		}
 		//transform the biomes into a square array
 		Square[][] squares = translateIntoSquares(biomes, numberOfBiomes);
-		switch(sizeMap) {
+		switch(mapSize) {
 		case(0):map = new Map(LITTLE_MAP_DIMENSIONS, squares);
 		break;
 		case(1):map = new Map(MEDIUM_MAP_DIMENSIONS, squares);
 		break;
 		case(2):map = new Map(WIDE_MAP_DIMENSIONS, squares);
 		break;
-		default:throw new InvalidMapSizeNumberException(sizeMap);
+		default:throw new InvalidMapSizeNumberException(mapSize);
 		}
 		return map;
 	}

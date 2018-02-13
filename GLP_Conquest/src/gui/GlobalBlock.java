@@ -1,5 +1,6 @@
 package gui;
 
+import gui_datas.ScreenSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
@@ -16,19 +17,19 @@ public class GlobalBlock extends GridPane{
 	
 	private CentralBlock centralBlock;
 
-	private double screenWidth;
-	private double screenHeight;
+	private ScreenSize screenSize;
+	private int mapSize;
 	
-	public GlobalBlock(double screenWidth, double screenHeight) {
+	public GlobalBlock(ScreenSize screenSize, int mapSize) {
 		super();
-		setScreenWidth(screenWidth);
-		setScreenHeight(screenHeight);
+		setMapSize(mapSize);
+		setScreenSize(screenSize);
 		initializeTracking();
-		setCentralBlock(new CentralBlock());
+		setCentralBlock(new CentralBlock(getScreenSize(), getMapSize()));
 		add(centralBlock, 1, 1);
 		
 		getNorthWestTracking().setMinSize(10, 10);
-		getCentralBlock().setMinSize(getScreenWidth()-20, getScreenHeight()-20);
+		getCentralBlock().setMinSize(getScreenSize().getWidth()-20, getScreenSize().getHeight()-20);
 		getCentralBlock().setStyle("-fx-background-color: blue");
 	}
 	public void initializeTracking() {
@@ -52,17 +53,11 @@ public class GlobalBlock extends GridPane{
 	}
 	
 	
-	public double getScreenWidth() {
-		return screenWidth;
+	public ScreenSize getScreenSize() {
+		return screenSize;
 	}
-	public void setScreenWidth(double screenWidth) {
-		this.screenWidth = screenWidth;
-	}
-	public double getScreenHeight() {
-		return screenHeight;
-	}
-	public void setScreenHeight(double screenHeight) {
-		this.screenHeight = screenHeight;
+	public void setScreenSize(ScreenSize screenSize) {
+		this.screenSize = screenSize;
 	}
 	public TrackingCamera getNorthWestTracking() {
 		return northWestTracking;
@@ -117,6 +112,12 @@ public class GlobalBlock extends GridPane{
 	}
 	public void setCentralBlock(CentralBlock centralBlock) {
 		this.centralBlock = centralBlock;
+	}
+	public int getMapSize() {
+		return mapSize;
+	}
+	public void setMapSize(int mapSize) {
+		this.mapSize = mapSize;
 	}
 	
 }
