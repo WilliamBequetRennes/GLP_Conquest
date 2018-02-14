@@ -1,32 +1,54 @@
 package gui;
 
+import gui_datas.PositionDouble;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class TrackingCamera extends Pane{
 
-	private int COEFFICIENT = 1;
-	private int hTracking;
-	private int vTracking;
+	private int COEFFICIENT = 5;
+	private double hTracking;
+	private double vTracking;
 	
-	public TrackingCamera( int vTracking, int hTracking) {
+	public TrackingCamera( double vTracking, double hTracking, PositionDouble positionDouble) {
 		super();
 		setVTracking(vTracking);
 		setHTracking(hTracking);
+		initializeTracking(positionDouble);
+	}
+	
+	public void initializeTracking(PositionDouble positionDouble) {
+		setOnMouseEntered(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				double x = positionDouble.getX()+getHTracking()*COEFFICIENT;
+				double y = positionDouble.getY()+getVTracking()*COEFFICIENT;
+				positionDouble.setX(x);
+				positionDouble.setY(y);
+			}
+		});
+		setOnMouseExited(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				positionDouble.setX(0);
+				positionDouble.setY(0);
+			}
+		});
 	}
 
-	public int getHTracking() {
+	public double getHTracking() {
 		return hTracking;
 	}
 
-	public void setHTracking(int horizontalTracking) {
-		this.hTracking = horizontalTracking;
+	public void setHTracking(double hTracking) {
+		this.hTracking = hTracking;
 	}
 
-	public int getVTracking() {
+	public double getVTracking() {
 		return vTracking;
 	}
 
-	public void setVTracking(int verticalTracking) {
-		this.vTracking = verticalTracking;
+	public void setVTracking(double vTracking) {
+		this.vTracking = vTracking;
 	}
+	
 }

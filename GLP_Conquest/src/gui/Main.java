@@ -36,13 +36,15 @@ public class Main extends Application {
 			Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 			setScreenSize(new ScreenSize(screen.getWidth(), screen.getHeight()));
 			
-			Scene scene = new Scene(root, getScreenSize().getWidth(), getScreenSize().getHeight(), Color.LIGHTSTEELBLUE);
+			//Scene scene = new Scene(root, getScreenSize().getWidth(), getScreenSize().getHeight(), Color.LIGHTSTEELBLUE);
+			Scene scene = new Scene(root, 300, 300, Color.LIGHTSTEELBLUE);
+			
 			scene.getStylesheets().add(getClass().getResource("theme.css").toExternalForm());
 			primaryStage.setTitle("Project Conquest : Another Modern Wargame");
 
 			primaryStage.setScene(scene);
 			
-			setMapSize(0);
+			setMapSize(LITTLE_MAP);
 			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), getMapSize());
 			root.getChildren().add(globalBlock);
 			

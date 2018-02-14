@@ -1,5 +1,6 @@
 package gui;
 
+import gui_datas.PositionDouble;
 import gui_datas.ScreenSize;
 import javafx.scene.layout.HBox;
 
@@ -11,10 +12,10 @@ public class GameBlock extends HBox{
 	private ScreenSize screenSize;
 	private int mapSize;
 	
-	public GameBlock(ScreenSize screenSize, int mapSize) {
+	public GameBlock(ScreenSize screenSize, int mapSize, PositionDouble tracking) {
 		super();
 		setLeftMenu(new LeftMenu());
-		setCentralMenu(new CentralMenu(screenSize));
+		setCentralMenu(new CentralMenu(screenSize, tracking));
 		setRightMenu(new RightMenu());
 		setScreenSize(screenSize);
 		setMapSize(mapSize);

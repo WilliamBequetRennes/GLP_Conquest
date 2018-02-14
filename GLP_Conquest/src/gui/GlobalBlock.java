@@ -1,8 +1,8 @@
 package gui;
 
+import gui_datas.PositionDouble;
 import gui_datas.ScreenSize;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 
 public class GlobalBlock extends GridPane{
 
@@ -19,13 +19,15 @@ public class GlobalBlock extends GridPane{
 
 	private ScreenSize screenSize;
 	private int mapSize;
+	private PositionDouble tracking;
 	
 	public GlobalBlock(ScreenSize screenSize, int mapSize) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
+		setTracking(new PositionDouble());
 		initializeTracking();
-		setCentralBlock(new CentralBlock(getScreenSize(), getMapSize()));
+		setCentralBlock(new CentralBlock(getScreenSize(), getMapSize(), getTracking()));
 		add(centralBlock, 1, 1);
 		
 		getNorthWestTracking().setMinSize(10, 10);
@@ -33,14 +35,14 @@ public class GlobalBlock extends GridPane{
 		getCentralBlock().setStyle("-fx-background-color: blue");
 	}
 	public void initializeTracking() {
-		setNorthWestTracking(new TrackingCamera(-1, -1));
-		setNorthTracking(new TrackingCamera(-1, 0));
-		setNorthEastTracking(new TrackingCamera(-1, 1));
-		setEastTracking(new TrackingCamera(0, 1));
-		setSouthEastTracking(new TrackingCamera(1, 1));
-		setSouthTracking(new TrackingCamera(1, 0));
-		setSouthWestTracking(new TrackingCamera(1, -1));
-		setWestTracking(new TrackingCamera(0, -1));
+		setNorthWestTracking(new TrackingCamera(-1, -1, getTracking()));
+		setNorthTracking(new TrackingCamera(-1, 0, getTracking()));
+		setNorthEastTracking(new TrackingCamera(-1, 1, getTracking()));
+		setEastTracking(new TrackingCamera(0, 1, getTracking()));
+		setSouthEastTracking(new TrackingCamera(1, 1, getTracking()));
+		setSouthTracking(new TrackingCamera(1, 0, getTracking()));
+		setSouthWestTracking(new TrackingCamera(1, -1, getTracking()));
+		setWestTracking(new TrackingCamera(0, -1, getTracking()));
 		
 		add(getNorthWestTracking(), 0, 0);
 		add(getNorthTracking(), 1, 0);
@@ -119,6 +121,13 @@ public class GlobalBlock extends GridPane{
 	public void setMapSize(int mapSize) {
 		this.mapSize = mapSize;
 	}
+	public PositionDouble getTracking() {
+		return tracking;
+	}
+	public void setTracking(PositionDouble tracking) {
+		this.tracking = tracking;
+	}
+	
 	
 }
 

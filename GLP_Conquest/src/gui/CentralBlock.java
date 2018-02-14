@@ -1,5 +1,6 @@
 package gui;
 
+import gui_datas.PositionDouble;
 import gui_datas.ScreenSize;
 import javafx.scene.layout.VBox;
 
@@ -11,12 +12,12 @@ public class CentralBlock extends VBox{
 	private ScreenSize screenSize;
 	private int mapSize;
 
-	public CentralBlock(ScreenSize screenSize, int mapSize) {
+	public CentralBlock(ScreenSize screenSize, int mapSize, PositionDouble tracking) {
 		super();
 		setScreenSize(screenSize);
 		setMapSize(mapSize);
 		setMenuBar(new MenuBar());
-		setGameBlock(new GameBlock(getScreenSize(), getMapSize()));
+		setGameBlock(new GameBlock(getScreenSize(), getMapSize(), tracking));
 		getChildren().add(getMenuBar());
 		getChildren().add(getGameBlock());
 	}
