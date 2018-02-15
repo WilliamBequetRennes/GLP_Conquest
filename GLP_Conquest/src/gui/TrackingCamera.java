@@ -1,20 +1,30 @@
 package gui;
 
+import gui_datas.BlockSize;
 import gui_datas.PositionDouble;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class TrackingCamera extends Pane{
-
-	private int COEFFICIENT = 5;
+	
+	private int COEFFICIENT = 8;
 	private double hTracking;
 	private double vTracking;
+	private BlockSize blockSize;
 	
 	public TrackingCamera( double vTracking, double hTracking, PositionDouble positionDouble) {
 		super();
 		setVTracking(vTracking);
 		setHTracking(hTracking);
+		initializeTracking(positionDouble);
+	}
+	public TrackingCamera(double vTracking, double hTracking, PositionDouble positionDouble, BlockSize blockSize) {
+		super();
+		setVTracking(vTracking);
+		setHTracking(hTracking);
+		setBlockSize(blockSize);
+		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		initializeTracking(positionDouble);
 	}
 	
@@ -49,6 +59,14 @@ public class TrackingCamera extends Pane{
 
 	public void setVTracking(double vTracking) {
 		this.vTracking = vTracking;
+	}
+
+	public BlockSize getBlockSize() {
+		return blockSize;
+	}
+
+	public void setBlockSize(BlockSize blockSize) {
+		this.blockSize = blockSize;
 	}
 	
 }

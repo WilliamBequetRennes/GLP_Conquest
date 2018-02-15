@@ -1,24 +1,36 @@
 package gui;
 
 import gui_datas.PositionDouble;
-import gui_datas.ScreenSize;
+import gui_datas.BlockSize;
 import javafx.scene.layout.HBox;
 
 public class GameBlock extends HBox{
 	
+	private static final double SIDE_BLOCK_WIDTH = 0.20;
+	private static final double MAP_CANVAS_WIDTH = 0.60;
+	
 	private LeftMenu leftMenu;
 	private RightMenu rightMenu;
 	private CentralMenu centralMenu;
-	private ScreenSize screenSize;
+	private BlockSize blockSize;
 	private int mapSize;
 	
-	public GameBlock(ScreenSize screenSize, int mapSize, PositionDouble tracking) {
+	public GameBlock(BlockSize blockSize, int mapSize, PositionDouble tracking) {
 		super();
-		setLeftMenu(new LeftMenu());
-		setCentralMenu(new CentralMenu(screenSize, tracking));
-		setRightMenu(new RightMenu());
-		setScreenSize(screenSize);
+		setBlockSize(blockSize);
 		setMapSize(mapSize);
+		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
+		
+		BlockSize sideBlockSize = new BlockSize(getBlockSize().getWidth()*SIDE_BLOCK_WIDTH, getBlockSize().getHeight());
+		BlockSize centralBlockSize = new BlockSize(getBlockSize().getWidth()*MAP_CANVAS_WIDTH-1, getBlockSize().getHeight());
+		
+		System.out.println(sideBlockSize.getWidth());
+		System.out.println(centralBlockSize.getWidth());
+		System.out.println(sideBlockSize.getWidth()*2);
+		System.out.println(sideBlockSize.getWidth()*2+centralBlockSize.getWidth());
+		setLeftMenu(new LeftMenu(sideBlockSize));
+		setCentralMenu(new CentralMenu(centralBlockSize, getMapSize(), tracking));
+		setRightMenu(new RightMenu(sideBlockSize));
 		
 		getChildren().add(getLeftMenu());
 		getChildren().add(getCentralMenu());
@@ -49,12 +61,12 @@ public class GameBlock extends HBox{
 		this.centralMenu = centralMenu;
 	}
 
-	public ScreenSize getScreenSize() {
-		return screenSize;
+	public BlockSize getBlockSize() {
+		return blockSize;
 	}
 
-	public void setScreenSize(ScreenSize screenSize) {
-		this.screenSize = screenSize;
+	public void setBlockSize(BlockSize blockSize) {
+		this.blockSize = blockSize;
 	}
 
 	public int getMapSize() {

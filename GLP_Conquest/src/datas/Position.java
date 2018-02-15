@@ -1,31 +1,31 @@
 package datas;
 
 public class Position {
-	private int xPosition;
-	private int yPosition;
+	private int jPosition;
+	private int iPosition;
 	
-	public Position(int xPosition, int yPosition) {
-		setXPosition(xPosition);
-		setYPosition(yPosition);
+	public Position(int jPosition, int iPosition) {
+		setJPosition(jPosition);
+		setIPosition(iPosition);
 	}
 	public Position() {
 		this(0,0);
 	}
 
-	public int getXPosition() {
-		return xPosition;
+	public int getJPosition() {
+		return jPosition;
 	}
 
-	public void setXPosition(int xPosition) {
-		this.xPosition = xPosition;
+	public void setJPosition(int jPosition) {
+		this.jPosition = jPosition;
 	}
 
-	public int getYPosition() {
-		return yPosition;
+	public int getIPosition() {
+		return iPosition;
 	}
 
-	public void setYPosition(int yPosition) {
-		this.yPosition = yPosition;
+	public void setIPosition(int iPosition) {
+		this.iPosition = iPosition;
 	}
 
 }

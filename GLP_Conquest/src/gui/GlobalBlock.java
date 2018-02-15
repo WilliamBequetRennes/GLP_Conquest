@@ -1,10 +1,13 @@
 package gui;
 
 import gui_datas.PositionDouble;
-import gui_datas.ScreenSize;
+import gui_datas.BlockSize;
 import javafx.scene.layout.GridPane;
 
 public class GlobalBlock extends GridPane{
+	
+	private static final double CORNER_SIZE = 0.01;
+	private static final double CENTER_SIZE = 0.98;
 
 	private TrackingCamera northWestTracking;
 	private TrackingCamera northTracking;
@@ -17,29 +20,27 @@ public class GlobalBlock extends GridPane{
 	
 	private CentralBlock centralBlock;
 
-	private ScreenSize screenSize;
+	private BlockSize screenSize;
 	private int mapSize;
 	private PositionDouble tracking;
 	
-	public GlobalBlock(ScreenSize screenSize, int mapSize) {
+	public GlobalBlock(BlockSize screenSize, int mapSize) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
 		setTracking(new PositionDouble());
 		initializeTracking();
-		setCentralBlock(new CentralBlock(getScreenSize(), getMapSize(), getTracking()));
+		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
+		setCentralBlock(new CentralBlock(centerSize, getMapSize(), getTracking()));
 		add(centralBlock, 1, 1);
-		
-		getNorthWestTracking().setMinSize(10, 10);
-		getCentralBlock().setMinSize(getScreenSize().getWidth()-20, getScreenSize().getHeight()-20);
-		getCentralBlock().setStyle("-fx-background-color: blue");
 	}
 	public void initializeTracking() {
-		setNorthWestTracking(new TrackingCamera(-1, -1, getTracking()));
+		BlockSize cornerSize = new BlockSize(getScreenSize().getWidth()*CORNER_SIZE, getScreenSize().getHeight()*CORNER_SIZE);
+		setNorthWestTracking(new TrackingCamera(-1, -1, getTracking(), cornerSize));
 		setNorthTracking(new TrackingCamera(-1, 0, getTracking()));
 		setNorthEastTracking(new TrackingCamera(-1, 1, getTracking()));
 		setEastTracking(new TrackingCamera(0, 1, getTracking()));
-		setSouthEastTracking(new TrackingCamera(1, 1, getTracking()));
+		setSouthEastTracking(new TrackingCamera(1, 1, getTracking(), cornerSize));
 		setSouthTracking(new TrackingCamera(1, 0, getTracking()));
 		setSouthWestTracking(new TrackingCamera(1, -1, getTracking()));
 		setWestTracking(new TrackingCamera(0, -1, getTracking()));
@@ -55,10 +56,10 @@ public class GlobalBlock extends GridPane{
 	}
 	
 	
-	public ScreenSize getScreenSize() {
+	public BlockSize getScreenSize() {
 		return screenSize;
 	}
-	public void setScreenSize(ScreenSize screenSize) {
+	public void setScreenSize(BlockSize screenSize) {
 		this.screenSize = screenSize;
 	}
 	public TrackingCamera getNorthWestTracking() {

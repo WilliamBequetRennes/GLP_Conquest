@@ -2,24 +2,24 @@ package gui;
 
 import exceptions.InvalidMapSizeNumberException;
 import gui_datas.PositionDouble;
-import gui_datas.ScreenSize;
+import gui_datas.BlockSize;
 import javafx.scene.layout.StackPane;
 
 public class CentralMenu extends StackPane{
 
-	private ScreenSize screenSize;
+	private BlockSize blockSize;
 	private int mapSize;
 	
 	private MapCanvas mapCanvas;
 	
-	public CentralMenu(ScreenSize screenSize, PositionDouble tracking) {
+	public CentralMenu(BlockSize blockSize, int mapSize, PositionDouble tracking) {
 		super();
-		setScreenSize(screenSize);
+		setBlockSize(blockSize);
 		setMapSize(mapSize);
+		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 
 		try {
-			setMapCanvas(new MapCanvas(getScreenSize().getWidth(), getScreenSize().getHeight(), getMapSize()));
-			//getMapCanvas().staticMap(cameraPosition);
+			setMapCanvas(new MapCanvas(getBlockSize().getWidth(), getBlockSize().getHeight(), getMapSize()));
 			getMapCanvas().animatedMap(tracking);
 		} catch (InvalidMapSizeNumberException e) {
 			// TODO Auto-generated catch block
@@ -31,12 +31,12 @@ public class CentralMenu extends StackPane{
 		
 	}
 
-	public ScreenSize getScreenSize() {
-		return screenSize;
+	public BlockSize getBlockSize() {
+		return blockSize;
 	}
 
-	public void setScreenSize(ScreenSize screenSize) {
-		this.screenSize = screenSize;
+	public void setBlockSize(BlockSize blockSize) {
+		this.blockSize = blockSize;
 	}
 
 	public int getMapSize() {

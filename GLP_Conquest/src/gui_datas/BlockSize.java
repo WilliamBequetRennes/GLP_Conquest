@@ -1,11 +1,11 @@
 package gui_datas;
 
-public class ScreenSize {
+public class BlockSize {
 	
 	private double width;
 	private double height;
 	
-	public ScreenSize(double width, double height) {
+	public BlockSize(double width, double height) {
 		setWidth(width);
 		setHeight(height);
 	}

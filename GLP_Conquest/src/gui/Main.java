@@ -1,6 +1,8 @@
 package gui;
 	
-import gui_datas.ScreenSize;
+import java.awt.Dimension;
+
+import gui_datas.BlockSize;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
@@ -23,7 +25,7 @@ public class Main extends Application {
 	private static final int MEDIUM_DIMENSIONS = 45;
 	private static final int WIDE_DIMENSIONS = 63;
 	
-	private ScreenSize screenSize;
+	private BlockSize screenSize;
 	private int mapSize;
 	
 	public static void main(String[] args) {
@@ -34,32 +36,33 @@ public class Main extends Application {
 		try {
 			Pane root = new Pane();
 			Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-			setScreenSize(new ScreenSize(screen.getWidth(), screen.getHeight()));
+			Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			setScreenSize(new BlockSize(dimension.getWidth(), dimension.getHeight()));
 			
-			//Scene scene = new Scene(root, getScreenSize().getWidth(), getScreenSize().getHeight(), Color.LIGHTSTEELBLUE);
-			Scene scene = new Scene(root, 300, 300, Color.LIGHTSTEELBLUE);
+			Scene scene = new Scene(root, getScreenSize().getWidth(), getScreenSize().getHeight(), Color.LIGHTSTEELBLUE);
+			//Scene scene = new Scene(root, 300, 300);
 			
 			scene.getStylesheets().add(getClass().getResource("theme.css").toExternalForm());
 			primaryStage.setTitle("Project Conquest : Another Modern Wargame");
 
 			primaryStage.setScene(scene);
 			
-			setMapSize(LITTLE_MAP);
+			setMapSize(WIDE_MAP);
 			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), getMapSize());
 			root.getChildren().add(globalBlock);
 			
 			primaryStage.show();
-			//primaryStage.setFullScreen(true);
+			primaryStage.setFullScreen(true);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public ScreenSize getScreenSize() {
+	public BlockSize getScreenSize() {
 		return screenSize;
 	}
 
-	public void setScreenSize(ScreenSize screenSize) {
+	public void setScreenSize(BlockSize screenSize) {
 		this.screenSize = screenSize;
 	}
 

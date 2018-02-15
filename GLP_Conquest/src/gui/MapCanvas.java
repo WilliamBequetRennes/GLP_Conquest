@@ -4,6 +4,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import exceptions.InvalidMapSizeNumberException;
+import gui_datas.BlockSize;
 import gui_datas.PositionDouble;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -21,32 +22,23 @@ public class MapCanvas extends Canvas{
 	private static final int WIDTH_SQUARE = 60;
 	private static final int HEIGHT_SQUARE = 52;
 	private static final Color BACKGROUND = Color.BLACK;
+	private static final double VIEWABLE_VOID = 150;
 	
 	private MapGenerator mapGenerator;
 	private GraphicsContext board;
 	private Map map;
 	private int mapSize;
-	private int mapDimensions;
+	private int numberOfSquares;
+	private BlockSize mapDimensions;
 	
 	private Image[] squaresSprites;
 	private Image[] frontierSprites;
 	private double cameraPositionX;
 	private double cameraPositionY;
 
-	public MapCanvas (double screenWidth, double screenHeight, int mapSize) throws InvalidMapSizeNumberException {
+	public MapCanvas (double blockWidth, double blockHeight, int mapSize) throws InvalidMapSizeNumberException {
 		super();
-		setWidth(screenWidth/2);
-		setHeight(screenHeight/2);
-		setMapSize(mapSize);
-		switch(getMapSize()) {
-			case(0):setMapDimensions(27);
-			break;
-			case(1):setMapDimensions(45);
-			break;
-			case(2):setMapDimensions(63);
-			break;
-			default: throw new InvalidMapSizeNumberException(mapSize);
-		}
+		initializeMapDimensions(blockWidth, blockHeight, mapSize);
 		setSquaresSprites(initializeSquareSprites());
 		setFrontierSprites(initializeFrontierSprites());
 		setCameraPositionX(0);
@@ -58,44 +50,24 @@ public class MapCanvas extends Canvas{
 		setBoard(getGraphicsContext2D());
 		
 	}
-
-	public void staticMap(PositionDouble tracking) throws InvalidMapSizeNumberException{
-		board.setFill(BACKGROUND);
-		board.fillRect(0, 0, getWidth(), getHeight());
-		int squareType = 0;
-		int squareOwner = 0;
-		setCameraPositionX(getCameraPositionX()+tracking.getX());
-		setCameraPositionY(getCameraPositionY()+tracking.getY());
-		HashMap<PositionDouble,Square> displayedSquares = new HashMap<>();
-		for(int i=0; i<mapDimensions; i++) {
-			for (int j=0; j<mapDimensions; j++) {
-				squareType = map.getSquares()[i][j].getType();
-				squareOwner = map.getSquares()[i][j].getFaction();
-				
-				double originalX = WIDTH_SQUARE-(Math.sqrt(3)*HEIGHT_SQUARE/6);
-				double x = j*originalX-getCameraPositionX();
-				double y = 0;
-				if(x > -WIDTH_SQUARE && x < getWidth()+WIDTH_SQUARE) {
-					if(j%2==0) {
-						y = HEIGHT_SQUARE*i-getCameraPositionY();
-						if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-							board.drawImage(getSquaresSprites()[squareType], x, y);
-							board.drawImage(getFrontierSprites()[squareOwner], x, y);
-							displayedSquares.put(new PositionDouble(x, y), map.getSquares()[i][j]);
-						}
-					}
-					else {
-						y = HEIGHT_SQUARE*(i+0.5)-getCameraPositionY();
-						if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-							board.drawImage(getSquaresSprites()[squareType], x, y);
-							board.drawImage(getFrontierSprites()[squareOwner], x, y);
-							displayedSquares.put(new PositionDouble(x, y), map.getSquares()[i][j]);
-						}
-					}
-				}
-			}
+	
+	public void initializeMapDimensions(double blockWidth, double blockHeight, int mapSize) throws InvalidMapSizeNumberException {
+		setWidth(blockWidth);
+		setHeight(blockHeight);
+		setMapSize(mapSize);
+		switch(getMapSize()) {
+			case(0):setNumberOfSquares(27);
+			break;
+			case(1):setNumberOfSquares(45);
+			break;
+			case(2):setNumberOfSquares(63);
+			break;
+			default: throw new InvalidMapSizeNumberException(mapSize);
 		}
-		initializeSquareClicks(displayedSquares);
+		double mapWidth = WIDTH_SQUARE*(3*getNumberOfSquares()+2)/4-getNumberOfSquares()/2;
+		double mapHeight = HEIGHT_SQUARE*(getNumberOfSquares()+0.5);
+		setMapDimensions(new BlockSize(mapWidth, mapHeight));
+	
 	}
 	
 	public void animatedMap(PositionDouble tracking) {
@@ -105,16 +77,19 @@ public class MapCanvas extends Canvas{
 				board.fillRect(0, 0, getWidth(), getHeight());
 				int squareType = 0;
 				int squareOwner = 0;
-				setCameraPositionX(getCameraPositionX()+tracking.getX());
-				setCameraPositionY(getCameraPositionY()+tracking.getY());
+				if((tracking.getX()<=0 && getCameraPositionX()>-VIEWABLE_VOID) || (tracking.getX()>=0 && getCameraPositionX()<getMapDimensions().getWidth()-getWidth()+VIEWABLE_VOID)) {
+					setCameraPositionX(getCameraPositionX()+tracking.getX());
+				}
+				if((tracking.getY()<=0 && getCameraPositionY()>-VIEWABLE_VOID) || (tracking.getY()>=0 && getCameraPositionY()<getMapDimensions().getHeight()-getHeight()+VIEWABLE_VOID)) {
+					setCameraPositionY(getCameraPositionY()+tracking.getY());
+				}
 				HashMap<PositionDouble,Square> displayedSquares = new HashMap<>();
-				for(int i=0; i<mapDimensions; i++) {
-					for (int j=0; j<mapDimensions; j++) {
+				for(int i=0; i<numberOfSquares; i++) {
+					for (int j=0; j<numberOfSquares; j++) {
 						squareType = map.getSquares()[i][j].getType();
 						squareOwner = map.getSquares()[i][j].getFaction();
 						
-						double originalX = WIDTH_SQUARE-(Math.sqrt(3)*HEIGHT_SQUARE/6);
-						double x = j*originalX-getCameraPositionX();
+						double x = j*WIDTH_SQUARE*3/4-getCameraPositionX();
 						double y = 0;
 						if(x > -WIDTH_SQUARE && x < getWidth()+WIDTH_SQUARE) {
 							if(j%2==0) {
@@ -153,9 +128,7 @@ public class MapCanvas extends Canvas{
 					double xPosition = Math.abs(current.getX()+xCenter-mouseX);
 					double yPosition = Math.abs(current.getY()+yCenter-mouseY);
 					if(Math.pow(xPosition, 2) + Math.pow(yPosition, 2) <= Math.pow(radius, 2)){
-						System.out.println(squares.get(current).getPosition().getXPosition());
-						System.out.println(squares.get(current).getPosition().getYPosition());
-						System.out.println(squares.get(current).getType());
+						System.out.println(squares.get(current).getPosition().getJPosition()+" ; "+squares.get(current).getPosition().getIPosition());
 					}
 				}
 			}
@@ -220,12 +193,12 @@ public class MapCanvas extends Canvas{
 		this.mapSize = mapSize;
 	}
 
-	public int getMapDimensions() {
-		return mapDimensions;
+	public int getNumberOfSquares() {
+		return numberOfSquares;
 	}
 
-	public void setMapDimensions(int mapDimensions) {
-		this.mapDimensions = mapDimensions;
+	public void setNumberOfSquares(int numberOfSquares) {
+		this.numberOfSquares = numberOfSquares;
 	}
 
 	public void setBoard(GraphicsContext board) {
@@ -262,6 +235,14 @@ public class MapCanvas extends Canvas{
 
 	public void setCameraPositionY(double cameraPositionY) {
 		this.cameraPositionY = cameraPositionY;
+	}
+
+	public BlockSize getMapDimensions() {
+		return mapDimensions;
+	}
+
+	public void setMapDimensions(BlockSize mapDimensions) {
+		this.mapDimensions = mapDimensions;
 	}
 
 	
