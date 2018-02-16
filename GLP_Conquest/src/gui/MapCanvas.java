@@ -3,7 +3,9 @@ package gui;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import datas.Position;
 import exceptions.InvalidMapSizeNumberException;
+import game.Game;
 import gui_datas.BlockSize;
 import gui_datas.PositionDouble;
 import javafx.animation.AnimationTimer;
@@ -26,8 +28,6 @@ public class MapCanvas extends Canvas{
 	
 	private MapGenerator mapGenerator;
 	private GraphicsContext board;
-	private Map map;
-	private int mapSize;
 	private int numberOfSquares;
 	private BlockSize mapDimensions;
 	
@@ -36,17 +36,14 @@ public class MapCanvas extends Canvas{
 	private double cameraPositionX;
 	private double cameraPositionY;
 
-	public MapCanvas (double blockWidth, double blockHeight, int mapSize) throws InvalidMapSizeNumberException {
+	public MapCanvas (double blockWidth, double blockHeight, Game game) throws InvalidMapSizeNumberException {
 		super();
-		initializeMapDimensions(blockWidth, blockHeight, mapSize);
+		initializeMapDimensions(blockWidth, blockHeight, game.getMapSize());
 		setSquaresSprites(initializeSquareSprites());
 		setFrontierSprites(initializeFrontierSprites());
 		setCameraPositionX(0);
 		setCameraPositionY(0);
 		
-		//Generate the map
-		setMapGenerator(new MapGenerator());
-		setMap(getMapGenerator().generate(getMapSize()));
 		setBoard(getGraphicsContext2D());
 		
 	}
@@ -54,8 +51,7 @@ public class MapCanvas extends Canvas{
 	public void initializeMapDimensions(double blockWidth, double blockHeight, int mapSize) throws InvalidMapSizeNumberException {
 		setWidth(blockWidth);
 		setHeight(blockHeight);
-		setMapSize(mapSize);
-		switch(getMapSize()) {
+		switch(mapSize) {
 			case(0):setNumberOfSquares(27);
 			break;
 			case(1):setNumberOfSquares(45);
@@ -70,7 +66,7 @@ public class MapCanvas extends Canvas{
 	
 	}
 	
-	public void animatedMap(PositionDouble tracking) {
+	public void animatedMap(PositionDouble tracking, Position currentSelection, Game game) {
 		new AnimationTimer() {
 			public void handle(long now) {
 				board.setFill(BACKGROUND);
@@ -86,8 +82,8 @@ public class MapCanvas extends Canvas{
 				HashMap<PositionDouble,Square> displayedSquares = new HashMap<>();
 				for(int i=0; i<numberOfSquares; i++) {
 					for (int j=0; j<numberOfSquares; j++) {
-						squareType = map.getSquares()[i][j].getType();
-						squareOwner = map.getSquares()[i][j].getFaction();
+						squareType = game.getMap().getSquares()[i][j].getType();
+						squareOwner = game.getMap().getSquares()[i][j].getFaction();
 						
 						double x = j*WIDTH_SQUARE*3/4-getCameraPositionX();
 						double y = 0;
@@ -97,7 +93,7 @@ public class MapCanvas extends Canvas{
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
 									board.drawImage(getSquaresSprites()[squareType], x, y);
 									board.drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y), map.getSquares()[i][j]);
+									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
 								}
 							}
 							else {
@@ -105,18 +101,18 @@ public class MapCanvas extends Canvas{
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
 									board.drawImage(getSquaresSprites()[squareType], x, y);
 									board.drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y), map.getSquares()[i][j]);
+									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
 								}
 							}
 						}
 					}
 				}
-				initializeSquareClicks(displayedSquares);
+				initializeSquareClicks(displayedSquares, currentSelection);
 			}
 		}.start();
 	}
 	
-	public void initializeSquareClicks(HashMap<PositionDouble,Square> squares) {
+	public void initializeSquareClicks(HashMap<PositionDouble,Square> squares, Position currentSelection) {
 		double xCenter = (WIDTH_SQUARE/2);
 		double yCenter = (HEIGHT_SQUARE/2);
 		double radius = HEIGHT_SQUARE/2;
@@ -128,7 +124,10 @@ public class MapCanvas extends Canvas{
 					double xPosition = Math.abs(current.getX()+xCenter-mouseX);
 					double yPosition = Math.abs(current.getY()+yCenter-mouseY);
 					if(Math.pow(xPosition, 2) + Math.pow(yPosition, 2) <= Math.pow(radius, 2)){
-						System.out.println(squares.get(current).getPosition().getJPosition()+" ; "+squares.get(current).getPosition().getIPosition());
+						currentSelection.setIPosition(squares.get(current).getPosition().getIPosition());
+						currentSelection.setJPosition(squares.get(current).getPosition().getJPosition());
+						System.out.println(currentSelection.getJPosition());
+						System.out.println(currentSelection.getIPosition());
 					}
 				}
 			}
@@ -175,22 +174,6 @@ public class MapCanvas extends Canvas{
 
 	public GraphicsContext getBoard() {
 		return board;
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public int getMapSize() {
-		return mapSize;
-	}
-
-	public void setMapSize(int mapSize) {
-		this.mapSize = mapSize;
 	}
 
 	public int getNumberOfSquares() {

@@ -1,6 +1,8 @@
 package gui;
 
 import gui_datas.PositionDouble;
+import datas.Position;
+import game.Game;
 import gui_datas.BlockSize;
 import javafx.scene.layout.HBox;
 
@@ -13,23 +15,20 @@ public class GameBlock extends HBox{
 	private RightMenu rightMenu;
 	private CentralMenu centralMenu;
 	private BlockSize blockSize;
-	private int mapSize;
 	
-	public GameBlock(BlockSize blockSize, int mapSize, PositionDouble tracking) {
+	private Position currentSelection;
+	
+	public GameBlock(BlockSize blockSize, Game game, PositionDouble tracking) {
 		super();
 		setBlockSize(blockSize);
-		setMapSize(mapSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
+		setCurrentSelection(new Position());
 		
 		BlockSize sideBlockSize = new BlockSize(getBlockSize().getWidth()*SIDE_BLOCK_WIDTH, getBlockSize().getHeight());
 		BlockSize centralBlockSize = new BlockSize(getBlockSize().getWidth()*MAP_CANVAS_WIDTH-1, getBlockSize().getHeight());
 		
-		System.out.println(sideBlockSize.getWidth());
-		System.out.println(centralBlockSize.getWidth());
-		System.out.println(sideBlockSize.getWidth()*2);
-		System.out.println(sideBlockSize.getWidth()*2+centralBlockSize.getWidth());
 		setLeftMenu(new LeftMenu(sideBlockSize));
-		setCentralMenu(new CentralMenu(centralBlockSize, getMapSize(), tracking));
+		setCentralMenu(new CentralMenu(centralBlockSize, game, tracking, currentSelection));
 		setRightMenu(new RightMenu(sideBlockSize));
 		
 		getChildren().add(getLeftMenu());
@@ -69,11 +68,11 @@ public class GameBlock extends HBox{
 		this.blockSize = blockSize;
 	}
 
-	public int getMapSize() {
-		return mapSize;
+	public Position getCurrentSelection() {
+		return currentSelection;
 	}
 
-	public void setMapSize(int mapSize) {
-		this.mapSize = mapSize;
+	public void setCurrentSelection(Position currentSelection) {
+		this.currentSelection = currentSelection;
 	}
 }

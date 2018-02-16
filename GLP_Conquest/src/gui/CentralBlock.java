@@ -1,19 +1,23 @@
 package gui;
 
 import gui_datas.PositionDouble;
+import exceptions.InvalidMapSizeNumberException;
+import game.Game;
 import gui_datas.BlockSize;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import map.Map;
+import mapGenerator.MapGenerator;
 
 public class CentralBlock extends VBox{
 	private static final double MENU_BAR_HEIGHT = 0.08;
 	private static final double GAME_BLOCK_HEIGHT = 0.92;
+	private static final int PLAYERS_NUMBER = 4;
 	
 	private MenuBar menuBar;
 	private GameBlock gameBlock;
 
 	private BlockSize blockSize;
-	private int mapSize;
+	private Game game;
 
 	public CentralBlock(BlockSize blockSize, int mapSize, PositionDouble tracking) {
 		super();
@@ -23,10 +27,18 @@ public class CentralBlock extends VBox{
 		
 		BlockSize menuBarSize = new BlockSize(getBlockSize().getWidth(), getBlockSize().getHeight()*MENU_BAR_HEIGHT);
 		BlockSize gameBlockSize = new BlockSize(getBlockSize().getWidth(), getBlockSize().getHeight()*GAME_BLOCK_HEIGHT);
+
+		try {
+			MapGenerator mapGenerator = new MapGenerator();
+			Map map = mapGenerator.generate(mapSize);
 		
-		setMapSize(mapSize);
-		setMenuBar(new MenuBar(menuBarSize));
-		setGameBlock(new GameBlock(gameBlockSize, getMapSize(), tracking));
+			setGame(new Game(PLAYERS_NUMBER, mapSize, map));
+			setMenuBar(new MenuBar(menuBarSize));
+			setGameBlock(new GameBlock(gameBlockSize, getGame(), tracking));
+		} catch (InvalidMapSizeNumberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		getChildren().add(getMenuBar());
 		getChildren().add(getGameBlock());
 	}
@@ -55,12 +67,12 @@ public class CentralBlock extends VBox{
 		this.blockSize = blockSize;
 	}
 
-	public int getMapSize() {
-		return mapSize;
+	public Game getGame() {
+		return game;
 	}
 
-	public void setMapSize(int mapSize) {
-		this.mapSize = mapSize;
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 }

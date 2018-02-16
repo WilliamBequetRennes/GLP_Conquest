@@ -2,6 +2,7 @@ package gui;
 
 import gui_datas.BlockSize;
 import javafx.scene.layout.StackPane;
+import squares.Square;
 
 public class LeftMenu extends StackPane{
 	
