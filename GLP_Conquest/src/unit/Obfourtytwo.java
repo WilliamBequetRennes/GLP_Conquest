@@ -3,7 +3,7 @@ package unit;
 import datas.Resources;
 import datas.Position;
 
-public class Obfourtytwo extends Unit{
+public class Obfourtytwo implements Unit{
 	private float currentHealth;
 	private Position position;
 	private int ID;

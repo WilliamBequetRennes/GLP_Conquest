@@ -3,7 +3,7 @@ package unit;
 import datas.Resources;
 import datas.Position;
 
-public class Battleship extends Unit{
+public class Battleship implements Unit{
 	private float currentHealth;
 	private Position position;
 	private int ID;

@@ -3,7 +3,7 @@ package unit;
 import datas.Resources;
 import datas.Position;
 
-public class Bfgninethousand extends Unit{
+public class Bfgninethousand implements Unit{
 	private float currentHealth;
 	private Position position;
 	private int ID;

@@ -3,7 +3,7 @@ package unit;
 import datas.Resources;
 import datas.Position;
 
-public class Assault extends Unit{
+public class Assault implements Unit{
 	private float currentHealth;
 	private Position position;
 	private int ID;
