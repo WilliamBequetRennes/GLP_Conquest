@@ -24,7 +24,5 @@ public class Board {
 
 	public void setDimensions(int dimensions) {
 		this.dimensions = dimensions;
-	}
-	
-	
+	}	
 }

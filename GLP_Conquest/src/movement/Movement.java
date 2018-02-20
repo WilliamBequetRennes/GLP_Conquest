@@ -1,20 +1,16 @@
-package movement;
-
 import java.util.ArrayList;
-
-import datas.Position;
-import exceptions.OutOfRangeException;
-import units.Unit;
+import unit.Unit;
 
 public class Movement {
 	private Unit unit;
 	private Graph graph;
-	private int mapSize;
+	private Map map;
 	
 	public Movement(Unit unit) {
-		this.unit = unit;
+		setUnit(unit);
 		Position position = this.unit.getPosition();
-		this.graph = new Graph(position);
+		setGraph(position);
+		setMap(map);
 	}
 	
 	public boolean parity(int YPosition) {
@@ -30,9 +26,9 @@ public class Movement {
 	
 	public ArrayList<Position> adjacentSquare(Position position){
 		ArrayList<Position> adjacent = new ArrayList<Position>();
-		int xPosition = position.getJPosition();
-		int yPosition = position.getIPosition();
-		if (parity(position.getIPosition())){
+		int xPosition = position.getXPosition();
+		int yPosition = position.getYPosition();
+		if (parity(position.getYPosition())){
 			if(xPosition > 0) {
 				adjacent.add(new Position(xPosition-1,yPosition));
 				if (yPosition > 0) {
@@ -76,18 +72,30 @@ public class Movement {
 	}
 	
 	public ArrayList<Position> availableMovement(){
-		int count = 0;
+		
+		//Contains the Position the Unit can go through
 		ArrayList<Position> movementRange = new ArrayList<Position>();
-		ArrayList<Position> maxRange = graph.getGraph();
+		Iterator<Position> positionIterator0 = this.graph.iterator();
+		
 		Position position = this.unit.getPosition();
-		int movement = (int) this.unit.getMovement();
+		int movement = (int) this.unit.getRemainingMovement();
+		//For each position
+		while (positionIterator0.hasNext()) {
+			Position testedPosition0 = positionIterator0.next();
+			ArrayList<Position> adjacent1 = adjacentSquare(position);
+			//if it is next to the unit's position
+			if (adjacent1.contains(testedPosition0)) {
+				testedPosition0.setCost(board.getSquare());
+			}
+		}
+		
 		
 		
 		
 		return movementRange;
 	}
 	
-	public ArrayList<Position> shortestWay(Position position) throws OutOfRangeException{
+	public ArrayList<Position> shortestWay(Position position) throws outOfRangeException{
 		ArrayList<Position> available = availableMovement();
 		if (available.contains(position)) {
 			ArrayList<Position> way = new ArrayList<Position>();
@@ -97,7 +105,7 @@ public class Movement {
 			return way;
 		}
 		else {
-			OutOfRangeException except = new OutOfRangeException();
+			outOfRangeException except = new outOfRangeException();
 			throw except; 
 		}
 	}
