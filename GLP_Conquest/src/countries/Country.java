@@ -38,6 +38,9 @@ public class Country {
 			this(leader,player,new Resources(STARTING_MONEY, STARTING_FOOD, STARTING_OIL,
 				STARTING_ELECTRICITY),gains,spents,squareNumber,buildings,units);
 		}
+	public Country(Leader leader, int player) {
+		this(leader, player, new Resources(), new Resources(), 0, new ArrayList<>(), new ArrayList<>());
+	}
 
 	public int getPlayer() {
 		return player;

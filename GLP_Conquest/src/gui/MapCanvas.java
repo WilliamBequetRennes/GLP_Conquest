@@ -3,7 +3,6 @@ package gui;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
-import datas.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
 import gui_datas.BlockSize;
@@ -15,7 +14,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import map.Map;
 import mapGenerator.MapGenerator;
 import squares.Square;
 
@@ -66,7 +64,7 @@ public class MapCanvas extends Canvas{
 	
 	}
 	
-	public void animatedMap(PositionDouble tracking, Position currentSelection, Game game) {
+	public void animatedMap(PositionDouble tracking, Game game, GameBlock gameBlock) {
 		new AnimationTimer() {
 			public void handle(long now) {
 				board.setFill(BACKGROUND);
@@ -107,12 +105,12 @@ public class MapCanvas extends Canvas{
 						}
 					}
 				}
-				initializeSquareClicks(displayedSquares, currentSelection);
+				initializeSquareClicks(game, displayedSquares, gameBlock);
 			}
 		}.start();
 	}
 	
-	public void initializeSquareClicks(HashMap<PositionDouble,Square> squares, Position currentSelection) {
+	public void initializeSquareClicks(Game game, HashMap<PositionDouble,Square> squares, GameBlock gameBlock) {
 		double xCenter = (WIDTH_SQUARE/2);
 		double yCenter = (HEIGHT_SQUARE/2);
 		double radius = HEIGHT_SQUARE/2;
@@ -124,10 +122,31 @@ public class MapCanvas extends Canvas{
 					double xPosition = Math.abs(current.getX()+xCenter-mouseX);
 					double yPosition = Math.abs(current.getY()+yCenter-mouseY);
 					if(Math.pow(xPosition, 2) + Math.pow(yPosition, 2) <= Math.pow(radius, 2)){
-						currentSelection.setIPosition(squares.get(current).getPosition().getIPosition());
-						currentSelection.setJPosition(squares.get(current).getPosition().getJPosition());
-						System.out.println(currentSelection.getJPosition());
-						System.out.println(currentSelection.getIPosition());
+						game.setCurrentSquare(squares.get(current));
+						String type = "";
+						switch(game.getCurrentSquare().getType()) {
+							case(0):type="Water";
+							break;
+							case(1):type="Land";
+							break;
+							case(2):type="Desert";
+							break;
+							case(3):type="Forest";
+							break;
+							case(4):type="Mont";
+							break;
+							case(5):type="Mine";
+							break;
+							case(6):type="Farm";
+							break;
+							case(7):type="Oil well";
+							break;
+							case(8):type="Nuclear plant";
+							break;
+							case(9):type="City";
+							break;
+						}
+					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
 					}
 				}
 			}

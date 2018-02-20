@@ -4,12 +4,13 @@ import unit.Unit;
 public class Movement {
 	private Unit unit;
 	private Graph graph;
-	private int mapSize;
+	private Map map;
 	
 	public Movement(Unit unit) {
-		this.unit = unit;
+		setUnit(unit);
 		Position position = this.unit.getPosition();
-		this.graph = new Graph(position);
+		setGraph(position);
+		setMap(map);
 	}
 	
 	public boolean parity(int YPosition) {

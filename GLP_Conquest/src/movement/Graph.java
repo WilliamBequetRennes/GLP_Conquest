@@ -1,10 +1,13 @@
+package movement;
+
 import java.util.ArrayList;
+import datas.Position;
 
 public class Graph {
 	private ArrayList<Position> graph;
 	
 	public Graph(Position position) {
-		if (parity(position.getYPosition())){
+		if (parity(position.getIPosition())){
 			this.graph = evenYGraph(position);
 		}
 		else {
@@ -26,8 +29,8 @@ public class Graph {
 	 * Possible de fusionner les deux cas et de faire la boucle correctement
 	 */
 	public ArrayList<Position> evenYGraph(Position Position){
-		int xPosition = Position.getXPosition();
-		int yPosition = Position.getYPosition();
+		int xPosition = Position.getJPosition();
+		int yPosition = Position.getIPosition();
 		ArrayList<Position> graph = new ArrayList<Position>();
 		graph.add(new Position(xPosition-3, yPosition));
 		graph.add(new Position(xPosition-3, yPosition-1));
@@ -69,8 +72,8 @@ public class Graph {
 		return graph;	
 	}
 	public ArrayList<Position> unevenYGraph(Position Position){
-		int xPosition = Position.getXPosition();
-		int yPosition = Position.getYPosition();
+		int xPosition = Position.getJPosition();
+		int yPosition = Position.getIPosition();
 		ArrayList<Position> graph = new ArrayList<Position>();
 		graph.add(new Position(xPosition+3, yPosition));
 		graph.add(new Position(xPosition+3, yPosition-1));

@@ -9,6 +9,7 @@ public class Position {
 	public Position(int jPosition, int iPosition) {
 		setJPosition(jPosition);
 		setIPosition(iPosition);
+		setDefaultLocalPath();
 	}
 	public Position() {
 		this(0,0);
@@ -30,12 +31,31 @@ public class Position {
 		this.iPosition = iPosition;
 	}
 	
+	public void setDefaultLocalPath() {
+		this.localPath = {};
+	}
+	
 	public void setLocalPath(Position[] path) {
 		this.localPath = path;
 	}
 	
 	public void addLocalPath(Position position) {
-		this.
+		this.localPath += position;
 	}
 
+	public Position[] getLocalPath() {
+		return this.localPath;
+	}
+	
+	public void setDefaultLocalCost() {
+		this.localCost = 100;
+	}
+	
+	public void setLocalCost(float cost) {
+		this.localCost = cost;
+	}
+	
+	public float getLocalCost() {
+		return this.localCost;
+	}
 }

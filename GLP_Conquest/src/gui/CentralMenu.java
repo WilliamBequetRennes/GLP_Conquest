@@ -1,6 +1,5 @@
 package gui;
 
-import datas.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
 import gui_datas.PositionDouble;
@@ -12,14 +11,14 @@ public class CentralMenu extends StackPane{
 	private BlockSize blockSize;
 	private MapCanvas mapCanvas;
 	
-	public CentralMenu(BlockSize blockSize, Game game, PositionDouble tracking, Position currentSelection) {
+	public CentralMenu(BlockSize blockSize, Game game, PositionDouble tracking, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 
 		try {
 			setMapCanvas(new MapCanvas(getBlockSize().getWidth(), getBlockSize().getHeight(), game));
-			getMapCanvas().animatedMap(tracking, currentSelection, game);
+			getMapCanvas().animatedMap(tracking, game, gameBlock);
 		} catch (InvalidMapSizeNumberException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

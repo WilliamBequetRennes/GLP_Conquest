@@ -20,7 +20,6 @@ public class BlockGenerator {
 	
 	public Block generate(int biome, int mainSquare) 
 			throws InvalidBiomeNumberException, InvalidSquareNumberException{
-		
 		Block block = new Block();
 		BufferedReader reader = null;
 		try {
@@ -36,7 +35,7 @@ public class BlockGenerator {
 			throw new InvalidSquareNumberException(mainSquare);
 		}
 		String[] currentLine = {"","",""};
-		while (!currentLine[0].equals(String.valueOf(biome)) &&
+		while (!currentLine[0].equals(String.valueOf(biome)) || 
 				!currentLine[1].equals(String.valueOf(mainSquare))) {
 			try {
 				currentLine = reader.readLine().split("#");

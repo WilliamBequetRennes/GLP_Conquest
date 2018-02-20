@@ -11,7 +11,6 @@ public class MenuBar extends HBox{
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
-		setStyle("-fx-background-color: brown");
 	}
 
 	public BlockSize getBlockSize() {
