@@ -26,5 +26,10 @@ public class Board {
 		this.dimensions = dimensions;
 	}
 	
+	public Square getSquareType(Position position) {
+		int jPosition = position.getJPosition();
+		int iPosition = position.getIPosition();
+		return squares[jPosition][iPosition];
+	}
 	
 }

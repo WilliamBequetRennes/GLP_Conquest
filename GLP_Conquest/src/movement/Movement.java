@@ -71,11 +71,23 @@ public class Movement {
 	}
 	
 	public ArrayList<Position> availableMovement(){
-		int count = 0;
+		
+		//Contains the Position the Unit can go through
 		ArrayList<Position> movementRange = new ArrayList<Position>();
-		ArrayList<Position> maxRange = graph.getGraph();
+		Iterator<Position> positionIterator0 = this.graph.iterator();
+		
 		Position position = this.unit.getPosition();
 		int movement = (int) this.unit.getRemainingMovement();
+		//For each position
+		while (positionIterator0.hasNext()) {
+			Position testedPosition0 = positionIterator0.next();
+			ArrayList<Position> adjacent1 = adjacentSquare(position);
+			//if it is next to the unit's position
+			if (adjacent1.contains(testedPosition0)) {
+				testedPosition0.setCost(board.getSquare());
+			}
+		}
+		
 		
 		
 		

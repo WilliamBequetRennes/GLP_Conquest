@@ -3,6 +3,8 @@ package datas;
 public class Position {
 	private int jPosition;
 	private int iPosition;
+	private Position[] localPath;
+	private float localCost;
 	
 	public Position(int jPosition, int iPosition) {
 		setJPosition(jPosition);
@@ -26,6 +28,14 @@ public class Position {
 
 	public void setIPosition(int iPosition) {
 		this.iPosition = iPosition;
+	}
+	
+	public void setLocalPath(Position[] path) {
+		this.localPath = path;
+	}
+	
+	public void addLocalPath(Position position) {
+		this.
 	}
 
 }
