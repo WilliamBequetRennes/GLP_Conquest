@@ -1,5 +1,12 @@
+package movement;
+
 import java.util.ArrayList;
-import unit.Unit;
+import java.util.Iterator;
+
+import datas.Position;
+import exceptions.OutOfRangeException;
+import map.Map;
+import units.Unit;
 
 public class Movement {
 	private Unit unit;
@@ -9,7 +16,7 @@ public class Movement {
 	public Movement(Unit unit) {
 		setUnit(unit);
 		Position position = this.unit.getPosition();
-		setGraph(position);
+		//setGraph(position);
 		setMap(map);
 	}
 	
@@ -26,10 +33,10 @@ public class Movement {
 	
 	public ArrayList<Position> adjacentSquare(Position position){
 		ArrayList<Position> adjacent = new ArrayList<Position>();
-		int xPosition = position.getXPosition();
-		int yPosition = position.getYPosition();
-		if (parity(position.getYPosition())){
-			if(xPosition > 0) {
+		int xPosition = position.getJPosition();
+		int yPosition = position.getIPosition();
+		if (parity(position.getIPosition())){
+			/*if(xPosition > 0) {
 				adjacent.add(new Position(xPosition-1,yPosition));
 				if (yPosition > 0) {
 					adjacent.add(new Position(xPosition-1, yPosition-1));
@@ -66,7 +73,7 @@ public class Movement {
 				if (yPosition < mapSize) {
 					adjacent.add(new Position(xPosition+1,yPosition+1));
 				}
-			}
+			}*/
 		}
 		return adjacent; 
 	}
@@ -75,18 +82,18 @@ public class Movement {
 		
 		//Contains the Position the Unit can go through
 		ArrayList<Position> movementRange = new ArrayList<Position>();
-		Iterator<Position> positionIterator0 = this.graph.iterator();
+		Iterator<Position> positionIterator0 = movementRange.iterator();
 		
 		Position position = this.unit.getPosition();
-		int movement = (int) this.unit.getRemainingMovement();
+		int movement = (int) this.unit.getMovement();
 		//For each position
 		while (positionIterator0.hasNext()) {
 			Position testedPosition0 = positionIterator0.next();
 			ArrayList<Position> adjacent1 = adjacentSquare(position);
 			//if it is next to the unit's position
-			if (adjacent1.contains(testedPosition0)) {
+			/*if (adjacent1.contains(testedPosition0)) {
 				testedPosition0.setCost(board.getSquare());
-			}
+			}*/
 		}
 		
 		
@@ -95,7 +102,7 @@ public class Movement {
 		return movementRange;
 	}
 	
-	public ArrayList<Position> shortestWay(Position position) throws outOfRangeException{
+	public ArrayList<Position> shortestWay(Position position) throws OutOfRangeException{
 		ArrayList<Position> available = availableMovement();
 		if (available.contains(position)) {
 			ArrayList<Position> way = new ArrayList<Position>();
@@ -105,8 +112,31 @@ public class Movement {
 			return way;
 		}
 		else {
-			outOfRangeException except = new outOfRangeException();
-			throw except; 
+			throw new OutOfRangeException();
 		}
+	}
+
+	public Unit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
+
+	public Graph getGraph() {
+		return graph;
+	}
+
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
 	}
 }

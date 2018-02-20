@@ -52,9 +52,8 @@ public class GlobalBlock extends GridPane{
 		try {
 			MapGenerator mapGenerator = new MapGenerator();
 			Map map = mapGenerator.generate(mapSize);
-			Country[] players = new Country[playersNumber];
-			setGame(new Game(playersNumber, players, mapSize, map));
-			getGame().setPlayers(initializePlayers(players));
+			setGame(new Game(playersNumber, mapSize, map));
+			getGame().setPlayers(initializePlayers());
 			System.out.println(getGame().getMap().getSquares()[4][4].getFaction());
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
@@ -86,36 +85,38 @@ public class GlobalBlock extends GridPane{
 		add(getWestTracking(), 0, 1);
 	}
 	
-	public Country[] initializePlayers(Country[] players) throws InvalidMapSizeNumberException{
+	public Country[] initializePlayers() throws InvalidMapSizeNumberException{
+
+		Country[] players = new Country[getGame().getPlayersNumber()];
 		for(int i = 0; i < players.length; i++) {
 			players[i] = new Country(new Leader("name", "ability"), i+1);
 		}
 		if(getMapSize()==0) {
 			switch(getGame().getPlayersNumber()) {
-			case(4):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MAX, 4);
-			case(3):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MIN, 3);
-			case(2):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MAX, 2);
-			case(1):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MIN, 1);
+			case(4):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MAX, 4, players);
+			case(3):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MIN, 3, players);
+			case(2):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MAX, 2, players);
+			case(1):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MIN, 1, players);
 			break;
 			default:throw new InvalidMapSizeNumberException(getMapSize());
 			}
 		}
 		else if (getMapSize()==1) {
 			switch(getGame().getPlayersNumber()) {
-			case(4):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MAX, 4);
-			case(3):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MIN, 3);
-			case(2):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MAX, 2);
-			case(1):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MIN, 1);
+			case(4):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MAX, 4, players);
+			case(3):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MIN, 3, players);
+			case(2):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MAX, 2, players);
+			case(1):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MIN, 1, players);
 			break;
 			default:throw new InvalidMapSizeNumberException(getMapSize());
 			}
 		}
 		else if (getMapSize()==2) {
 			switch(getGame().getPlayersNumber()) {
-			case(4):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MAX, getGame().getPlayersNumber());
-			case(3):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MIN, getGame().getPlayersNumber());
-			case(2):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MAX, getGame().getPlayersNumber());
-			case(1):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MIN, getGame().getPlayersNumber());
+			case(4):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MAX, 4, players);
+			case(3):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MIN, 3, players);
+			case(2):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MAX, 2, players);
+			case(1):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MIN, 1, players);
 			break;
 			default:throw new InvalidMapSizeNumberException(getMapSize());
 			}
@@ -126,10 +127,11 @@ public class GlobalBlock extends GridPane{
 		return players;
 	}
 	
-	public void giveSquareToPlayer(int j, int i, int player) {
+	public void giveSquareToPlayer(int j, int i, int player, Country[] players) {
 		//give a city to the player as starting square
 		getGame().getMap().getSquares()[i][j].setFaction(player);
-		getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i),getGame().getMap().getSquares()[i][j]);
+		
+		players[player-1].getBuildings().put(new Position(j, i), getGame().getMap().getSquares()[i][j]);
 		//give also the squares rounding the city
 		if(j%2!=0) {
 			getGame().getMap().getSquares()[i-1][j].setFaction(player);
@@ -138,12 +140,12 @@ public class GlobalBlock extends GridPane{
 			getGame().getMap().getSquares()[i+1][j].setFaction(player);
 			getGame().getMap().getSquares()[i+1][j-1].setFaction(player);
 			getGame().getMap().getSquares()[i][j-1].setFaction(player);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j+1]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i+1),getGame().getMap().getSquares()[i+1][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i+1),getGame().getMap().getSquares()[i+1][j-1]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i+1][j-1]);
+			players[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
+			players[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j+1]);
+			players[player-1].getBuildings().put(new Position(j+1, i+1),getGame().getMap().getSquares()[i+1][j]);
+			players[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
+			players[player-1].getBuildings().put(new Position(j-1, i+1),getGame().getMap().getSquares()[i+1][j-1]);
+			players[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i+1][j-1]);
 		}
 		else {
 			getGame().getMap().getSquares()[i-1][j].setFaction(player);
@@ -152,12 +154,12 @@ public class GlobalBlock extends GridPane{
 			getGame().getMap().getSquares()[i+1][j].setFaction(player);
 			getGame().getMap().getSquares()[i][j-1].setFaction(player);
 			getGame().getMap().getSquares()[i-1][j-1].setFaction(player);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i-1),getGame().getMap().getSquares()[i-1][j+1]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i][j-1]);
-			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i-1),getGame().getMap().getSquares()[i-1][j-1]);
+			players[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
+			players[player-1].getBuildings().put(new Position(j+1, i-1),getGame().getMap().getSquares()[i-1][j+1]);
+			players[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j]);
+			players[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
+			players[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i][j-1]);
+			players[player-1].getBuildings().put(new Position(j-1, i-1),getGame().getMap().getSquares()[i-1][j-1]);
 		}
 	}
 	
