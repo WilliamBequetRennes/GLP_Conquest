@@ -1,3 +1,15 @@
 GlobalBlock {
 	-fx-background-color:rgb(200,200,200); 
 }
+
+MenuBar {
+	-fx-background-color: brown;
+}
+
+LeftMenu {
+	-fx-background-color: red;
+}
+
+RightMenu {
+	-fx-background-color: red;
+}

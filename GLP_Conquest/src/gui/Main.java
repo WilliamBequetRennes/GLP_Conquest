@@ -24,6 +24,7 @@ public class Main extends Application {
 	private static final int LITTLE_DIMENSIONS = 27;
 	private static final int MEDIUM_DIMENSIONS = 45;
 	private static final int WIDE_DIMENSIONS = 63;
+	private static final int PLAYERS_NUMBER = 4;
 	
 	private BlockSize screenSize;
 	private int mapSize;
@@ -48,7 +49,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			
 			setMapSize(WIDE_MAP);
-			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), getMapSize());
+			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), PLAYERS_NUMBER, getMapSize());
 			root.getChildren().add(globalBlock);
 			
 			primaryStage.show();

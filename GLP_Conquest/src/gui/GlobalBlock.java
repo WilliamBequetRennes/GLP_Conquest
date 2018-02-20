@@ -1,8 +1,14 @@
 package gui;
 
 import gui_datas.PositionDouble;
+import countries.Country;
+import countries.Leader;
+import exceptions.InvalidMapSizeNumberException;
+import game.Game;
 import gui_datas.BlockSize;
 import javafx.scene.layout.GridPane;
+import map.Map;
+import mapGenerator.MapGenerator;
 
 public class GlobalBlock extends GridPane{
 	
@@ -24,15 +30,34 @@ public class GlobalBlock extends GridPane{
 	private int mapSize;
 	private PositionDouble tracking;
 	
-	public GlobalBlock(BlockSize screenSize, int mapSize) {
+	private Game game;
+	
+	public GlobalBlock(BlockSize screenSize, int playersNumber, int mapSize) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
 		setTracking(new PositionDouble());
 		initializeTracking();
+		
 		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
-		setCentralBlock(new CentralBlock(centerSize, getMapSize(), getTracking()));
+		
+		try {
+			MapGenerator mapGenerator = new MapGenerator();
+			Map map = mapGenerator.generate(mapSize);
+			
+			Country[] players = new Country[playersNumber];
+			for(int i = 0; i < players.length; i++) {
+				players[i] = new Country(new Leader("name", "ability"), i+1);
+			}
+			setGame(new Game(playersNumber, players, mapSize, map));
+		} catch (InvalidMapSizeNumberException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+		
+		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking()));
 		add(centralBlock, 1, 1);
+		
 	}
 	public void initializeTracking() {
 		BlockSize cornerSize = new BlockSize(getScreenSize().getWidth()*CORNER_SIZE, getScreenSize().getHeight()*CORNER_SIZE);
@@ -128,7 +153,12 @@ public class GlobalBlock extends GridPane{
 	public void setTracking(PositionDouble tracking) {
 		this.tracking = tracking;
 	}
-	
+	public Game getGame() {
+		return game;
+	}
+	public void setGame(Game game) {
+		this.game = game;
+	}
 	
 }
 

@@ -1,5 +1,10 @@
+package movement;
+
 import java.util.ArrayList;
-import unit.Unit;
+
+import datas.Position;
+import exceptions.OutOfRangeException;
+import units.Unit;
 
 public class Movement {
 	private Unit unit;
@@ -25,9 +30,9 @@ public class Movement {
 	
 	public ArrayList<Position> adjacentSquare(Position position){
 		ArrayList<Position> adjacent = new ArrayList<Position>();
-		int xPosition = position.getXPosition();
-		int yPosition = position.getYPosition();
-		if (parity(position.getYPosition())){
+		int xPosition = position.getJPosition();
+		int yPosition = position.getIPosition();
+		if (parity(position.getIPosition())){
 			if(xPosition > 0) {
 				adjacent.add(new Position(xPosition-1,yPosition));
 				if (yPosition > 0) {
@@ -75,14 +80,14 @@ public class Movement {
 		ArrayList<Position> movementRange = new ArrayList<Position>();
 		ArrayList<Position> maxRange = graph.getGraph();
 		Position position = this.unit.getPosition();
-		int movement = (int) this.unit.getRemainingMovement();
+		int movement = (int) this.unit.getMovement();
 		
 		
 		
 		return movementRange;
 	}
 	
-	public ArrayList<Position> shortestWay(Position position) throws outOfRangeException{
+	public ArrayList<Position> shortestWay(Position position) throws OutOfRangeException{
 		ArrayList<Position> available = availableMovement();
 		if (available.contains(position)) {
 			ArrayList<Position> way = new ArrayList<Position>();
@@ -92,7 +97,7 @@ public class Movement {
 			return way;
 		}
 		else {
-			outOfRangeException except = new outOfRangeException();
+			OutOfRangeException except = new OutOfRangeException();
 			throw except; 
 		}
 	}

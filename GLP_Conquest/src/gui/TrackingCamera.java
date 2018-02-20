@@ -8,12 +8,12 @@ import javafx.scene.layout.Pane;
 
 public class TrackingCamera extends Pane{
 	
-	private int COEFFICIENT = 8;
+	private int COEFFICIENT = 10;
 	private double hTracking;
 	private double vTracking;
 	private BlockSize blockSize;
 	
-	public TrackingCamera( double vTracking, double hTracking, PositionDouble positionDouble) {
+	public TrackingCamera(double vTracking, double hTracking, PositionDouble positionDouble) {
 		super();
 		setVTracking(vTracking);
 		setHTracking(hTracking);

@@ -13,18 +13,20 @@ public class Game {
 	private int mapSize;
 	private Map map;
 	private Square currentSquare;
+	private int id;
 	
 	public Game(int turnNumber, int playersNumber, Country[] players, int currentPlayer, int mapSize, Map map, Square currentSquare) {
 		setTurnNumber(turnNumber);
 		setPlayersNumber(playersNumber);
 		setPlayers(players);
 		setCurrentPlayer(currentPlayer);
+		setMapSize(mapSize);
 		setMap(map);
 		setCurrentSquare(currentSquare);
 	}
 	
-	public Game(int playersNumber, int mapSize, Map map) {
-		this(0, playersNumber, new Country[playersNumber], 0, mapSize, map, map.getSquares()[0][0]);
+	public Game(int playersNumber, Country[] players, int mapSize, Map map) {
+		this(0, playersNumber, players, 0, mapSize, map, map.getSquares()[0][0]);
 	}
 	public int getTurnNumber() {
 		return turnNumber;
@@ -69,6 +71,14 @@ public class Game {
 	}
 	public void setCurrentSquare(Square currentSquare) {
 		this.currentSquare = currentSquare;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

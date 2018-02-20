@@ -1,3 +1,4 @@
+package movement;
 
 public class IndexPosition {
 	int xPosition;
