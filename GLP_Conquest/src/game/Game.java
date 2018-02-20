@@ -71,10 +71,5 @@ public class Game {
 		this.currentSquare = currentSquare;
 	}
 	
-	public Square getSquareType(Position position) {
-		int jPosition = position.getJPosition();
-		int iPosition = position.getIPosition();
-		return squares[jPosition][iPosition];
-	}
 	
 }
