@@ -3,6 +3,7 @@ package gui;
 import gui_datas.PositionDouble;
 import countries.Country;
 import countries.Leader;
+import datas.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
 import gui_datas.BlockSize;
@@ -14,6 +15,13 @@ public class GlobalBlock extends GridPane{
 	
 	private static final double CORNER_SIZE = 0.01;
 	private static final double CENTER_SIZE = 0.98;
+	
+	private static final int LITTLE_STARTING_CITY_MIN = 4;
+	private static final int LITTLE_STARTING_CITY_MAX = 22;
+	private static final int MEDIUM_STARTING_CITY_MIN = 12;
+	private static final int MEDIUM_STARTING_CITY_MAX = 31;
+	private static final int WIDE_STARTING_CITY_MIN = 12;
+	private static final int WIDE_STARTING_CITY_MAX = 49;
 
 	private TrackingCamera northWestTracking;
 	private TrackingCamera northTracking;
@@ -44,12 +52,10 @@ public class GlobalBlock extends GridPane{
 		try {
 			MapGenerator mapGenerator = new MapGenerator();
 			Map map = mapGenerator.generate(mapSize);
-			
 			Country[] players = new Country[playersNumber];
-			for(int i = 0; i < players.length; i++) {
-				players[i] = new Country(new Leader("name", "ability"), i+1);
-			}
 			setGame(new Game(playersNumber, players, mapSize, map));
+			getGame().setPlayers(initializePlayers(players));
+			System.out.println(getGame().getMap().getSquares()[4][4].getFaction());
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -80,6 +86,80 @@ public class GlobalBlock extends GridPane{
 		add(getWestTracking(), 0, 1);
 	}
 	
+	public Country[] initializePlayers(Country[] players) throws InvalidMapSizeNumberException{
+		for(int i = 0; i < players.length; i++) {
+			players[i] = new Country(new Leader("name", "ability"), i+1);
+		}
+		if(getMapSize()==0) {
+			switch(getGame().getPlayersNumber()) {
+			case(4):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MAX, 4);
+			case(3):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MIN, 3);
+			case(2):giveSquareToPlayer(LITTLE_STARTING_CITY_MAX, LITTLE_STARTING_CITY_MAX, 2);
+			case(1):giveSquareToPlayer(LITTLE_STARTING_CITY_MIN, LITTLE_STARTING_CITY_MIN, 1);
+			break;
+			default:throw new InvalidMapSizeNumberException(getMapSize());
+			}
+		}
+		else if (getMapSize()==1) {
+			switch(getGame().getPlayersNumber()) {
+			case(4):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MAX, 4);
+			case(3):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MIN, 3);
+			case(2):giveSquareToPlayer(MEDIUM_STARTING_CITY_MAX, MEDIUM_STARTING_CITY_MAX, 2);
+			case(1):giveSquareToPlayer(MEDIUM_STARTING_CITY_MIN, MEDIUM_STARTING_CITY_MIN, 1);
+			break;
+			default:throw new InvalidMapSizeNumberException(getMapSize());
+			}
+		}
+		else if (getMapSize()==2) {
+			switch(getGame().getPlayersNumber()) {
+			case(4):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MAX, getGame().getPlayersNumber());
+			case(3):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MIN, getGame().getPlayersNumber());
+			case(2):giveSquareToPlayer(WIDE_STARTING_CITY_MAX, WIDE_STARTING_CITY_MAX, getGame().getPlayersNumber());
+			case(1):giveSquareToPlayer(WIDE_STARTING_CITY_MIN, WIDE_STARTING_CITY_MIN, getGame().getPlayersNumber());
+			break;
+			default:throw new InvalidMapSizeNumberException(getMapSize());
+			}
+		}
+		else {
+			throw new InvalidMapSizeNumberException(getMapSize());
+		}
+		return players;
+	}
+	
+	public void giveSquareToPlayer(int j, int i, int player) {
+		//give a city to the player as starting square
+		getGame().getMap().getSquares()[i][j].setFaction(player);
+		getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i),getGame().getMap().getSquares()[i][j]);
+		//give also the squares rounding the city
+		if(j%2!=0) {
+			getGame().getMap().getSquares()[i-1][j].setFaction(player);
+			getGame().getMap().getSquares()[i][j+1].setFaction(player);
+			getGame().getMap().getSquares()[i+1][j+1].setFaction(player);
+			getGame().getMap().getSquares()[i+1][j].setFaction(player);
+			getGame().getMap().getSquares()[i+1][j-1].setFaction(player);
+			getGame().getMap().getSquares()[i][j-1].setFaction(player);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j+1]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i+1),getGame().getMap().getSquares()[i+1][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i+1),getGame().getMap().getSquares()[i+1][j-1]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i+1][j-1]);
+		}
+		else {
+			getGame().getMap().getSquares()[i-1][j].setFaction(player);
+			getGame().getMap().getSquares()[i-1][j+1].setFaction(player);
+			getGame().getMap().getSquares()[i][j+1].setFaction(player);
+			getGame().getMap().getSquares()[i+1][j].setFaction(player);
+			getGame().getMap().getSquares()[i][j-1].setFaction(player);
+			getGame().getMap().getSquares()[i-1][j-1].setFaction(player);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i-1),getGame().getMap().getSquares()[i-1][j+1]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i][j-1]);
+			getGame().getPlayers()[player-1].getBuildings().put(new Position(j-1, i-1),getGame().getMap().getSquares()[i-1][j-1]);
+		}
+	}
 	
 	public BlockSize getScreenSize() {
 		return screenSize;
