@@ -5,16 +5,18 @@ public class Resources {
 	private float food;
 	private float oil;
 	private float electricity;
+	private int level;
 	
-	public Resources(float money, float food, float oil, float electricity) {
+	public Resources(float money, float food, float oil, float electricity, int level) {
 		setMoney(money);
 		setFood(food);
 		setOil(oil);
 		setElectricity(electricity);
+		setLevel(level);
 	}
 	
 	public Resources() {
-		this(0,0,0,0);
+		this(0,0,0,0,0);
 	}
 
 	public float getMoney() {
@@ -47,5 +49,13 @@ public class Resources {
 
 	public void setElectricity(float electricity) {
 		this.electricity = electricity;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }
