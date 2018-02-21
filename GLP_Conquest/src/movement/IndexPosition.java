@@ -1,37 +1,62 @@
-package movement;
+package datas;
 
+public class IndexPosition extends Position {
+	private int jPosition;
+	private int iPosition;
+	private float localCost;
+	private Position[] localPath;
+	
+	public Position(int jPosition, int iPosition) {
+		setJPosition(jPosition);
+		setIPosition(iPosition);
+		setDefaultLocalCost();
+		setDefaultLocalPath();
+	}
+	public Position() {
+		this(0,0);
+	}
 
-public class IndexPosition {
-	int xPosition;
-	int yPosition;
-	int cost;
-	
-	public IndexPosition(int xPosition, int yPosition) {
-		setXPosition(xPosition);
-		setYPosition(yPosition);
+	public int getJPosition() {
+		return jPosition;
+	}
+
+	public void setJPosition(int jPosition) {
+		this.jPosition = jPosition;
+	}
+
+	public int getIPosition() {
+		return iPosition;
+	}
+
+	public void setIPosition(int iPosition) {
+		this.iPosition = iPosition;
 	}
 	
-	public void setXPosition(int xPosition){
-		this.xPosition = xPosition;
+	public void setDefaultCost() {
+		this.localCost = 100;
 	}
 	
-	public void setYPosition(int yPosition) {
-		this.yPosition = yPosition;
+	public void setLocalCost(float localCost) {
+		this.localCost = localCost;
 	}
 	
-	public void setCost(int cost) {
-		this.cost = cost;
+	public float getLocalCost() {
+		return this.localCost;
 	}
 	
-	public int getXPosition(){
-		return this.xPosition;
+	public void setDefaultLocalPath() {
+		this.localPath = {};
+	}
+
+	public void setLocalPath(Position[] localPath) {
+		this.localPath = localPath;
 	}
 	
-	public int getYPosition() {
-		return this.yPosition;
+	public void addLocalPath(Position position) {
+		this.localPath += position;
 	}
 	
-	public int getCost() {
-		return this.cost;
+	public Position[] getLocalPath() {
+		return this.localPath;
 	}
 }
