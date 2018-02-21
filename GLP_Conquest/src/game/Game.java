@@ -1,8 +1,12 @@
 package game;
 
+import java.util.HashMap;
+
 import countries.Country;
+import datas.Position;
 import map.Map;
 import squares.Square;
+import units.Unit;
 
 public class Game {
 
@@ -13,18 +17,21 @@ public class Game {
 	private int mapSize;
 	private Map map;
 	private Square currentSquare;
+	private HashMap<Position,Unit> units;
 	
-	public Game(int turnNumber, int playersNumber, Country[] players, int currentPlayer, int mapSize, Map map, Square currentSquare) {
+	public Game(int turnNumber, int playersNumber, Country[] players, int currentPlayer, int mapSize,
+			Map map, Square currentSquare, HashMap<Position,Unit> units) {
 		setTurnNumber(turnNumber);
 		setPlayersNumber(playersNumber);
 		setPlayers(players);
 		setCurrentPlayer(currentPlayer);
 		setMap(map);
 		setCurrentSquare(currentSquare);
+		setUnits(units);
 	}
 	
 	public Game(int playersNumber, int mapSize, Map map) {
-		this(0, playersNumber, new Country[playersNumber], 0, mapSize, map, map.getSquares()[0][0]);
+		this(1, playersNumber, new Country[playersNumber], 1, mapSize, map, map.getSquares()[0][0], new HashMap<Position,Unit>());
 	}
 	public int getTurnNumber() {
 		return turnNumber;
@@ -69,6 +76,14 @@ public class Game {
 	}
 	public void setCurrentSquare(Square currentSquare) {
 		this.currentSquare = currentSquare;
+	}
+
+	public HashMap<Position, Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(HashMap<Position, Unit> units) {
+		this.units = units;
 	}
 	
 }

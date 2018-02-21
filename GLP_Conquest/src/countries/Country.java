@@ -19,8 +19,8 @@ public class Country {
 	private Resources gains;
 	private Resources spents;
 	private int squareNumber;
-	private HashMap<Position,Square> buildings = new HashMap<Position,Square>();
-	private HashMap<Position,Unit> units = new HashMap<Position,Unit>();
+	private HashMap<Position,Square> buildings;
+	private HashMap<Position,Unit> units;
 	
 	public Country(Leader leader, int player, Resources resources, Resources gains,
 			Resources spents, int squareNumber, HashMap<Position,Square> buildings,
