@@ -12,7 +12,7 @@ public abstract class Unit{
 	private int faction;
 	private float maxMovement;
 	private float movement;
-	private int range;
+	public static int range;
 	private int attack;
 	private int defense;
 	private float vision;

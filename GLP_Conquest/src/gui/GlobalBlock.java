@@ -54,7 +54,6 @@ public class GlobalBlock extends GridPane{
 			Map map = mapGenerator.generate(mapSize);
 			setGame(new Game(playersNumber, mapSize, map));
 			getGame().setPlayers(initializePlayers());
-			System.out.println(getGame().getMap().getSquares()[4][4].getFaction());
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -140,12 +139,6 @@ public class GlobalBlock extends GridPane{
 			getGame().getMap().getSquares()[i+1][j].setFaction(player);
 			getGame().getMap().getSquares()[i+1][j-1].setFaction(player);
 			getGame().getMap().getSquares()[i][j-1].setFaction(player);
-			players[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
-			players[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j+1]);
-			players[player-1].getBuildings().put(new Position(j+1, i+1),getGame().getMap().getSquares()[i+1][j]);
-			players[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
-			players[player-1].getBuildings().put(new Position(j-1, i+1),getGame().getMap().getSquares()[i+1][j-1]);
-			players[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i+1][j-1]);
 		}
 		else {
 			getGame().getMap().getSquares()[i-1][j].setFaction(player);
@@ -154,12 +147,6 @@ public class GlobalBlock extends GridPane{
 			getGame().getMap().getSquares()[i+1][j].setFaction(player);
 			getGame().getMap().getSquares()[i][j-1].setFaction(player);
 			getGame().getMap().getSquares()[i-1][j-1].setFaction(player);
-			players[player-1].getBuildings().put(new Position(j, i-1),getGame().getMap().getSquares()[i-1][j]);
-			players[player-1].getBuildings().put(new Position(j+1, i-1),getGame().getMap().getSquares()[i-1][j+1]);
-			players[player-1].getBuildings().put(new Position(j+1, i),getGame().getMap().getSquares()[i][j]);
-			players[player-1].getBuildings().put(new Position(j, i+1),getGame().getMap().getSquares()[i+1][j]);
-			players[player-1].getBuildings().put(new Position(j-1, i),getGame().getMap().getSquares()[i][j-1]);
-			players[player-1].getBuildings().put(new Position(j-1, i-1),getGame().getMap().getSquares()[i-1][j-1]);
 		}
 	}
 	
