@@ -71,5 +71,4 @@ public class Game {
 		this.currentSquare = currentSquare;
 	}
 	
-	
 }

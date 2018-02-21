@@ -1,9 +1,11 @@
 package countries;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import datas.Position;
 import datas.Resources;
 import squares.Square;
+import units.Unit;
 
 public class Country {
 	private final static int STARTING_MONEY = 5000;
@@ -17,12 +19,12 @@ public class Country {
 	private Resources gains;
 	private Resources spents;
 	private int squareNumber;
-	private ArrayList<Square> buildings = new ArrayList<Square>();
-	private ArrayList<String> units = new ArrayList<String>();
+	private HashMap<Position,Square> buildings = new HashMap<Position,Square>();
+	private HashMap<Position,Unit> units = new HashMap<Position,Unit>();
 	
 	public Country(Leader leader, int player, Resources resources, Resources gains,
-			Resources spents, int squareNumber, ArrayList<Square> buildings,
-			ArrayList<String> units) {
+			Resources spents, int squareNumber, HashMap<Position,Square> buildings,
+			HashMap<Position,Unit> units) {
 		setPlayer(player);
 		setLeader(leader);
 		setResources(resources);
@@ -33,13 +35,13 @@ public class Country {
 		setUnits(units);
 	}
 	public Country(Leader leader, int player, Resources gains,
-			Resources spents, int squareNumber, ArrayList<Square> buildings,
-			ArrayList<String> units) {
+			Resources spents, int squareNumber, HashMap<Position,Square> buildings,
+			HashMap<Position,Unit> units) {
 			this(leader,player,new Resources(STARTING_MONEY, STARTING_FOOD, STARTING_OIL,
 				STARTING_ELECTRICITY),gains,spents,squareNumber,buildings,units);
 		}
 	public Country(Leader leader, int player) {
-		this(leader, player, new Resources(), new Resources(), 0, new ArrayList<>(), new ArrayList<>());
+		this(leader, player, new Resources(), new Resources(), 0, new HashMap<Position,Square>(), new HashMap<Position,Unit>());
 	}
 
 	public int getPlayer() {
@@ -89,20 +91,17 @@ public class Country {
 	public void setSquareNumber(int squareNumber) {
 		this.squareNumber = squareNumber;
 	}
-
-	public ArrayList<Square> getBuildings() {
+	public HashMap<Position, Square> getBuildings() {
 		return buildings;
 	}
-
-	public void setBuildings(ArrayList<Square> buildings) {
+	public void setBuildings(HashMap<Position, Square> buildings) {
 		this.buildings = buildings;
 	}
-
-	public ArrayList<String> getUnits() {
+	public HashMap<Position, Unit> getUnits() {
 		return units;
 	}
-
-	public void setUnits(ArrayList<String> units) {
+	public void setUnits(HashMap<Position, Unit> units) {
 		this.units = units;
 	}
+
 }
