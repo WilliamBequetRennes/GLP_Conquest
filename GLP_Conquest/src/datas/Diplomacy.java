@@ -2,25 +2,25 @@ package datas;
 
 public class Diplomacy {
 	
-	private int status;
+	private String status;
 
-	public Diplomacy(int status) {
+	public Diplomacy(String status) {
 		this.status = status;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
-		if (status==0) {
-			this.status = status;
+	public void setStatus(String status) {
+		if (status.equals("War")) {
+			this.status = "War";
 		}
-		if (status==1) {
-			this.status = status;
+		if (status.equals("Neutral")) {
+			this.status = "Neutral";
 		}
-		if (status==2) {
-			this.status = status;
+		if (status.equals("Allied")) {
+			this.status = "Allied";
 		}
 	}
 
