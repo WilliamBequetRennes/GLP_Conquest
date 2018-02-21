@@ -230,6 +230,9 @@ public class Movement {
 			}
 		}
 		else {
+			Country[] players  = Game.getPlayers();
+			Country player = players[defenderFaction-1];
+			player.units.remove(defenderUnit);
 			//Remove defender Unit
 			//Conquest Square
 			//Move attacker unit
