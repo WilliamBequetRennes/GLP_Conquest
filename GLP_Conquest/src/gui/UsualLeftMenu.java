@@ -1,7 +1,6 @@
 package gui;
 
 import game.Game;
-import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -11,6 +10,9 @@ public class UsualLeftMenu extends VBox{
 	private GridPane playerArray;
 	private Label[] playerList;
 	private Label squareType;
+	private Label attackBoost;
+	private Label defenseBoost;
+	private Label squareLevel;
 	
 	public UsualLeftMenu(Game game) {
 		super();
@@ -36,8 +38,13 @@ public class UsualLeftMenu extends VBox{
 	}
 	public void initializeCurrentSquare(Game game){
 		setSquareType(new Label());
+		setAttackBoost(new Label());
+		setDefenseBoost(new Label());
+		setSquareLevel(new Label());
 		getChildren().add(getSquareType());
-		
+		getChildren().add(getAttackBoost());
+		getChildren().add(getDefenseBoost());
+		getChildren().add(getSquareLevel());
 	}
 
 	public GridPane getPlayerArray() {
@@ -62,6 +69,30 @@ public class UsualLeftMenu extends VBox{
 
 	public void setSquareType(Label squareType) {
 		this.squareType = squareType;
+	}
+
+	public Label getAttackBoost() {
+		return attackBoost;
+	}
+
+	public void setAttackBoost(Label attackBoost) {
+		this.attackBoost = attackBoost;
+	}
+
+	public Label getDefenseBoost() {
+		return defenseBoost;
+	}
+
+	public void setDefenseBoost(Label defenseBoost) {
+		this.defenseBoost = defenseBoost;
+	}
+
+	public Label getSquareLevel() {
+		return squareLevel;
+	}
+
+	public void setSquareLevel(Label squareLevel) {
+		this.squareLevel = squareLevel;
 	}
 
 }

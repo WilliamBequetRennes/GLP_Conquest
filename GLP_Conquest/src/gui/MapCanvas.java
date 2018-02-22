@@ -146,7 +146,13 @@ public class MapCanvas extends Canvas{
 							case(9):type="City";
 							break;
 						}
+					String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
+					String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
+					String level = "Level : "+game.getCurrentSquare().getLevel();
 					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
+					gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
+					gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
+					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
 					}
 				}
 			}

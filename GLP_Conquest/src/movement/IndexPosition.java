@@ -1,7 +1,9 @@
-package datas;
+package movement;
+
+import datas.Position;
 
 public class IndexPosition extends Position {
-	private int jPosition;
+/*	private int jPosition;
 	private int iPosition;
 	private float localCost;
 	private Position[] localPath;
@@ -58,5 +60,5 @@ public class IndexPosition extends Position {
 	
 	public Position[] getLocalPath() {
 		return this.localPath;
-	}
+	}*/
 }

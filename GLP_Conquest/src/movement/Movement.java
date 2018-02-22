@@ -2,11 +2,10 @@ package movement;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import datas.IndexPosition;
-import unit.Unit;
+import units.Unit;
 
 public class Movement {
-	private Unit unit;
+/*	private Unit unit;
 	private Graph graph;
 	private Map map;
 	
@@ -262,5 +261,5 @@ public class Movement {
 	
 	public Map = getMap() {
 		return this.map;
-	}
+	}*/
 }
