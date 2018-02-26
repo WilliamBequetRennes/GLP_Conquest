@@ -62,7 +62,8 @@ public class MenuBar extends HBox{
 					game.setTurnNumber(game.getTurnNumber()+1);
 					getTurnNumber().setText("turn : "+game.getTurnNumber());
 				}
-				centralBlock.getGameBlock().getRightMenu().getUsualRightMenu().getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());	
+				centralBlock.getGameBlock().getRightMenu().getUsualRightMenu().getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
+				centralBlock.getGameBlock().getRightMenu().getUsualRightMenu().initializePortrait(game.getPlayers()[game.getCurrentPlayer()].getLeader().getNumber());
 			}
 		});
 		getRightSide().getChildren().add(getEndTurn());

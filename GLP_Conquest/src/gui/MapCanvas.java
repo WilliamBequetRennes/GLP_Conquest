@@ -161,21 +161,16 @@ public class MapCanvas extends Canvas{
 	
 	public Image[] initializeSquareSprites() {
 		Image[] sprites = new Image[10];
-		try {
-			sprites[0] = new Image(getClass().getResource("\\sprites\\Water.png").toURI().toString());
-			sprites[1] = new Image(getClass().getResource("\\sprites\\Land.png").toString());
-			sprites[2] = new Image(getClass().getResource("\\sprites\\Desert.png").toString());
-			sprites[3] = new Image(getClass().getResource("\\sprites\\Forest.png").toString());
-			sprites[4] = new Image(getClass().getResource("\\sprites\\Mont.png").toString());
-			sprites[5] = new Image(getClass().getResource("\\sprites\\Mine.png").toString());
-			sprites[6] = new Image(getClass().getResource("\\sprites\\Farm.png").toString());
-			sprites[7] = new Image(getClass().getResource("\\sprites\\OilWell.png").toString());
-			sprites[8] = new Image(getClass().getResource("\\sprites\\NuclearPlant.png").toString());
-			sprites[9] = new Image(getClass().getResource("\\sprites\\City.png").toString());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sprites[0] = new Image(getClass().getResource("\\sprites\\Water.png").toString());
+		sprites[1] = new Image(getClass().getResource("\\sprites\\Land.png").toString());
+		sprites[2] = new Image(getClass().getResource("\\sprites\\Desert.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\Forest.png").toString());
+		sprites[4] = new Image(getClass().getResource("\\sprites\\Mont.png").toString());
+		sprites[5] = new Image(getClass().getResource("\\sprites\\Mine.png").toString());
+		sprites[6] = new Image(getClass().getResource("\\sprites\\Farm.png").toString());
+		sprites[7] = new Image(getClass().getResource("\\sprites\\OilWell.png").toString());
+		sprites[8] = new Image(getClass().getResource("\\sprites\\NuclearPlant.png").toString());
+		sprites[9] = new Image(getClass().getResource("\\sprites\\City.png").toString());
 		return sprites;
 	}
 	
