@@ -78,8 +78,8 @@ public class MapCanvas extends Canvas{
 					setCameraPositionY(getCameraPositionY()+tracking.getY());
 				}
 				HashMap<PositionDouble,Square> displayedSquares = new HashMap<>();
-				for(int i=0; i<numberOfSquares; i++) {
-					for (int j=0; j<numberOfSquares; j++) {
+				for(int i=0; i<getNumberOfSquares(); i++) {
+					for (int j=0; j<getNumberOfSquares(); j++) {
 						squareType = game.getMap().getSquares()[i][j].getType();
 						squareOwner = game.getMap().getSquares()[i][j].getFaction();
 						
@@ -146,13 +146,19 @@ public class MapCanvas extends Canvas{
 							case(9):type="City";
 							break;
 						}
-					String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
-					String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
-					String level = "Level : "+game.getCurrentSquare().getLevel();
-					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
+						String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
+						String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
+						String level = "Level : "+game.getCurrentSquare().getLevel();
+						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
+						if(game.getCurrentSquare().getType()==9) {
+							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
+						}
+						else {
+							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
+						}
 					}
 				}
 			}

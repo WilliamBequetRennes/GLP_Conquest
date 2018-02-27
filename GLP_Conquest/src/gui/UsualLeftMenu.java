@@ -18,6 +18,7 @@ public class UsualLeftMenu extends VBox{
 		super();
 		initializePlayerArray(game);
 		initializeCurrentSquare(game);
+		displayContent();
 	}
 	
 	public void initializePlayerArray(Game game){
@@ -34,19 +35,22 @@ public class UsualLeftMenu extends VBox{
 			case(1):getPlayerArray().add(getPlayerList()[0], 0, 0);
 			break;
 		}	
-		getChildren().add(getPlayerArray());
 	}
 	public void initializeCurrentSquare(Game game){
 		setSquareType(new Label());
 		setAttackBoost(new Label());
 		setDefenseBoost(new Label());
 		setSquareLevel(new Label());
+	}
+
+	public void displayContent() {
+		getChildren().add(getPlayerArray());
 		getChildren().add(getSquareType());
 		getChildren().add(getAttackBoost());
 		getChildren().add(getDefenseBoost());
-		getChildren().add(getSquareLevel());
+		getChildren().add(getSquareLevel());	
 	}
-
+	
 	public GridPane getPlayerArray() {
 		return playerArray;
 	}

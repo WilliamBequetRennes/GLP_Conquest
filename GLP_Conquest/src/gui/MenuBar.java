@@ -62,13 +62,21 @@ public class MenuBar extends HBox{
 					game.setTurnNumber(game.getTurnNumber()+1);
 					getTurnNumber().setText("turn : "+game.getTurnNumber());
 				}
-				centralBlock.getGameBlock().getRightMenu().getUsualRightMenu().getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
-				centralBlock.getGameBlock().getRightMenu().getUsualRightMenu().initializePortrait(game.getPlayers()[game.getCurrentPlayer()].getLeader().getNumber());
+				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
 			}
 		});
 		getRightSide().getChildren().add(getEndTurn());
 	}
-
+	
+	public void refreshUsualRightMenu(UsualRightMenu menu, Game game) {
+		menu.getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
+		menu.initializePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
+		menu.getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
+		menu.getMoney().setText("Money : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney());
+		menu.getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
+		menu.getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
+		menu.getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricty());
+	}
 	public HBox getLeftSide() {
 		return leftSide;
 	}

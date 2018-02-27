@@ -16,7 +16,6 @@ public class CentralBlock extends VBox{
 
 	public CentralBlock(BlockSize blockSize, Game game, PositionDouble tracking) {
 		super();
-		setStyle("-fx-background-color: blue");
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		

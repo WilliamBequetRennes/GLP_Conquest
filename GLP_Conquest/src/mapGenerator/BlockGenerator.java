@@ -10,6 +10,7 @@ import map.Block;
 import exceptions.InvalidBiomeNumberException;
 
 public class BlockGenerator {	
+	private static final int MAX_BIOME_NUMBER = 6;
 	private String statsFile;
 	private SquareNumberGenerator sng;
 	
@@ -28,7 +29,7 @@ public class BlockGenerator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(biome>5) {
+		if(biome>MAX_BIOME_NUMBER) {
 			throw new InvalidBiomeNumberException(biome);
 		}
 		if(mainSquare>10) {

@@ -57,28 +57,33 @@ public class MapGenerator {
 		try {
 			for(int i = 0; i<numberOfBiomes; i++) {
 				for(int j = 0; j<numberOfBiomes; j++) {
-					int biomeType = getRng().generate(5, 0);
 					if(mapSize==0) {
 						if ((i==0 || i==2) && (j==0 || j==2)) {
+							int biomeType = getRng().generate(5, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
 						else {
+							int biomeType = getRng().generate(6, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, false);	
 						}
 					}
 					else if(mapSize==1) {
 						if ((i==1 || i==3) && (j==1 || j==3)) {
+							int biomeType = getRng().generate(5, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
 						else {
+							int biomeType = getRng().generate(6, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, false);	
 						}
 					}
 					else if(mapSize==2) {
 						if ((i==1 || i==5) && (j==1 || j==5)) {
+							int biomeType = getRng().generate(5, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, true);
 						}
 						else {
+							int biomeType = getRng().generate(6, 0);
 							biomes[i][j] = biomeGenerator.generate(biomeType, false);	
 						}
 					}
