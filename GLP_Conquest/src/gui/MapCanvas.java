@@ -149,15 +149,33 @@ public class MapCanvas extends Canvas{
 						String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
 						String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
 						String level = "Level : "+game.getCurrentSquare().getLevel();
+						
 						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
 						gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
 						gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
 						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
+						
+						//Unit creation part in the right menu
 						if(game.getCurrentSquare().getType()==9) {
 							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
 						}
 						else {
 							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
+						}
+						
+						//Square level part in the left menu
+						if(game.getCurrentSquare().getType()>4) {
+							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
+							if(game.getCurrentSquare().getLevel()<3) {
+								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
+							}
+							else {
+								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
+							}
+						}
+						else {
+							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(false);
+							gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
 						}
 					}
 				}

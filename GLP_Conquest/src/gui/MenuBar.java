@@ -45,6 +45,7 @@ public class MenuBar extends HBox{
 		setMenu(new Button());
 		getMenu().setText("Menu");
 		getLeftSide().getChildren().add(getMenu());
+		getMenu().setId("menu");
 	}
 	public void initializeTurnNumber(Game game) {
 		setTurnNumber(new Label());

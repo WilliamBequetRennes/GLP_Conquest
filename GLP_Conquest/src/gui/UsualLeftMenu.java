@@ -1,7 +1,11 @@
 package gui;
 
 import game.Game;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
@@ -13,11 +17,15 @@ public class UsualLeftMenu extends VBox{
 	private Label attackBoost;
 	private Label defenseBoost;
 	private Label squareLevel;
+	private Button levelUp;
 	
 	public UsualLeftMenu(Game game) {
 		super();
 		initializePlayerArray(game);
 		initializeCurrentSquare(game);
+		initializeLevelUpButton(game);
+
+		setAlignment(Pos.TOP_CENTER);
 		displayContent();
 	}
 	
@@ -35,12 +43,32 @@ public class UsualLeftMenu extends VBox{
 			case(1):getPlayerArray().add(getPlayerList()[0], 0, 0);
 			break;
 		}	
+		getPlayerArray().setAlignment(Pos.CENTER);
 	}
 	public void initializeCurrentSquare(Game game){
 		setSquareType(new Label());
 		setAttackBoost(new Label());
 		setDefenseBoost(new Label());
 		setSquareLevel(new Label());
+		
+		/*getSquareType().setVisible(false);
+		getAttackBoost().setVisible(false);
+		getDefenseBoost().setVisible(false);*/
+		getSquareLevel().setVisible(false);
+	}
+	public void initializeLevelUpButton(Game game) {
+		setLevelUp(new Button());
+		getLevelUp().setText("Level Up");
+		getLevelUp().setVisible(false);
+		getLevelUp().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				game.getCurrentSquare().setLevel(game.getCurrentSquare().getLevel()+1);
+				getSquareLevel().setText("Level : "+game.getCurrentSquare().getLevel());
+				if(game.getCurrentSquare().getLevel()==3) {
+					getLevelUp().setVisible(false);
+				}
+			}
+		});
 	}
 
 	public void displayContent() {
@@ -49,6 +77,7 @@ public class UsualLeftMenu extends VBox{
 		getChildren().add(getAttackBoost());
 		getChildren().add(getDefenseBoost());
 		getChildren().add(getSquareLevel());	
+		getChildren().add(getLevelUp());	
 	}
 	
 	public GridPane getPlayerArray() {
@@ -97,6 +126,14 @@ public class UsualLeftMenu extends VBox{
 
 	public void setSquareLevel(Label squareLevel) {
 		this.squareLevel = squareLevel;
+	}
+
+	public Button getLevelUp() {
+		return levelUp;
+	}
+
+	public void setLevelUp(Button levelUp) {
+		this.levelUp = levelUp;
 	}
 
 }
