@@ -19,9 +19,9 @@ public class UsualLeftMenu extends VBox{
 	private Label squareLevel;
 	private Button levelUp;
 	
-	public UsualLeftMenu(Game game) {
+	public UsualLeftMenu(Game game, GameBlock gameBlock) {
 		super();
-		initializePlayerArray(game);
+		initializePlayerArray(game, gameBlock);
 		initializeCurrentSquare(game);
 		initializeLevelUpButton(game);
 
@@ -29,12 +29,21 @@ public class UsualLeftMenu extends VBox{
 		displayContent();
 	}
 	
-	public void initializePlayerArray(Game game){
+	public void initializePlayerArray(Game game, GameBlock gameBlock){
 		setPlayerArray(new GridPane());
 		setPlayerList(new Label[game.getPlayersNumber()]);
 		for (int i = 1; i<=getPlayerList().length; i++) {
+			int country = i-1;
 			getPlayerList()[i-1] = new Label();
 			getPlayerList()[i-1].setText("player"+i);
+			getPlayerList()[i-1].setOnMouseClicked(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent mouseEvent) {
+					gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[country]);
+					gameBlock.getCentralMenu().getPlayerMenu().setVisible(true);
+					gameBlock.getCentralMenu().getPlayerMenu().toFront();
+					gameBlock.getCentralMenu().getMapCanvas().setVisible(false);
+				}
+			});
 		}
 		switch(game.getPlayersNumber()) {
 			case(4):getPlayerArray().add(getPlayerList()[3], 1, 1);
