@@ -1,12 +1,11 @@
 package movement;
 
 import java.util.ArrayList;
-import datas.Position;
 
 public class Graph {
-	private ArrayList<Position> graph;
+	private ArrayList<IndexPosition> graph;
 	
-	public Graph(Position position) {
+	public Graph(IndexPosition position) {
 		if (parity(position.getIPosition())){
 			this.graph = evenYGraph(position);
 		}
@@ -28,94 +27,94 @@ public class Graph {
 	/*
 	 * Possible de fusionner les deux cas et de faire la boucle correctement
 	 */
-	public ArrayList<Position> evenYGraph(Position Position){
-		int xPosition = Position.getJPosition();
-		int yPosition = Position.getIPosition();
-		ArrayList<Position> graph = new ArrayList<Position>();
-		graph.add(new Position(xPosition-3, yPosition));
-		graph.add(new Position(xPosition-3, yPosition-1));
-		graph.add(new Position(xPosition-3, yPosition+1));
-		graph.add(new Position(xPosition-2, yPosition-3));
-		graph.add(new Position(xPosition-2, yPosition-2));
-		graph.add(new Position(xPosition-2, yPosition-1));
-		graph.add(new Position(xPosition-2, yPosition));
-		graph.add(new Position(xPosition-2, yPosition+1));
-		graph.add(new Position(xPosition-2, yPosition+2));
-		graph.add(new Position(xPosition-2, yPosition+3));
-		graph.add(new Position(xPosition-1, yPosition-3));
-		graph.add(new Position(xPosition-1, yPosition-2));
-		graph.add(new Position(xPosition-1, yPosition-1));
-		graph.add(new Position(xPosition-1, yPosition));
-		graph.add(new Position(xPosition-1, yPosition+1));
-		graph.add(new Position(xPosition-1, yPosition+2));
-		graph.add(new Position(xPosition-1, yPosition+3));
-		graph.add(new Position(xPosition, yPosition-3));
-		graph.add(new Position(xPosition, yPosition-2));
-		graph.add(new Position(xPosition, yPosition-1));
-		graph.add(new Position(xPosition, yPosition+1));
-		graph.add(new Position(xPosition, yPosition+2));
-		graph.add(new Position(xPosition, yPosition+3));
-		graph.add(new Position(xPosition+1, yPosition-3));
-		graph.add(new Position(xPosition+1, yPosition-2));
-		graph.add(new Position(xPosition+1, yPosition-1));
-		graph.add(new Position(xPosition+1, yPosition));
-		graph.add(new Position(xPosition+1, yPosition+1));
-		graph.add(new Position(xPosition+1, yPosition+2));
-		graph.add(new Position(xPosition+1, yPosition+3));
-		graph.add(new Position(xPosition+2, yPosition-2));
-		graph.add(new Position(xPosition+2, yPosition-1));
-		graph.add(new Position(xPosition+2, yPosition));
-		graph.add(new Position(xPosition+2, yPosition+1));
-		graph.add(new Position(xPosition+2, yPosition+2));
-		graph.add(new Position(xPosition+3, yPosition));
+	public ArrayList<IndexPosition> evenYGraph(IndexPosition position){
+		int xPosition = position.getJPosition();
+		int yPosition = position.getIPosition();
+		ArrayList<IndexPosition> graph = new ArrayList<IndexPosition>();
+		graph.add(new IndexPosition(xPosition-3, yPosition));
+		graph.add(new IndexPosition(xPosition-3, yPosition-1));
+		graph.add(new IndexPosition(xPosition-3, yPosition+1));
+		graph.add(new IndexPosition(xPosition-2, yPosition-3));
+		graph.add(new IndexPosition(xPosition-2, yPosition-2));
+		graph.add(new IndexPosition(xPosition-2, yPosition-1));
+		graph.add(new IndexPosition(xPosition-2, yPosition));
+		graph.add(new IndexPosition(xPosition-2, yPosition+1));
+		graph.add(new IndexPosition(xPosition-2, yPosition+2));
+		graph.add(new IndexPosition(xPosition-2, yPosition+3));
+		graph.add(new IndexPosition(xPosition-1, yPosition-3));
+		graph.add(new IndexPosition(xPosition-1, yPosition-2));
+		graph.add(new IndexPosition(xPosition-1, yPosition-1));
+		graph.add(new IndexPosition(xPosition-1, yPosition));
+		graph.add(new IndexPosition(xPosition-1, yPosition+1));
+		graph.add(new IndexPosition(xPosition-1, yPosition+2));
+		graph.add(new IndexPosition(xPosition-1, yPosition+3));
+		graph.add(new IndexPosition(xPosition, yPosition-3));
+		graph.add(new IndexPosition(xPosition, yPosition-2));
+		graph.add(new IndexPosition(xPosition, yPosition-1));
+		graph.add(new IndexPosition(xPosition, yPosition+1));
+		graph.add(new IndexPosition(xPosition, yPosition+2));
+		graph.add(new IndexPosition(xPosition, yPosition+3));
+		graph.add(new IndexPosition(xPosition+1, yPosition-3));
+		graph.add(new IndexPosition(xPosition+1, yPosition-2));
+		graph.add(new IndexPosition(xPosition+1, yPosition-1));
+		graph.add(new IndexPosition(xPosition+1, yPosition));
+		graph.add(new IndexPosition(xPosition+1, yPosition+1));
+		graph.add(new IndexPosition(xPosition+1, yPosition+2));
+		graph.add(new IndexPosition(xPosition+1, yPosition+3));
+		graph.add(new IndexPosition(xPosition+2, yPosition-2));
+		graph.add(new IndexPosition(xPosition+2, yPosition-1));
+		graph.add(new IndexPosition(xPosition+2, yPosition));
+		graph.add(new IndexPosition(xPosition+2, yPosition+1));
+		graph.add(new IndexPosition(xPosition+2, yPosition+2));
+		graph.add(new IndexPosition(xPosition+3, yPosition));
 
 		return graph;	
 	}
-	public ArrayList<Position> unevenYGraph(Position Position){
-		int xPosition = Position.getJPosition();
-		int yPosition = Position.getIPosition();
-		ArrayList<Position> graph = new ArrayList<Position>();
-		graph.add(new Position(xPosition+3, yPosition));
-		graph.add(new Position(xPosition+3, yPosition-1));
-		graph.add(new Position(xPosition+3, yPosition+1));
-		graph.add(new Position(xPosition+2, yPosition-3));
-		graph.add(new Position(xPosition+2, yPosition-2));
-		graph.add(new Position(xPosition+2, yPosition-1));
-		graph.add(new Position(xPosition+2, yPosition));
-		graph.add(new Position(xPosition+2, yPosition+1));
-		graph.add(new Position(xPosition+2, yPosition+2));
-		graph.add(new Position(xPosition+2, yPosition+3));
-		graph.add(new Position(xPosition+1, yPosition-3));
-		graph.add(new Position(xPosition+1, yPosition-2));
-		graph.add(new Position(xPosition+1, yPosition-1));
-		graph.add(new Position(xPosition+1, yPosition));
-		graph.add(new Position(xPosition+1, yPosition+1));
-		graph.add(new Position(xPosition+1, yPosition+2));
-		graph.add(new Position(xPosition+1, yPosition+3));
-		graph.add(new Position(xPosition, yPosition-3));
-		graph.add(new Position(xPosition, yPosition-2));
-		graph.add(new Position(xPosition, yPosition-1));
-		graph.add(new Position(xPosition, yPosition+1));
-		graph.add(new Position(xPosition, yPosition+2));
-		graph.add(new Position(xPosition, yPosition+3));
-		graph.add(new Position(xPosition-1, yPosition-3));
-		graph.add(new Position(xPosition-1, yPosition-2));
-		graph.add(new Position(xPosition-1, yPosition-1));
-		graph.add(new Position(xPosition-1, yPosition));
-		graph.add(new Position(xPosition-1, yPosition+1));
-		graph.add(new Position(xPosition-1, yPosition+2));
-		graph.add(new Position(xPosition-1, yPosition+3));
-		graph.add(new Position(xPosition-2, yPosition-2));
-		graph.add(new Position(xPosition-2, yPosition-1));
-		graph.add(new Position(xPosition-2, yPosition));
-		graph.add(new Position(xPosition-2, yPosition+1));
-		graph.add(new Position(xPosition-2, yPosition+2));
-		graph.add(new Position(xPosition-3, yPosition));
+	public ArrayList<IndexPosition> unevenYGraph(IndexPosition position){
+		int xPosition = position.getJPosition();
+		int yPosition = position.getIPosition();
+		ArrayList<IndexPosition> graph = new ArrayList<IndexPosition>();
+		graph.add(new IndexPosition(xPosition+3, yPosition));
+		graph.add(new IndexPosition(xPosition+3, yPosition-1));
+		graph.add(new IndexPosition(xPosition+3, yPosition+1));
+		graph.add(new IndexPosition(xPosition+2, yPosition-3));
+		graph.add(new IndexPosition(xPosition+2, yPosition-2));
+		graph.add(new IndexPosition(xPosition+2, yPosition-1));
+		graph.add(new IndexPosition(xPosition+2, yPosition));
+		graph.add(new IndexPosition(xPosition+2, yPosition+1));
+		graph.add(new IndexPosition(xPosition+2, yPosition+2));
+		graph.add(new IndexPosition(xPosition+2, yPosition+3));
+		graph.add(new IndexPosition(xPosition+1, yPosition-3));
+		graph.add(new IndexPosition(xPosition+1, yPosition-2));
+		graph.add(new IndexPosition(xPosition+1, yPosition-1));
+		graph.add(new IndexPosition(xPosition+1, yPosition));
+		graph.add(new IndexPosition(xPosition+1, yPosition+1));
+		graph.add(new IndexPosition(xPosition+1, yPosition+2));
+		graph.add(new IndexPosition(xPosition+1, yPosition+3));
+		graph.add(new IndexPosition(xPosition, yPosition-3));
+		graph.add(new IndexPosition(xPosition, yPosition-2));
+		graph.add(new IndexPosition(xPosition, yPosition-1));
+		graph.add(new IndexPosition(xPosition, yPosition+1));
+		graph.add(new IndexPosition(xPosition, yPosition+2));
+		graph.add(new IndexPosition(xPosition, yPosition+3));
+		graph.add(new IndexPosition(xPosition-1, yPosition-3));
+		graph.add(new IndexPosition(xPosition-1, yPosition-2));
+		graph.add(new IndexPosition(xPosition-1, yPosition-1));
+		graph.add(new IndexPosition(xPosition-1, yPosition));
+		graph.add(new IndexPosition(xPosition-1, yPosition+1));
+		graph.add(new IndexPosition(xPosition-1, yPosition+2));
+		graph.add(new IndexPosition(xPosition-1, yPosition+3));
+		graph.add(new IndexPosition(xPosition-2, yPosition-2));
+		graph.add(new IndexPosition(xPosition-2, yPosition-1));
+		graph.add(new IndexPosition(xPosition-2, yPosition));
+		graph.add(new IndexPosition(xPosition-2, yPosition+1));
+		graph.add(new IndexPosition(xPosition-2, yPosition+2));
+		graph.add(new IndexPosition(xPosition-3, yPosition));
 
 		return graph;	
 	}
 	
-	public ArrayList<Position> getGraph(){
+	public ArrayList<IndexPosition> getGraph(){
 		return this.graph;
 	}
 	

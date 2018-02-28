@@ -1,20 +1,22 @@
 package movement;
 
+import java.util.ArrayList;
+
 import datas.Position;
 
 public class IndexPosition extends Position {
-/*	private int jPosition;
+	private int jPosition;
 	private int iPosition;
 	private float localCost;
-	private Position[] localPath;
+	private ArrayList<Position> localPath;
 	
-	public Position(int jPosition, int iPosition) {
+	public IndexPosition(int jPosition, int iPosition) {
 		setJPosition(jPosition);
 		setIPosition(iPosition);
-		setDefaultLocalCost();
+		setDefaultCost();
 		setDefaultLocalPath();
 	}
-	public Position() {
+	public IndexPosition() {
 		this(0,0);
 	}
 
@@ -47,18 +49,18 @@ public class IndexPosition extends Position {
 	}
 	
 	public void setDefaultLocalPath() {
-		this.localPath = {};
+		this.localPath = null;
 	}
 
-	public void setLocalPath(Position[] localPath) {
+	public void setLocalPath(ArrayList<Position> localPath) {
 		this.localPath = localPath;
 	}
 	
 	public void addLocalPath(Position position) {
-		this.localPath += position;
+		this.localPath.add(position);
 	}
 	
-	public Position[] getLocalPath() {
+	public ArrayList<Position> getLocalPath() {
 		return this.localPath;
-	}*/
+	}
 }
