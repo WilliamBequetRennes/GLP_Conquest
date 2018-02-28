@@ -10,11 +10,11 @@ public class RightMenu extends StackPane{
 	private BlockSize blockSize;
 	private UsualRightMenu usualRightMenu;
 	
-	public RightMenu(BlockSize blockSize, Game game) {
+	public RightMenu(BlockSize blockSize, Game game, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
-		setUsualRightMenu(new UsualRightMenu(game));
+		setUsualRightMenu(new UsualRightMenu(game, gameBlock));
 		getChildren().add(getUsualRightMenu());
 	}
 

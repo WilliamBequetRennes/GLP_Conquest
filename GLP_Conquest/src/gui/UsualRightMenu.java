@@ -1,11 +1,13 @@
 package gui;
 
 import game.Game;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 public class UsualRightMenu extends VBox{
@@ -20,11 +22,12 @@ public class UsualRightMenu extends VBox{
 	private Label electricity;
 	private Button createUnit;
 	
-	public UsualRightMenu(Game game) {
+	public UsualRightMenu(Game game, GameBlock gameBlock) {
 		super();
-		initializeCurrentPlayer(game);
+		initializeCurrentPlayer(game, gameBlock);
 		setLeaderPortraits(initializeLeaderPortraits());
 		initializePortrait(game.getPlayers()[0].getLeader().getNumber());
+		initializePortraitClick(gameBlock.getCentralMenu(), game);
 		initializeNumberOfSquares(game);
 		initializeResources(game);
 		initializeCreateUnitButton(game);
@@ -33,9 +36,18 @@ public class UsualRightMenu extends VBox{
 		setAlignment(Pos.TOP_CENTER);
 	}
 	
-	public void initializeCurrentPlayer(Game game) {
+	public void initializeCurrentPlayer(Game game, GameBlock gameBlock) {
 		setCurrentPlayer(new Label());
 		getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
+		getCurrentPlayer().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[game.getCurrentPlayer()-1]);
+				gameBlock.getCentralMenu().getPlayerMenu().setVisible(true);
+				gameBlock.getCentralMenu().getPlayerMenu().toFront();
+				gameBlock.getCentralMenu().getMapCanvas().setVisible(false);
+				gameBlock.getCentralMenu().getLeaderMenu().setVisible(false);
+			}
+		});
 	}
 	public Image[] initializeLeaderPortraits() {
 		Image[] sprites = new Image[7];
@@ -51,7 +63,17 @@ public class UsualRightMenu extends VBox{
 	public void initializePortrait(int leader) {
 		setPortrait(new ImageView(getLeaderPortraits()[leader]));
 	}
-	
+	public void initializePortraitClick(CentralMenu centralMenu, Game game) {
+		getPortrait().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				centralMenu.getLeaderMenu().update(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
+				centralMenu.getLeaderMenu().setVisible(true);
+				centralMenu.getLeaderMenu().toFront();
+				centralMenu.getPlayerMenu().setVisible(false);
+				centralMenu.getMapCanvas().setVisible(false);
+			}
+		});
+	}
 	public void initializeNumberOfSquares(Game game) {
 		setNumberOfSquares(new Label());
 		getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());

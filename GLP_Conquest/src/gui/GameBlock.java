@@ -25,7 +25,7 @@ public class GameBlock extends HBox{
 		
 		setLeftMenu(new LeftMenu(sideBlockSize, game, this));
 		setCentralMenu(new CentralMenu(centralBlockSize, game, tracking, this));
-		setRightMenu(new RightMenu(sideBlockSize, game));
+		setRightMenu(new RightMenu(sideBlockSize, game, this));
 		
 		getChildren().add(getLeftMenu());
 		getChildren().add(getCentralMenu());

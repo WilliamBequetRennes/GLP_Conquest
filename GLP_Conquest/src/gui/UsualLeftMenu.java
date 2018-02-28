@@ -42,6 +42,7 @@ public class UsualLeftMenu extends VBox{
 					gameBlock.getCentralMenu().getPlayerMenu().setVisible(true);
 					gameBlock.getCentralMenu().getPlayerMenu().toFront();
 					gameBlock.getCentralMenu().getMapCanvas().setVisible(false);
+					gameBlock.getCentralMenu().getLeaderMenu().setVisible(false);
 				}
 			});
 		}

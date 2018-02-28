@@ -11,12 +11,14 @@ public class CentralMenu extends StackPane{
 	private BlockSize blockSize;
 	private MapCanvas mapCanvas;
 	private PlayerMenu playerMenu;
+	private LeaderMenu leaderMenu;
 	
 	public CentralMenu(BlockSize blockSize, Game game, PositionDouble tracking, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		
+		setLeaderMenu(new LeaderMenu(blockSize, this));
 		setPlayerMenu(new PlayerMenu(blockSize, this));
 		try {
 			setMapCanvas(new MapCanvas(getBlockSize().getWidth(), getBlockSize().getHeight(), game));
@@ -26,8 +28,10 @@ public class CentralMenu extends StackPane{
 			e.printStackTrace();
 		}
 		
+		getChildren().add(getLeaderMenu());
 		getChildren().add(getPlayerMenu());
 		getChildren().add(getMapCanvas());
+		getLeaderMenu().setVisible(false);
 		getPlayerMenu().setVisible(false);
 		getMapCanvas().setVisible(true);
 		
@@ -55,6 +59,14 @@ public class CentralMenu extends StackPane{
 
 	public void setPlayerMenu(PlayerMenu playerMenu) {
 		this.playerMenu = playerMenu;
+	}
+
+	public LeaderMenu getLeaderMenu() {
+		return leaderMenu;
+	}
+
+	public void setLeaderMenu(LeaderMenu leaderMenu) {
+		this.leaderMenu = leaderMenu;
 	}
 	
 }

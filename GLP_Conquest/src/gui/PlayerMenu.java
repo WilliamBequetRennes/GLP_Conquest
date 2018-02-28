@@ -33,6 +33,8 @@ public class PlayerMenu extends VBox{
 	private Label numberOfUnits;
 	private Button getBack;
 	
+	private int countryLeader;
+	
 	private GridPane dataGrid;
 	private VBox resources;
 	
@@ -42,6 +44,7 @@ public class PlayerMenu extends VBox{
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		setLeaderPortraits(initializeLeaderPortraits());
 		initializePortrait(0);
+		initializePortraitClick(centralMenu);
 		initializeContent();
 		initializeGetBackButton(centralMenu);
 
@@ -92,6 +95,17 @@ public class PlayerMenu extends VBox{
 	}
 	public void initializePortrait(int leader) {
 		setPortrait(new ImageView(getLeaderPortraits()[leader]));
+		setCountryLeader(leader);
+	}
+	public void initializePortraitClick(CentralMenu centralMenu) {
+		getPortrait().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				centralMenu.getLeaderMenu().update(getCountryLeader());
+				centralMenu.getLeaderMenu().setVisible(true);
+				centralMenu.getLeaderMenu().toFront();
+				centralMenu.getPlayerMenu().setVisible(false);
+			}
+		});
 	}
 	public void initializeContent() {
 		setPlayer(new Label());
@@ -330,6 +344,14 @@ public class PlayerMenu extends VBox{
 
 	public void setResources(VBox resources) {
 		this.resources = resources;
+	}
+
+	public int getCountryLeader() {
+		return countryLeader;
+	}
+
+	public void setCountryLeader(int countryLeader) {
+		this.countryLeader = countryLeader;
 	}
 
 }
