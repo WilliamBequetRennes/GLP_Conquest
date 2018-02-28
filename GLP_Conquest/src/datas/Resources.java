@@ -41,7 +41,7 @@ public class Resources {
 		this.oil = oil;
 	}
 
-	public float getElectricty() {
+	public float getElectricity() {
 		return electricity;
 	}
 

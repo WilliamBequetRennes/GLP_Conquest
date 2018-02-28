@@ -25,6 +25,7 @@ public class Game {
 		setPlayersNumber(playersNumber);
 		setPlayers(players);
 		setCurrentPlayer(currentPlayer);
+		setMapSize(mapSize);
 		setMap(map);
 		setCurrentSquare(currentSquare);
 		setUnits(units);

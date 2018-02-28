@@ -13,3 +13,13 @@ LeftMenu {
 RightMenu {
 	-fx-background-color: red;
 }
+
+Label{
+	-fx-font-size: 1.5em; 
+}
+
+/* ID for Menu button */
+#menu{
+	-fx-font: bold italic 1.5em "Arial";
+    -fx-effect: dropshadow(one-pass-box , black , 10 , 0 , 2 , 2); 
+}

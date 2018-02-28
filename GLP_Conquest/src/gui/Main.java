@@ -48,7 +48,7 @@ public class Main extends Application {
 
 			primaryStage.setScene(scene);
 			
-			setMapSize(LITTLE_MAP);
+			setMapSize(MEDIUM_MAP);
 			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), PLAYERS_NUMBER, getMapSize());
 			root.getChildren().add(globalBlock);
 			

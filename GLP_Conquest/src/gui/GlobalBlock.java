@@ -18,9 +18,9 @@ public class GlobalBlock extends GridPane{
 	
 	private static final int LITTLE_STARTING_CITY_MIN = 4;
 	private static final int LITTLE_STARTING_CITY_MAX = 22;
-	private static final int MEDIUM_STARTING_CITY_MIN = 12;
+	private static final int MEDIUM_STARTING_CITY_MIN = 13;
 	private static final int MEDIUM_STARTING_CITY_MAX = 31;
-	private static final int WIDE_STARTING_CITY_MIN = 12;
+	private static final int WIDE_STARTING_CITY_MIN = 13;
 	private static final int WIDE_STARTING_CITY_MAX = 49;
 
 	private TrackingCamera northWestTracking;
@@ -46,19 +46,18 @@ public class GlobalBlock extends GridPane{
 		setScreenSize(screenSize);
 		setTracking(new PositionDouble());
 		initializeTracking();
-		
-		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
-		
 		try {
 			MapGenerator mapGenerator = new MapGenerator();
 			Map map = mapGenerator.generate(mapSize);
 			setGame(new Game(playersNumber, mapSize, map));
+			System.out.println(getGame().getMapSize());
 			getGame().setPlayers(initializePlayers());
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
 		
+		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
 		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking()));
 		add(centralBlock, 1, 1);
 		
@@ -148,6 +147,7 @@ public class GlobalBlock extends GridPane{
 			getGame().getMap().getSquares()[i][j-1].setFaction(player);
 			getGame().getMap().getSquares()[i-1][j-1].setFaction(player);
 		}
+		players[player-1].setSquareNumber(7);
 	}
 	
 	public BlockSize getScreenSize() {

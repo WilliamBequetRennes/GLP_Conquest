@@ -78,8 +78,8 @@ public class MapCanvas extends Canvas{
 					setCameraPositionY(getCameraPositionY()+tracking.getY());
 				}
 				HashMap<PositionDouble,Square> displayedSquares = new HashMap<>();
-				for(int i=0; i<numberOfSquares; i++) {
-					for (int j=0; j<numberOfSquares; j++) {
+				for(int i=0; i<getNumberOfSquares(); i++) {
+					for (int j=0; j<getNumberOfSquares(); j++) {
 						squareType = game.getMap().getSquares()[i][j].getType();
 						squareOwner = game.getMap().getSquares()[i][j].getFaction();
 						
@@ -146,13 +146,37 @@ public class MapCanvas extends Canvas{
 							case(9):type="City";
 							break;
 						}
-					String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
-					String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
-					String level = "Level : "+game.getCurrentSquare().getLevel();
-					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
-					gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
+						String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
+						String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
+						String level = "Level : "+game.getCurrentSquare().getLevel();
+						
+						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
+						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
+						
+						//Unit creation part in the right menu
+						if(game.getCurrentSquare().getType()==9) {
+							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
+						}
+						else {
+							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
+						}
+						
+						//Square level part in the left menu
+						if(game.getCurrentSquare().getType()>4) {
+							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
+							if(game.getCurrentSquare().getLevel()<3) {
+								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
+							}
+							else {
+								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
+							}
+						}
+						else {
+							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(false);
+							gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
+						}
 					}
 				}
 			}
@@ -161,21 +185,16 @@ public class MapCanvas extends Canvas{
 	
 	public Image[] initializeSquareSprites() {
 		Image[] sprites = new Image[10];
-		try {
-			sprites[0] = new Image(getClass().getResource("\\sprites\\Water.png").toURI().toString());
-			sprites[1] = new Image(getClass().getResource("\\sprites\\Land.png").toString());
-			sprites[2] = new Image(getClass().getResource("\\sprites\\Desert.png").toString());
-			sprites[3] = new Image(getClass().getResource("\\sprites\\Forest.png").toString());
-			sprites[4] = new Image(getClass().getResource("\\sprites\\Mont.png").toString());
-			sprites[5] = new Image(getClass().getResource("\\sprites\\Mine.png").toString());
-			sprites[6] = new Image(getClass().getResource("\\sprites\\Farm.png").toString());
-			sprites[7] = new Image(getClass().getResource("\\sprites\\OilWell.png").toString());
-			sprites[8] = new Image(getClass().getResource("\\sprites\\NuclearPlant.png").toString());
-			sprites[9] = new Image(getClass().getResource("\\sprites\\City.png").toString());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		sprites[0] = new Image(getClass().getResource("\\sprites\\Water.png").toString());
+		sprites[1] = new Image(getClass().getResource("\\sprites\\Land.png").toString());
+		sprites[2] = new Image(getClass().getResource("\\sprites\\Desert.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\Forest.png").toString());
+		sprites[4] = new Image(getClass().getResource("\\sprites\\Mont.png").toString());
+		sprites[5] = new Image(getClass().getResource("\\sprites\\Mine.png").toString());
+		sprites[6] = new Image(getClass().getResource("\\sprites\\Farm.png").toString());
+		sprites[7] = new Image(getClass().getResource("\\sprites\\OilWell.png").toString());
+		sprites[8] = new Image(getClass().getResource("\\sprites\\NuclearPlant.png").toString());
+		sprites[9] = new Image(getClass().getResource("\\sprites\\City.png").toString());
 		return sprites;
 	}
 	

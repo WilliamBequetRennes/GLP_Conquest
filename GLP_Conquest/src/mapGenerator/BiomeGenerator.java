@@ -19,10 +19,14 @@ public class BiomeGenerator {
 	 * 3 = Désert
 	 * 4 = Savane
 	 * 5 = Montagneux
+	 * 6 = Océan
 	 */
+	private static final int MAX_BIOME_NUMBER = 6;
 	private static final int GROUND_BLOCKS = 3;
 	private static final int BUILDING_BLOCKS = 3;
 	private static final int CITY_BLOCKS = 3;
+	private static final int OCEAN_WATER_BLOCKS = 5;
+	private static final int OCEAN_CITY_BLOCKS = 4;
 	private String biomeStatsFile;
 	private String blockStatsFile;
 	private BlockGenerator blockGenerator;
@@ -40,7 +44,7 @@ public class BiomeGenerator {
 		Biome biome = new Biome();
 		ArrayList<Block> blocks = new ArrayList<Block>();
 		BufferedReader reader = null;
-		if(type>5) {
+		if(type>MAX_BIOME_NUMBER) {
 			throw new InvalidBiomeNumberException(type);
 		}
 		try {
@@ -60,36 +64,47 @@ public class BiomeGenerator {
 		}
 		int[] probabilities = transformIntoInteger(currentLine[1].split(","));
 		//Generate 3 ground blocks
-		for(int i = 0; i<GROUND_BLOCKS; i++) {
-			blocks.add(generate(type, probabilities, false));
-		}
-		try {
-			currentLine = reader.readLine().split("#");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		probabilities = transformIntoInteger(currentLine[1].split(","));
-		//generate 3 building blocks
-		for(int i = 0; i<BUILDING_BLOCKS; i++) {
-			blocks.add(generate(type, probabilities, true));
-		}
-		//generate 3 city blocks
-		for(int i = 0; i<CITY_BLOCKS; i++) {
-			blocks.add(getBlockGenerator().generate(type, 9));
-		}
-		if(startingBiome) {
-			biome = buildStartingBiome(biome, blocks);
+		if(type<MAX_BIOME_NUMBER) {
+			for(int i = 0; i<GROUND_BLOCKS; i++) {
+				blocks.add(generate(type, probabilities, false));
+			}
+			try {
+				currentLine = reader.readLine().split("#");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			probabilities = transformIntoInteger(currentLine[1].split(","));
+			//generate 3 building blocks
+			for(int i = 0; i<BUILDING_BLOCKS; i++) {
+				blocks.add(generate(type, probabilities, true));
+			}
+			//generate 3 city blocks
+			for(int i = 0; i<CITY_BLOCKS; i++) {
+				blocks.add(getBlockGenerator().generate(type, 9));
+			}
+			if(startingBiome) {
+				biome = buildStartingBiome(biome, blocks);
+			}
+			else {
+				biome = buildBiome(biome, blocks);
+			}
 		}
 		else {
+			for(int i = 0; i<OCEAN_WATER_BLOCKS; i++) {
+				blocks.add(generate(type, probabilities, false));
+			}
+			for(int i = 0; i<OCEAN_CITY_BLOCKS; i++) {
+				blocks.add(getBlockGenerator().generate(type, 9));
+			}
 			biome = buildBiome(biome, blocks);
 		}
 		return biome;
 	}
 	
-	public Block generate(int type, int[]probabilities, boolean building)
-			throws InvalidBiomeNumberException, InvalidSquareNumberException{
+	public Block generate(int type, int[]probabilities, boolean building) {
 		
+		//Randomly chose the central square of the block
 		Block result = null;
 		int dice = getRng().generate(19, 0);
 		int stats = probabilities[0];
@@ -101,7 +116,13 @@ public class BiomeGenerator {
 		if(building) {
 			mainSquare+=5;
 		}
-		result = getBlockGenerator().generate(type, mainSquare);
+		//start the block generation
+		try {
+			result = getBlockGenerator().generate(type, mainSquare);
+		} catch (InvalidBiomeNumberException | InvalidSquareNumberException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 	
