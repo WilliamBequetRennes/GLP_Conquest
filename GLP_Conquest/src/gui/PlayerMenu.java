@@ -128,7 +128,7 @@ public class PlayerMenu extends VBox{
 	}
 	public void initializeGetBackButton(CentralMenu centralMenu){
 		setGetBack(new Button());
-		getGetBack().setText("Get Back");
+		getGetBack().setText("Back");
 		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				centralMenu.getMapCanvas().setVisible(true);

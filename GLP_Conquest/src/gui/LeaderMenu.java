@@ -1,6 +1,10 @@
 package gui;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -18,19 +22,25 @@ import javafx.scene.layout.VBox;
 
 public class LeaderMenu extends VBox{
 	
+	private static final int MAX_LINE_SIZE = 5;
+	
 	private BlockSize blockSize;
 	
 	private Image[] leaderPortraits;
 	private ImageView portrait;
 	private Label name;
 	private Label power;
-	private Label description;
+	private Label boost1;
+	private Label boost2;
 	private Button getBack;
+	
+	private String leadersFile;
 
 	public LeaderMenu(BlockSize blockSize, CentralMenu centralMenu) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
+		setLeadersFile("leaders.txt");
 		setLeaderPortraits(initializeLeaderPortraits());
 		initializePortrait(0);
 		initializeContent();
@@ -42,10 +52,34 @@ public class LeaderMenu extends VBox{
 	
 	public void update(int leader) {
 		initializePortrait(leader);
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(getLeadersFile()));
+			String line = "";
+			while (!line.startsWith(""+leader)) {
+					line = reader.readLine();
+			}
+			String[] current = line.split("#");
+			getName().setText(current[1]);
+			getPower().setText(current[2]);
+			getBoost1().setText("- "+current[3]);
+			if(current.length==MAX_LINE_SIZE) {
+				getBoost2().setText("- "+current[4]);
+			}
+			else {
+				getBoost2().setText("");
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void initializeGetBackButton(CentralMenu centralMenu){
 		setGetBack(new Button());
-		getGetBack().setText("Get Back");
+		getGetBack().setText("Back");
 		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				centralMenu.getMapCanvas().setVisible(true);
@@ -58,14 +92,16 @@ public class LeaderMenu extends VBox{
 	public void initializeContent() {
 		setName(new Label());
 		setPower(new Label());
-		setDescription(new Label());
+		setBoost1(new Label());
+		setBoost2(new Label());
 	}
 	
 	public void displayContent() {
 		getChildren().add(getPortrait());
 		getChildren().add(getName());
 		getChildren().add(getPower());
-		getChildren().add(getDescription());
+		getChildren().add(getBoost1());
+		getChildren().add(getBoost2());
 		getChildren().add(getGetBack());
 	}
 	
@@ -125,12 +161,20 @@ public class LeaderMenu extends VBox{
 		this.power = power;
 	}
 
-	public Label getDescription() {
-		return description;
+	public Label getBoost1() {
+		return boost1;
 	}
 
-	public void setDescription(Label description) {
-		this.description = description;
+	public void setBoost1(Label boost1) {
+		this.boost1 = boost1;
+	}
+
+	public Label getBoost2() {
+		return boost2;
+	}
+
+	public void setBoost2(Label boost2) {
+		this.boost2 = boost2;
 	}
 
 	public Button getGetBack() {
@@ -139,5 +183,13 @@ public class LeaderMenu extends VBox{
 
 	public void setGetBack(Button getBack) {
 		this.getBack = getBack;
+	}
+
+	public String getLeadersFile() {
+		return leadersFile;
+	}
+
+	public void setLeadersFile(String leadersFile) {
+		this.leadersFile = leadersFile;
 	}
 }
