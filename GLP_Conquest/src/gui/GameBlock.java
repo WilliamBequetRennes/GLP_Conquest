@@ -15,7 +15,7 @@ public class GameBlock extends HBox{
 	private CentralMenu centralMenu;
 	private BlockSize blockSize;
 	
-	public GameBlock(BlockSize blockSize, Game game, PositionDouble tracking, MenuBar menuBar) {
+	public GameBlock(BlockSize blockSize, Game game, PositionDouble tracking) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());

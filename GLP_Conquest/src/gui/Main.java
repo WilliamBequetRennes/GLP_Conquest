@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import gui_datas.BlockSize;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -36,7 +37,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Pane root = new Pane();
-			Rectangle2D screen = Screen.getPrimary().getVisualBounds();
 			Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			setScreenSize(new BlockSize(dimension.getWidth(), dimension.getHeight()));
 			
@@ -54,6 +54,7 @@ public class Main extends Application {
 			
 			primaryStage.show();
 			primaryStage.setFullScreen(true);
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

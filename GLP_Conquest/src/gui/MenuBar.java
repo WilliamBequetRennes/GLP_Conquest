@@ -29,6 +29,17 @@ public class MenuBar extends HBox{
 		initializeMenuButton(game);
 		initializeTurnNumber(game);
 		initializeEndTurnButton(game, centralBlock);
+		initializeMenuClick(centralBlock.getGameBlock());
+	}
+	
+	public void initializeMenuClick(GameBlock gameBlock) {
+		getMenu().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				gameBlock.getLeftMenu().getGameMenu().setVisible(true);
+				gameBlock.getLeftMenu().getGameMenu().toFront();
+				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
+			}
+		});
 	}
 	
 	public void initializeSides() {
