@@ -65,6 +65,7 @@ public class GameOptions extends VBox{
 		initializeBoxes();
 		
 		initializeNextClick(menusBlock);
+		initializeGetBackClick(menusBlock);
 		
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
@@ -117,6 +118,13 @@ public class GameOptions extends VBox{
 		getNext().setText("Next");
 	}
 	
+	public void initializeGetBackClick(MenusBlock menusBlock) {
+		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				menusBlock.comeBackToStartMenu();
+			}
+		});
+	}
 	public void initializeNextClick(MenusBlock menusBlock) {
 		getNext().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {

@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 public class MenusBlock extends StackPane {
 	
 	private BlockSize screenSize;
+	private StartMenu startMenu;
 	private GameOptions gameOptions;
 	private LeaderSelection leaderSelection;
 	private GlobalBlock globalBlock;
@@ -20,14 +21,21 @@ public class MenusBlock extends StackPane {
 		setScreenSize(screenSize);
 		setPrefSize(getScreenSize().getWidth(), getScreenSize().getHeight());
 		
-		initializeGameOptions();
+		initializeStartMenu();
 	}
 	
+	public void initializeStartMenu() {
+		setStartMenu(new StartMenu(getScreenSize(), this));
+		getChildren().add(getStartMenu());
+		getStartMenu().toFront();
+		getStartMenu().setVisible(true);
+	}
 	public void initializeGameOptions() {
 		setGameOptions(new GameOptions(getScreenSize(), this));
 		getChildren().add(getGameOptions());
 		getGameOptions().toFront();
 		getGameOptions().setVisible(true);
+		getStartMenu().setVisible(false);
 	}
 	public void initializeLeaderSelection() {
 		setLeaderSelection(new LeaderSelection(getScreenSize(), getPlayersNumber(), this));
@@ -42,6 +50,11 @@ public class MenusBlock extends StackPane {
 		getGlobalBlock().toFront();
 		getGlobalBlock().setVisible(true);
 		getLeaderSelection().setVisible(false);
+	}
+	public void comeBackToStartMenu() {
+		getGameOptions().setVisible(false);
+		getStartMenu().toFront();
+		getStartMenu().setVisible(true);
 	}
 	public void comeBackToGameOptions() {
 		getLeaderSelection().setVisible(false);
@@ -110,6 +123,14 @@ public class MenusBlock extends StackPane {
 
 	public void setLeaders(int[] leaders) {
 		this.leaders = leaders;
+	}
+
+	public StartMenu getStartMenu() {
+		return startMenu;
+	}
+
+	public void setStartMenu(StartMenu startMenu) {
+		this.startMenu = startMenu;
 	}
 
 }
