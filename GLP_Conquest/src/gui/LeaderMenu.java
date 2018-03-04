@@ -23,6 +23,7 @@ public class LeaderMenu extends VBox{
 	
 	private Image[] leaderPortraits;
 	private ImageView portrait;
+	private int leader;
 	private Label name;
 	private Label power;
 	private Label boost1;
@@ -37,16 +38,19 @@ public class LeaderMenu extends VBox{
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		setLeadersFile("leaders.txt");
 		setLeaderPortraits(initializeLeaderPortraits());
-		initializePortrait(0);
+		initializePortrait();
 		initializeContent();
 		initializeGetBackButton(centralMenu);
 
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
 	}
-	
+	public void updatePortrait(int leader) {
+		setLeader(leader);
+		getPortrait().setImage(getLeaderPortraits()[getLeader()]);
+	}
 	public void update(int leader) {
-		initializePortrait(leader);
+		updatePortrait(leader);
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(getLeadersFile()));
 			String line = "";
@@ -100,8 +104,9 @@ public class LeaderMenu extends VBox{
 		getChildren().add(getGetBack());
 	}
 	
-	public void initializePortrait(int leader) {
-		setPortrait(new ImageView(getLeaderPortraits()[leader]));
+	public void initializePortrait() {
+		setLeader(0);
+		setPortrait(new ImageView(getLeaderPortraits()[getLeader()]));
 	}
 	
 	public Image[] initializeLeaderPortraits() {
@@ -186,5 +191,11 @@ public class LeaderMenu extends VBox{
 
 	public void setLeadersFile(String leadersFile) {
 		this.leadersFile = leadersFile;
+	}
+	public int getLeader() {
+		return leader;
+	}
+	public void setLeader(int leader) {
+		this.leader = leader;
 	}
 }

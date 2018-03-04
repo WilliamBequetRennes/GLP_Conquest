@@ -14,6 +14,7 @@ public class UsualRightMenu extends VBox{
 
 	private Label currentPlayer;
 	private Image[] leaderPortraits;
+	private int leader;
 	private ImageView portrait;
 	private Label numberOfSquares;
 	private Label money;
@@ -61,12 +62,17 @@ public class UsualRightMenu extends VBox{
 		return sprites;
 	}
 	public void initializePortrait(int leader) {
-		setPortrait(new ImageView(getLeaderPortraits()[leader]));
+		setLeader(leader);
+		setPortrait(new ImageView(getLeaderPortraits()[getLeader()]));
+	}
+	public void updatePortrait(int leader) {
+		setLeader(leader);
+		getPortrait().setImage(getLeaderPortraits()[getLeader()]);
 	}
 	public void initializePortraitClick(CentralMenu centralMenu, Game game) {
 		getPortrait().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				centralMenu.getLeaderMenu().update(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
+				centralMenu.getLeaderMenu().update(getLeader());
 				centralMenu.getLeaderMenu().setVisible(true);
 				centralMenu.getLeaderMenu().toFront();
 				centralMenu.getPlayerMenu().setVisible(false);
@@ -176,6 +182,14 @@ public class UsualRightMenu extends VBox{
 
 	public void setCreateUnit(Button createUnit) {
 		this.createUnit = createUnit;
+	}
+
+	public int getLeader() {
+		return leader;
+	}
+
+	public void setLeader(int leader) {
+		this.leader = leader;
 	}
 	
 }

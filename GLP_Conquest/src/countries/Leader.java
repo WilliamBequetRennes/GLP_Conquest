@@ -16,7 +16,7 @@ public class Leader {
 		super();
 		setName(name);
 		setAbility(ability);
-		setNumber(number);;
+		setNumber(number);
 	}
 
 	public String getName() {

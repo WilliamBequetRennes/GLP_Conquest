@@ -43,7 +43,7 @@ public class PlayerMenu extends VBox{
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		setLeaderPortraits(initializeLeaderPortraits());
-		initializePortrait(0);
+		initializePortrait();
 		initializePortraitClick(centralMenu);
 		initializeContent();
 		initializeGetBackButton(centralMenu);
@@ -91,11 +91,15 @@ public class PlayerMenu extends VBox{
 		getNumberOfSquares().setText("Squares ="+country.getSquareNumber());
 		
 		getNumberOfUnits().setText("Number of units = "+country.getUnits().size());
-		initializePortrait(country.getLeader().getNumber());
+		updatePortrait(country.getLeader().getNumber());
 	}
-	public void initializePortrait(int leader) {
-		setPortrait(new ImageView(getLeaderPortraits()[leader]));
+	public void initializePortrait() {
+		setCountryLeader(0);
+		setPortrait(new ImageView(getLeaderPortraits()[getCountryLeader()]));
+	}
+	public void updatePortrait(int leader) {
 		setCountryLeader(leader);
+		getPortrait().setImage(getLeaderPortraits()[getCountryLeader()]);
 	}
 	public void initializePortraitClick(CentralMenu centralMenu) {
 		getPortrait().setOnMouseClicked(new EventHandler<MouseEvent>() {

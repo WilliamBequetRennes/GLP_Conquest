@@ -82,7 +82,7 @@ public class MenuBar extends HBox{
 	
 	public void refreshUsualRightMenu(UsualRightMenu menu, Game game) {
 		menu.getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
-		menu.initializePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
+		menu.updatePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
 		menu.getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
 		menu.getMoney().setText("Money : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney());
 		menu.getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
