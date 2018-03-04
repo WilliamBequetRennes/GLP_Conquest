@@ -49,8 +49,11 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			
 			setMapSize(MEDIUM_MAP);
-			GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), PLAYERS_NUMBER, getMapSize());
-			root.getChildren().add(globalBlock);
+
+			MenusBlock menusBlock = new MenusBlock(getScreenSize());
+			root.getChildren().add(menusBlock);
+			//GlobalBlock globalBlock = new GlobalBlock(getScreenSize(), PLAYERS_NUMBER, getMapSize());
+			//root.getChildren().add(globalBlock);
 			
 			primaryStage.show();
 			primaryStage.setFullScreen(true);

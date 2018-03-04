@@ -8,9 +8,15 @@ public class Leader {
 	
 	public Leader(String name, String ability) {
 		super();
-		this.name = name;
-		this.ability = ability;
-		this.number = 0;
+		setName(name);
+		setAbility(ability);
+		setNumber(0);
+	}
+	public Leader(String name, String ability, int number) {
+		super();
+		setName(name);
+		setAbility(ability);
+		setNumber(number);;
 	}
 
 	public String getName() {

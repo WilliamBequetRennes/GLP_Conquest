@@ -2,7 +2,6 @@ package gui;
 
 import game.Game;
 import gui_datas.BlockSize;
-import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 
 public class RightMenu extends StackPane{

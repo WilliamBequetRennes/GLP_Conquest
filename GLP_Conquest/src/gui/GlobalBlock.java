@@ -40,7 +40,7 @@ public class GlobalBlock extends GridPane{
 	
 	private Game game;
 	
-	public GlobalBlock(BlockSize screenSize, int playersNumber, int mapSize) {
+	public GlobalBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
@@ -49,9 +49,8 @@ public class GlobalBlock extends GridPane{
 		try {
 			MapGenerator mapGenerator = new MapGenerator();
 			Map map = mapGenerator.generate(mapSize);
-			setGame(new Game(playersNumber, mapSize, map));
-			System.out.println(getGame().getMapSize());
-			getGame().setPlayers(initializePlayers());
+			setGame(new Game(playersNumber, turnsNumber, mapSize, map));
+			getGame().setPlayers(initializePlayers(leaders));
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,11 +82,11 @@ public class GlobalBlock extends GridPane{
 		add(getWestTracking(), 0, 1);
 	}
 	
-	public Country[] initializePlayers() throws InvalidMapSizeNumberException{
+	public Country[] initializePlayers(int[] number) throws InvalidMapSizeNumberException{
 
 		Country[] players = new Country[getGame().getPlayersNumber()];
 		for(int i = 0; i < players.length; i++) {
-			players[i] = new Country(new Leader("name", "ability"), i+1);
+			players[i] = new Country(new Leader("name", "ability", number[i]), i+1);
 		}
 		if(getMapSize()==0) {
 			switch(getGame().getPlayersNumber()) {

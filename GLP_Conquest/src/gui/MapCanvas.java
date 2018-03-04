@@ -1,6 +1,5 @@
 package gui;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import exceptions.InvalidMapSizeNumberException;

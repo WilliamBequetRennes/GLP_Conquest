@@ -60,7 +60,7 @@ public class MenuBar extends HBox{
 	}
 	public void initializeTurnNumber(Game game) {
 		setTurnNumber(new Label());
-		getTurnNumber().setText("turn : "+game.getTurnNumber());
+		getTurnNumber().setText("turn : "+game.getCurrentTurn());
 		getRightSide().getChildren().add(getTurnNumber());
 	}
 	public void initializeEndTurnButton(Game game, CentralBlock centralBlock) {
@@ -71,8 +71,8 @@ public class MenuBar extends HBox{
 				game.setCurrentPlayer(game.getCurrentPlayer()+1);
 				if(game.getCurrentPlayer()>game.getPlayersNumber()) {
 					game.setCurrentPlayer(1);
-					game.setTurnNumber(game.getTurnNumber()+1);
-					getTurnNumber().setText("turn : "+game.getTurnNumber());
+					game.setCurrentTurn(game.getCurrentTurn()+1);
+					getTurnNumber().setText("turn : "+game.getCurrentTurn());
 				}
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
 			}
