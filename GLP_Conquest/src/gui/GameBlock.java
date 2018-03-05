@@ -15,7 +15,7 @@ public class GameBlock extends HBox{
 	private CentralMenu centralMenu;
 	private BlockSize blockSize;
 	
-	public GameBlock(BlockSize blockSize, Game game, PositionDouble tracking) {
+	public GameBlock(BlockSize blockSize, Game game, PositionDouble tracking, MenusBlock menusBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
@@ -23,7 +23,7 @@ public class GameBlock extends HBox{
 		BlockSize sideBlockSize = new BlockSize(getBlockSize().getWidth()*SIDE_BLOCK_WIDTH, getBlockSize().getHeight());
 		BlockSize centralBlockSize = new BlockSize(getBlockSize().getWidth()*MAP_CANVAS_WIDTH-1, getBlockSize().getHeight());
 		
-		setLeftMenu(new LeftMenu(sideBlockSize, game, this));
+		setLeftMenu(new LeftMenu(sideBlockSize, game, this, menusBlock));
 		setCentralMenu(new CentralMenu(centralBlockSize, game, tracking, this));
 		setRightMenu(new RightMenu(sideBlockSize, game, this));
 		

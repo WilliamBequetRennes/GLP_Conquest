@@ -45,7 +45,7 @@ public class MenusBlock extends StackPane {
 		getGameOptions().setVisible(false);
 	}
 	public void initializeGlobalBlock() {
-		setGlobalBlock(new GlobalBlock(getScreenSize(), getPlayersNumber(), getTurnsNumber(), getMapSize(), getLeaders()));
+		setGlobalBlock(new GlobalBlock(getScreenSize(), getPlayersNumber(), getTurnsNumber(), getMapSize(), getLeaders(), this));
 		getChildren().add(getGlobalBlock());
 		getGlobalBlock().toFront();
 		getGlobalBlock().setVisible(true);
@@ -60,6 +60,11 @@ public class MenusBlock extends StackPane {
 		getLeaderSelection().setVisible(false);
 		getGameOptions().toFront();
 		getGameOptions().setVisible(true);
+	}
+	public void quitGame() {
+		getGlobalBlock().setVisible(false);
+		getStartMenu().toFront();
+		getStartMenu().setVisible(true);
 	}
 	public BlockSize getScreenSize() {
 		return screenSize;

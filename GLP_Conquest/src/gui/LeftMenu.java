@@ -10,11 +10,11 @@ public class LeftMenu extends StackPane{
 	private GameMenu gameMenu;
 	private UsualLeftMenu usualLeftMenu;
 	
-	public LeftMenu(BlockSize blockSize, Game game, GameBlock gameBlock){
+	public LeftMenu(BlockSize blockSize, Game game, GameBlock gameBlock, MenusBlock menusBlock){
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
-		setGameMenu(new GameMenu(game, getBlockSize(), gameBlock));
+		setGameMenu(new GameMenu(game, getBlockSize(), gameBlock, menusBlock));
 		setUsualLeftMenu(new UsualLeftMenu(game, gameBlock));
 		displayContent();
 		

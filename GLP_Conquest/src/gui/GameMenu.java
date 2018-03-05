@@ -20,13 +20,14 @@ public class GameMenu extends VBox{
 	private VBox menuBox;
 	private VBox backBox;
 	
-	public GameMenu(Game game, BlockSize blockSize, GameBlock gameBlock) {
+	public GameMenu(Game game, BlockSize blockSize, GameBlock gameBlock, MenusBlock menusBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		
 		initializeButtons();
 		initializeGetBackClick(gameBlock);
+		initializeMenuClick(menusBlock);
 		displayContent();
 		setAlignment(Pos.CENTER);
 	}
@@ -57,6 +58,14 @@ public class GameMenu extends VBox{
 		getBackBox().setPrefHeight(getBlockSize().getHeight()*BACK_BOX);
 		getMenuBox().setAlignment(Pos.TOP_CENTER);
 		getBackBox().setAlignment(Pos.BOTTOM_CENTER);
+	}
+	
+	public void initializeMenuClick(MenusBlock menusBlock) {
+		getMenu().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				menusBlock.quitGame();
+			}
+		});
 	}
 	
 	public void displayContent() {

@@ -40,7 +40,7 @@ public class GlobalBlock extends GridPane{
 	
 	private Game game;
 	
-	public GlobalBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders) {
+	public GlobalBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders, MenusBlock menusBlock) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
@@ -57,7 +57,7 @@ public class GlobalBlock extends GridPane{
 		}
 		
 		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
-		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking()));
+		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));
 		add(centralBlock, 1, 1);
 		
 	}

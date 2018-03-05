@@ -14,7 +14,7 @@ public class CentralBlock extends VBox{
 
 	private BlockSize blockSize;
 
-	public CentralBlock(BlockSize blockSize, Game game, PositionDouble tracking) {
+	public CentralBlock(BlockSize blockSize, Game game, PositionDouble tracking, MenusBlock menusBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
@@ -22,7 +22,7 @@ public class CentralBlock extends VBox{
 		BlockSize menuBarSize = new BlockSize(getBlockSize().getWidth(), getBlockSize().getHeight()*MENU_BAR_HEIGHT);
 		BlockSize gameBlockSize = new BlockSize(getBlockSize().getWidth(), getBlockSize().getHeight()*GAME_BLOCK_HEIGHT);
 
-		setGameBlock(new GameBlock(gameBlockSize, game, tracking));
+		setGameBlock(new GameBlock(gameBlockSize, game, tracking, menusBlock));
 		setMenuBar(new MenuBar(menuBarSize, game, this));
 		
 		getChildren().add(getMenuBar());
