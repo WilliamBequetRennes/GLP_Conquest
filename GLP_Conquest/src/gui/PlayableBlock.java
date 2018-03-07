@@ -9,12 +9,18 @@ import game.Game;
 import gui_datas.BlockSize;
 import javafx.scene.layout.GridPane;
 import map.Map;
+import map.MapLoader;
+import map.MapSaver;
 import mapGenerator.MapGenerator;
 
-public class GlobalBlock extends GridPane{
+public class PlayableBlock extends GridPane{
 	
 	private static final double CORNER_SIZE = 0.01;
 	private static final double CENTER_SIZE = 0.98;
+	
+	private static final int LITTLE_DIMENSIONS = 27;
+	private static final int MEDIUM_DIMENSIONS = 45;
+	private static final int WIDE_DIMENSIONS = 63;
 	
 	private static final int LITTLE_STARTING_CITY_MIN = 4;
 	private static final int LITTLE_STARTING_CITY_MAX = 22;
@@ -39,27 +45,50 @@ public class GlobalBlock extends GridPane{
 	private PositionDouble tracking;
 	
 	private Game game;
+	private MapSaver mapSaver;
 	
-	public GlobalBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders, MenusBlock menusBlock) {
+	public PlayableBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders, int mapNumber, MenusBlock menusBlock) {
 		super();
 		setMapSize(mapSize);
 		setScreenSize(screenSize);
 		setTracking(new PositionDouble());
+		setMapSaver(new MapSaver());
 		initializeTracking();
+		initializeGame(playersNumber, turnsNumber, mapSize, leaders, mapNumber);
+		
+		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
+		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));
+		add(centralBlock, 1, 1);
+		
+	}
+	public void initializeGame(int playersNumber, int turnsNumber, int mapSize, int[] leaders, int mapNumber) {
 		try {
-			MapGenerator mapGenerator = new MapGenerator();
-			Map map = mapGenerator.generate(mapSize);
+			Map map = null;
+			if(mapNumber > 0) {
+				MapLoader mapLoader = new MapLoader();
+				map = mapLoader.load(mapNumber);
+				if(map != null) {
+					switch(map.getDimensions()) {
+					case(LITTLE_DIMENSIONS):mapSize = 0;
+					break;
+					case(MEDIUM_DIMENSIONS):mapSize = 1;
+					break;
+					case(WIDE_DIMENSIONS):mapSize = 2;
+					break;
+					}
+				}
+			}
+			if(map == null) {
+				MapGenerator mapGenerator = new MapGenerator();
+				map = mapGenerator.generate(mapSize);
+				getMapSaver().saveMap(map);
+			}
 			setGame(new Game(playersNumber, turnsNumber, mapSize, map));
 			getGame().setPlayers(initializePlayers(leaders));
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
-		
-		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
-		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));
-		add(centralBlock, 1, 1);
-		
 	}
 	public void initializeTracking() {
 		BlockSize cornerSize = new BlockSize(getScreenSize().getWidth()*CORNER_SIZE, getScreenSize().getHeight()*CORNER_SIZE);
@@ -226,6 +255,12 @@ public class GlobalBlock extends GridPane{
 	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	public MapSaver getMapSaver() {
+		return mapSaver;
+	}
+	public void setMapSaver(MapSaver mapSaver) {
+		this.mapSaver = mapSaver;
 	}
 	
 }

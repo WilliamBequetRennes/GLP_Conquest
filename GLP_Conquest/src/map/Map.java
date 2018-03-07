@@ -7,10 +7,16 @@ public class Map {
 	
 	private Square[][] squares;
 	private int dimensions;
+	private int number;
 	
 	public Map(int dimensions, Square[][] squares) {
 		setDimensions(dimensions);
 		setSquares(squares);
+	}
+	public Map(int dimensions, Square[][] squares, int number) {
+		setDimensions(dimensions);
+		setSquares(squares);
+		setNumber(number);
 	}
 
 	public Square[][] getSquares() {
@@ -45,5 +51,13 @@ public class Map {
 		int jPosition = position.getJPosition();
 		int iPosition = position.getIPosition();
 		return squares[jPosition][iPosition];
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 }

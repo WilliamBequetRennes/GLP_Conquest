@@ -146,9 +146,25 @@ public class GameOptions extends VBox{
 				menusBlock.setPlayersNumber(numberOfPlayers);
 				menusBlock.setTurnsNumber(numberOfTurns);
 				menusBlock.setMapSize(sizeOfMap);
+				if(isInteger(getCode().getText())){
+					menusBlock.setMapNumber(Integer.valueOf(getCode().getText()).intValue());
+				}
+				else {
+					menusBlock.setMapNumber(0);
+				}
 				menusBlock.initializeLeaderSelection();
 			}
 		});
+		
+	}
+	
+	public boolean isInteger(String string) {
+		try {
+			Integer.valueOf(string).intValue();
+			return true;
+		}catch(NumberFormatException e) {
+			return false;
+		}
 		
 	}
 

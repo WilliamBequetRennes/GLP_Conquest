@@ -217,7 +217,7 @@ public class LeaderSelection extends VBox {
 		getNext().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				menusBlock.setLeaders(getCurrentLeader());
-				menusBlock.initializeGlobalBlock();
+				menusBlock.initializePlayableBlock();
 			}
 		});
 	}

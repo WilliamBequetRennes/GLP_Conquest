@@ -9,12 +9,13 @@ public class MenusBlock extends StackPane {
 	private StartMenu startMenu;
 	private GameOptions gameOptions;
 	private LeaderSelection leaderSelection;
-	private GlobalBlock globalBlock;
+	private PlayableBlock playableBlock;
 	
 	private int playersNumber;
 	private int turnsNumber;
 	private int mapSize;
 	private int[] leaders;
+	private int mapNumber;
 	
 	public MenusBlock(BlockSize screenSize) {
 		super();
@@ -44,11 +45,11 @@ public class MenusBlock extends StackPane {
 		getLeaderSelection().setVisible(true);
 		getGameOptions().setVisible(false);
 	}
-	public void initializeGlobalBlock() {
-		setGlobalBlock(new GlobalBlock(getScreenSize(), getPlayersNumber(), getTurnsNumber(), getMapSize(), getLeaders(), this));
-		getChildren().add(getGlobalBlock());
-		getGlobalBlock().toFront();
-		getGlobalBlock().setVisible(true);
+	public void initializePlayableBlock() {
+		setPlayableBlock(new PlayableBlock(getScreenSize(), getPlayersNumber(), getTurnsNumber(), getMapSize(), getLeaders(), getMapNumber(), this));
+		getChildren().add(getPlayableBlock());
+		getPlayableBlock().toFront();
+		getPlayableBlock().setVisible(true);
 		getLeaderSelection().setVisible(false);
 	}
 	public void comeBackToStartMenu() {
@@ -62,7 +63,7 @@ public class MenusBlock extends StackPane {
 		getGameOptions().setVisible(true);
 	}
 	public void quitGame() {
-		getGlobalBlock().setVisible(false);
+		getPlayableBlock().setVisible(false);
 		getStartMenu().toFront();
 		getStartMenu().setVisible(true);
 	}
@@ -74,12 +75,12 @@ public class MenusBlock extends StackPane {
 		this.screenSize = screenSize;
 	}
 
-	public GlobalBlock getGlobalBlock() {
-		return globalBlock;
+	public PlayableBlock getPlayableBlock() {
+		return playableBlock;
 	}
 
-	public void setGlobalBlock(GlobalBlock globalBlock) {
-		this.globalBlock = globalBlock;
+	public void setPlayableBlock(PlayableBlock playableBlock) {
+		this.playableBlock = playableBlock;
 	}
 
 	public GameOptions getGameOptions() {
@@ -136,6 +137,14 @@ public class MenusBlock extends StackPane {
 
 	public void setStartMenu(StartMenu startMenu) {
 		this.startMenu = startMenu;
+	}
+
+	public int getMapNumber() {
+		return mapNumber;
+	}
+
+	public void setMapNumber(int mapNumber) {
+		this.mapNumber = mapNumber;
 	}
 
 }
