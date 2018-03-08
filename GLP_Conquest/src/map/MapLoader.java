@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import datas.Position;
-import exceptions.InvalidMapNumberException;
-import exceptions.InvalidSquareNumberException;
 import squares.City;
 import squares.Desert;
 import squares.Farm;
@@ -53,7 +51,6 @@ public class MapLoader {
 					int squareType;
 					for(int i = 0; i < dimensions; i++) {
 						for(int j = 0; j < dimensions; j++) {
-							System.out.println(i+"  "+j);
 							squareType = Integer.valueOf(squaresList[currentSquare]).intValue();
 							switch(squareType) {
 							case(0):squares[i][j] = new Water(new Position(j, i));
