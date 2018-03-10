@@ -55,6 +55,8 @@ public class LeaderSelection extends VBox {
 		super();
 		setScreenSize(screenSize);
 		setPrefSize(getScreenSize().getWidth(), getScreenSize().getHeight());
+		setId("gradient");
+		
 		setLeadersFile("leaders.txt");
 		setPlayersNumber(playersNumber);
 		setPortraits(initializeLeaderPortraits());
@@ -110,6 +112,9 @@ public class LeaderSelection extends VBox {
 			getPowers()[i] = new Label();
 			initializeChangeButton(i);
 			update(i);
+			getPlayers()[i].setId("menu_text");
+			getNames()[i].setId("menu_text");
+			getPowers()[i].setId("menu_text");
 		}
 	}
 	
@@ -151,6 +156,7 @@ public class LeaderSelection extends VBox {
 	public void initializeLabels() {
 		setLeaderSelection(new Label());
 		getLeaderSelection().setText("Leader Selection");
+		getLeaderSelection().setId("menu_title");
 	}
 	
 	public void initializeMainBoxes() {
@@ -168,6 +174,8 @@ public class LeaderSelection extends VBox {
 		getMenuMoves().setAlignment(Pos.BOTTOM_CENTER);
 		getLeftMenuMoves().setAlignment(Pos.BOTTOM_LEFT);
 		getRightMenuMoves().setAlignment(Pos.BOTTOM_RIGHT);
+		
+		getLeadersBox().setId("spacing");
 	}
 	public void initializeMenuBoxes() {
 		setMenu(new HBox());
@@ -208,6 +216,9 @@ public class LeaderSelection extends VBox {
 		
 		getGetBack().setText("Back");
 		getNext().setText("Start");
+		
+		getGetBack().setId("switch_menu_button");
+		getNext().setId("switch_menu_button");
 		
 		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {

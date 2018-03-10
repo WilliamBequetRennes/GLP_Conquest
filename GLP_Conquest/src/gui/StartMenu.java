@@ -21,11 +21,13 @@ public class StartMenu extends VBox {
 		super();
 		setScreenSize(screenSize);
 		setPrefSize(getScreenSize().getWidth(), getScreenSize().getHeight());
+		setId("gradient");
 
 		initializeLogo();
 		initializeButtons();
 		initializeNewGameClick(menusBlock);
 		initializeLoadGameClick();
+		displayContent();
 		setAlignment(Pos.CENTER);
 	}
 	
@@ -39,7 +41,9 @@ public class StartMenu extends VBox {
 		
 		getNewGame().setText("New Game");
 		getLoadGame().setText("Load Game");
-		displayContent();
+
+		getNewGame().setId("menu_button");
+		getLoadGame().setId("menu_button");
 	}
 	
 	public void initializeNewGameClick(MenusBlock menusBlock){

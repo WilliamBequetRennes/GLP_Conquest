@@ -1,25 +1,124 @@
-GlobalBlock {
-	-fx-background-color:rgb(200,200,200); 
-}
+/* B L O C K S */
 
-MenuBar {
-	-fx-background-color: brown;
-}
+	/* M E N U S */
+	MenusBlock {
+		-fx-background-image: url("sprites//background.png"); 
+	}
+	#gradient{
+		-fx-background-color:
+			linear-gradient(to right, rgba(10,0,10,0) 0%, rgba(10,0,10,100) 35%, rgba(10,0,10,255) 50%,
+				rgba(10,0,10,100) 65%, rgba(10,0,10,0) 100%);
+	}
+	StartMenu{
+		-fx-spacing: 25px;
+	}
+	GameOptions, LeaderSelection{
+		-fx-padding: 50 25 25 25 px;
+	}
+	/* G A M E */
+	PlayableBlock {
+		-fx-background-color:rgb(200,200,200); 
+	}
+	
+	MenuBar {
+		-fx-background-color: brown;
+	}
+	
+	LeftMenu {
+		-fx-background-color: red;
+	}
+	
+	RightMenu {
+		-fx-background-color: red;
+	}
 
-LeftMenu {
-	-fx-background-color: red;
-}
-
-RightMenu {
-	-fx-background-color: red;
-}
+/* L A B E L S */
 
 Label{
-	-fx-font-size: 1.5em; 
+	-fx-font-size: 13pt; 
 }
 
-/* ID for Menu button */
-#menu{
-	-fx-font: bold italic 1.5em "Arial";
-    -fx-effect: dropshadow(one-pass-box , black , 10 , 0 , 2 , 2); 
-}
+	/* M E N U S */
+	
+	#menu_title, #menu_text{
+		-fx-text-fill: rgb(175,175,175);
+	}
+	#menu_title{
+		-fx-font-size: 18pt;
+		-fx-font-weight: bold;
+		-fx-text-fill:
+		linear-gradient(rgb(150,150,150) 0%, rgb(150,150,150) 45%, rgb(255,255,255) 55%, rgb(150,150,150) 65%, rgb(150,150,150) 100%);
+	}
+	#spacing{
+		-fx-spacing: 15px;
+	}
+
+/* B U T T O N S */
+
+	/* M E N U S */
+	
+	#menu_button{
+		-fx-pref-width: 150px;
+		-fx-pref-height: 30px;
+	}
+	#switch_menu_button{
+		-fx-pref-width: 75px;
+		-fx-pref-height: 30px;
+	}
+	#menu_button, #switch_menu_button{
+		-fx-font-size: 14pt;
+		-fx-font-family: "Arial";
+		-fx-font-weight: bold;
+		-fx-text-fill: rgb(175,175,175);
+		-fx-background-color: 
+			rgb(30,30,30),
+			linear-gradient(rgb(175,175,175) 0%, rgb(125,125,125) 40%, rgb(100,100,100) 60%, rgb(50,50,50) 100%),
+			linear-gradient(rgb(150,150,150) 0%, rgb(125,125,125) 40%, rgb(100,100,100) 60%, rgb(75,75,75) 100%);
+	    -fx-background-insets: 0,2,5;
+	    -fx-background-radius: 9,8,5;
+	}
+	#menu_button:hover, #switch_menu_button:hover{
+		-fx-text-fill: rgb(175,175,175);
+		-fx-background-color: 
+			rgb(30,30,30),
+			linear-gradient(rgb(50,50,50) 0%, rgb(100,100,100) 40%, rgb(125,125,125) 60%, rgb(175,175,175) 100%),
+			linear-gradient(rgb(75,75,75) 0%, rgb(100,100,100) 40%, rgb(125,125,125) 60%, rgb(150,150,150) 100%);
+	}
+	#menu_button:pressed, #switch_menu_button:pressed{
+		-fx-text-fill: rgb(150,150,150);
+		-fx-background-color: 
+			rgb(30,30,30),
+			linear-gradient(rgb(30,30,30) 0%, rgb(80,80,80) 40%, rgb(105,105,105) 60%, rgb(155,155,155) 100%),
+			linear-gradient(rgb(55,55,55) 0%, rgb(80,80,80) 40%, rgb(105,105,105) 60%, rgb(130,130,130) 100%);
+	}
+	RadioButton{
+		-fx-font-family: "Arial";
+		-fx-font-size: 13pt;
+		-fx-text-fill: rgb(175,175,175);
+	}
+	RadioButton .radio{
+		-fx-background-color: rgb(255,255,255);
+		-fx-pref-height: 15px;
+		-fx-pref-width: 15px;
+	}
+	RadioButton:hover .radio{
+		-fx-background-color: rgb(200,200,200);
+		-fx-pref-height: 15px;
+		-fx-pref-width: 15px;
+	}
+	RadioButton:selected .dot{
+		-fx-background-color: rgb(30,30,30);
+		-fx-padding: 4px;
+	}
+	
+/* T E X T   F I E L D S */
+
+	TextField{
+		-fx-font-family: "Arial";
+		-fx-font-size: 13pt;
+		-fx-background-color:
+		linear-gradient(rgb(150,150,150) 0%, rgb(125,125,125) 40%, rgb(100,100,100) 60%, rgb(75,75,75) 100%),
+		rgb(255,255,255);
+		-fx-background-insets: 0,2;
+	    -fx-background-radius: 9,8;
+	}

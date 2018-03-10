@@ -55,6 +55,7 @@ public class GameOptions extends VBox{
 		super();
 		setScreenSize(screenSize);
 		setPrefSize(getScreenSize().getWidth(), getScreenSize().getHeight());
+		setId("gradient");
 		
 		initializeLogo();
 		initializeLabels();
@@ -93,6 +94,12 @@ public class GameOptions extends VBox{
 		getTurnsNumber().setText("Turns Number :");
 		getMapSize().setText("Map Size :");
 		getMapCode().setText("Use a map code :");
+		
+		getGameOptions().setId("menu_title");
+		getPlayersNumber().setId("menu_text");
+		getTurnsNumber().setId("menu_text");
+		getMapSize().setId("menu_text");
+		getMapCode().setId("menu_text");
 	}
 	public void initializeToggleGroups() {
 		setPlayers(new ToggleGroup());
@@ -116,6 +123,9 @@ public class GameOptions extends VBox{
 		
 		getGetBack().setText("Back");
 		getNext().setText("Next");
+		
+		getGetBack().setId("switch_menu_button");
+		getNext().setId("switch_menu_button");
 	}
 	
 	public void initializeGetBackClick(MenusBlock menusBlock) {
@@ -215,6 +225,12 @@ public class GameOptions extends VBox{
 		getMenuMoves().setAlignment(Pos.BOTTOM_CENTER);
 		getLeftMenuMoves().setAlignment(Pos.BOTTOM_LEFT);
 		getRightMenuMoves().setAlignment(Pos.BOTTOM_RIGHT);
+		
+		getOptionsBox().setId("spacing");
+		getPlayersBox().setId("spacing");
+		getTurnsBox().setId("spacing");
+		getMapBox().setId("spacing");
+		getCodeBox().setId("spacing");
 	}
 	
 	public void displayContent() {

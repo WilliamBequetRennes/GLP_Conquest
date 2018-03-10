@@ -18,6 +18,7 @@ public class MenuBar extends HBox{
 	private HBox leftSide;
 	private HBox rightSide;
 	private Button menu;
+	private Label mapNumber;
 	private Label turnNumber;
 	private Button endTurn;
 	
@@ -27,6 +28,7 @@ public class MenuBar extends HBox{
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		initializeSides();
 		initializeMenuButton(game);
+		initializeMapNumber(game);
 		initializeTurnNumber(game);
 		initializeEndTurnButton(game, centralBlock);
 		initializeMenuClick(centralBlock.getGameBlock());
@@ -56,7 +58,12 @@ public class MenuBar extends HBox{
 		setMenu(new Button());
 		getMenu().setText("Menu");
 		getLeftSide().getChildren().add(getMenu());
-		getMenu().setId("menu");
+		getMenu().setId("menu_button");
+	}
+	public void initializeMapNumber(Game game) {
+		setTurnNumber(new Label());
+		getTurnNumber().setText("map : "+game.getMap().getNumber());
+		getRightSide().getChildren().add(getTurnNumber());
 	}
 	public void initializeTurnNumber(Game game) {
 		setTurnNumber(new Label());
@@ -135,5 +142,13 @@ public class MenuBar extends HBox{
 
 	public void setEndTurn(Button endTurn) {
 		this.endTurn = endTurn;
+	}
+
+	public Label getMapNumber() {
+		return mapNumber;
+	}
+
+	public void setMapNumber(Label mapNumber) {
+		this.mapNumber = mapNumber;
 	}
 }

@@ -66,8 +66,8 @@ public class MapCanvas extends Canvas{
 	public void animatedMap(PositionDouble tracking, Game game, GameBlock gameBlock) {
 		new AnimationTimer() {
 			public void handle(long now) {
-				board.setFill(BACKGROUND);
-				board.fillRect(0, 0, getWidth(), getHeight());
+				getBoard().setFill(BACKGROUND);
+				getBoard().fillRect(0, 0, getWidth(), getHeight());
 				int squareType = 0;
 				int squareOwner = 0;
 				if((tracking.getX()<=0 && getCameraPositionX()>-VIEWABLE_VOID) || (tracking.getX()>=0 && getCameraPositionX()<getMapDimensions().getWidth()-getWidth()+VIEWABLE_VOID)) {
@@ -88,16 +88,16 @@ public class MapCanvas extends Canvas{
 							if(j%2==0) {
 								y = HEIGHT_SQUARE*i-getCameraPositionY();
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-									board.drawImage(getSquaresSprites()[squareType], x, y);
-									board.drawImage(getFrontierSprites()[squareOwner], x, y);
+									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
+									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
 									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
 								}
 							}
 							else {
 								y = HEIGHT_SQUARE*(i+0.5)-getCameraPositionY();
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-									board.drawImage(getSquaresSprites()[squareType], x, y);
-									board.drawImage(getFrontierSprites()[squareOwner], x, y);
+									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
+									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
 									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
 								}
 							}
