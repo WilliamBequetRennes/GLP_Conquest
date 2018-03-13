@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 public class LeaderSelection extends VBox {
 	
 	private final static int MAX_LEADER = 6;
-	private final static double PLAYER_BOXES_WIDTH = 0.22;
+	private final static double PLAYER_BOXES_WIDTH = 0.24;
 	private final static double LEADERS_BOX_HEIGHT = 0.9;
 	private final static double MENU_MOVES_HEIGHT = 0.1;
 	private final static double SIDE_MENU_MOVES_WIDTH = 0.5;
@@ -112,9 +112,12 @@ public class LeaderSelection extends VBox {
 			getPowers()[i] = new Label();
 			initializeChangeButton(i);
 			update(i);
-			getPlayers()[i].setId("menu_text");
-			getNames()[i].setId("menu_text");
+			
+			getPlayers()[i].setId("player"+(i+1));
+			getNames()[i].setId("leader_name");
 			getPowers()[i].setId("menu_text");
+			getPreviousLeader()[i].setId("change_leader");
+			getNextLeader()[i].setId("change_leader");
 		}
 	}
 	
@@ -185,6 +188,7 @@ public class LeaderSelection extends VBox {
 			getChangeLeader()[i].getChildren().add(getPreviousLeader()[i]);
 			getChangeLeader()[i].getChildren().add(getNextLeader()[i]);
 			getChangeLeader()[i].setAlignment(Pos.CENTER);
+			getChangeLeader()[i].setId("spacing");
 			
 			getPlayersLeader()[i] = new VBox();
 			getPlayersLeader()[i].getChildren().add(getPlayers()[i]);
@@ -192,8 +196,11 @@ public class LeaderSelection extends VBox {
 			getPlayersLeader()[i].getChildren().add(getNames()[i]);
 			getPlayersLeader()[i].getChildren().add(getPowers()[i]);
 			getPlayersLeader()[i].getChildren().add(getChangeLeader()[i]);
+			
 			getPlayersLeader()[i].setAlignment(Pos.CENTER);
 			getPlayersLeader()[i].setPrefWidth(getScreenSize().getWidth()*PLAYER_BOXES_WIDTH);
+			getPlayersLeader()[i].setId("leader_selection"+(i+1));
+			
 			getMenu().getChildren().add(getPlayersLeader()[i]);
 		}
 		getMenu().setAlignment(Pos.CENTER);

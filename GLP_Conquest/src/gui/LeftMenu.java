@@ -18,6 +18,8 @@ public class LeftMenu extends StackPane{
 		setUsualLeftMenu(new UsualLeftMenu(game, gameBlock));
 		displayContent();
 		
+		setId("padding");
+		
 	}
 	
 	public void displayContent() {

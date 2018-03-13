@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 
 public class UsualRightMenu extends VBox{
 
-	private Label currentPlayer;
+	private Button currentPlayer;
 	private Image[] leaderPortraits;
 	private int leader;
 	private ImageView portrait;
@@ -38,8 +38,9 @@ public class UsualRightMenu extends VBox{
 	}
 	
 	public void initializeCurrentPlayer(Game game, GameBlock gameBlock) {
-		setCurrentPlayer(new Label());
-		getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
+		setCurrentPlayer(new Button());
+		getCurrentPlayer().setText("Player "+game.getCurrentPlayer());
+		getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
 		getCurrentPlayer().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[game.getCurrentPlayer()-1]);
@@ -101,6 +102,7 @@ public class UsualRightMenu extends VBox{
 		setCreateUnit(new Button());
 		getCreateUnit().setText("Create Unit");
 		getCreateUnit().setVisible(false);
+		getCreateUnit().setId("menu_bar_button");
 	}
 	public void displayContent() {
 		getChildren().add(getCurrentPlayer());
@@ -112,11 +114,11 @@ public class UsualRightMenu extends VBox{
 		getChildren().add(getElectricity());
 		getChildren().add(getCreateUnit());
 	}
-	public Label getCurrentPlayer() {
+	public Button getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	public void setCurrentPlayer(Label currentPlayer) {
+	public void setCurrentPlayer(Button currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 

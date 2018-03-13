@@ -43,7 +43,7 @@ public class LeaderMenu extends VBox{
 		initializeGetBackButton(centralMenu);
 
 		displayContent();
-		setAlignment(Pos.TOP_CENTER);
+		setAlignment(Pos.CENTER);
 	}
 	public void updatePortrait(int leader) {
 		setLeader(leader);
@@ -86,6 +86,7 @@ public class LeaderMenu extends VBox{
 				centralMenu.getLeaderMenu().setVisible(false);
 			}
 		});
+		getGetBack().setId("switch_button");
 	}
 	
 	public void initializeContent() {

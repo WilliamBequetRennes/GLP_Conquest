@@ -15,8 +15,8 @@ import mapGenerator.MapGenerator;
 
 public class PlayableBlock extends GridPane{
 	
-	private static final double CORNER_SIZE = 0.01;
-	private static final double CENTER_SIZE = 0.98;
+	private static final double CORNER_WIDTH = 4;
+	private static final double CORNER_HEIGHT = 20;
 	
 	private static final int LITTLE_DIMENSIONS = 27;
 	private static final int MEDIUM_DIMENSIONS = 45;
@@ -64,7 +64,7 @@ public class PlayableBlock extends GridPane{
 		initializeTracking();
 		initializeGame(leaders, mapNumber);
 		
-		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()*CENTER_SIZE, getScreenSize().getHeight()*CENTER_SIZE);
+		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()-(CORNER_WIDTH*2), getScreenSize().getHeight()-(CORNER_HEIGHT*2));
 		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));
 		add(centralBlock, 1, 1);
 		
@@ -105,7 +105,7 @@ public class PlayableBlock extends GridPane{
 		}
 	}
 	public void initializeTracking() {
-		BlockSize cornerSize = new BlockSize(getScreenSize().getWidth()*CORNER_SIZE, getScreenSize().getHeight()*CORNER_SIZE);
+		BlockSize cornerSize = new BlockSize(CORNER_WIDTH,CORNER_HEIGHT);
 		setNorthWestTracking(new TrackingCamera(-1, -1, getTracking(), cornerSize));
 		setNorthTracking(new TrackingCamera(-1, 0, getTracking()));
 		setNorthEastTracking(new TrackingCamera(-1, 1, getTracking()));

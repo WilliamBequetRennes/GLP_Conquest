@@ -22,6 +22,8 @@ public class MenuBar extends HBox{
 	private Label turnNumber;
 	private Button endTurn;
 	
+	private boolean menuClicked;
+	
 	public MenuBar(BlockSize blockSize, Game game, CentralBlock centralBlock) {
 		super();
 		setBlockSize(blockSize);
@@ -37,9 +39,18 @@ public class MenuBar extends HBox{
 	public void initializeMenuClick(GameBlock gameBlock) {
 		getMenu().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				gameBlock.getLeftMenu().getGameMenu().setVisible(true);
-				gameBlock.getLeftMenu().getGameMenu().toFront();
-				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
+				if(!isMenuClicked()) {
+					gameBlock.getLeftMenu().getGameMenu().setVisible(true);
+					gameBlock.getLeftMenu().getGameMenu().toFront();
+					gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
+					setMenuClicked(true);
+				}
+				else {
+					gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
+					gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
+					gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+					setMenuClicked(false);
+				}
 			}
 		});
 	}
@@ -51,6 +62,9 @@ public class MenuBar extends HBox{
 		getRightSide().setPrefSize(getBlockSize().getWidth()*RIGHT_SIDE, getBlockSize().getHeight());
 		getLeftSide().setAlignment(Pos.CENTER_LEFT);
 		getRightSide().setAlignment(Pos.CENTER_RIGHT);
+		getLeftSide().setId("separed");
+		getRightSide().setId("separed");
+		
 		getChildren().add(getLeftSide());
 		getChildren().add(getRightSide());
 	}
@@ -58,7 +72,8 @@ public class MenuBar extends HBox{
 		setMenu(new Button());
 		getMenu().setText("Menu");
 		getLeftSide().getChildren().add(getMenu());
-		getMenu().setId("menu_button");
+		getMenu().setId("switch_button");
+		setMenuClicked(false);
 	}
 	public void initializeMapNumber(Game game) {
 		setTurnNumber(new Label());
@@ -84,6 +99,8 @@ public class MenuBar extends HBox{
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
 			}
 		});
+		getEndTurn().setId("switch_button");
+		
 		getRightSide().getChildren().add(getEndTurn());
 	}
 	
@@ -95,6 +112,7 @@ public class MenuBar extends HBox{
 		menu.getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
 		menu.getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
 		menu.getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
+		menu.getCurrentPlayer().setId("player_title"+game.getCurrentPlayer());
 	}
 	public HBox getLeftSide() {
 		return leftSide;
@@ -150,5 +168,13 @@ public class MenuBar extends HBox{
 
 	public void setMapNumber(Label mapNumber) {
 		this.mapNumber = mapNumber;
+	}
+
+	public boolean isMenuClicked() {
+		return menuClicked;
+	}
+
+	public void setMenuClicked(boolean menuClicked) {
+		this.menuClicked = menuClicked;
 	}
 }
