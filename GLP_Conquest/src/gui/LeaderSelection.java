@@ -82,7 +82,7 @@ public class LeaderSelection extends VBox {
 			}
 			String[] current = line.split("#");
 			getNames()[player].setText(current[1]);
-			getPowers()[player].setText("Power : "+current[2]);
+			getPowers()[player].setText(current[2]);
 			reader.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -115,7 +115,7 @@ public class LeaderSelection extends VBox {
 			
 			getPlayers()[i].setId("player"+(i+1));
 			getNames()[i].setId("leader_name");
-			getPowers()[i].setId("menu_text");
+			getPowers()[i].setId("leader_power");
 			getPreviousLeader()[i].setId("change_leader");
 			getNextLeader()[i].setId("change_leader");
 		}

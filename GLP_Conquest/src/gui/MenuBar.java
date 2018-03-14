@@ -112,7 +112,7 @@ public class MenuBar extends HBox{
 		menu.getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
 		menu.getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
 		menu.getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
-		menu.getCurrentPlayer().setId("player_title"+game.getCurrentPlayer());
+		menu.getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
 	}
 	public HBox getLeftSide() {
 		return leftSide;

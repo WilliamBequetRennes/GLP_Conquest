@@ -94,6 +94,9 @@ public class LeaderMenu extends VBox{
 		setPower(new Label());
 		setBoost1(new Label());
 		setBoost2(new Label());
+		
+		getName().setId("leader_name");
+		getPower().setId("leader_power");
 	}
 	
 	public void displayContent() {
