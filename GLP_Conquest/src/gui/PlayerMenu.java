@@ -49,7 +49,7 @@ public class PlayerMenu extends VBox{
 		initializeGetBackButton(centralMenu);
 
 		displayContent();
-		setAlignment(Pos.TOP_CENTER);
+		setAlignment(Pos.CENTER);
 	}
 	
 	public void update(Country country) {
@@ -92,6 +92,9 @@ public class PlayerMenu extends VBox{
 		
 		getNumberOfUnits().setText("Number of units = "+country.getUnits().size());
 		updatePortrait(country.getLeader().getNumber());
+
+		getPlayer().setId("player"+country.getPlayer());
+		setId("player_menu"+country.getPlayer());
 	}
 	public void initializePortrait() {
 		setCountryLeader(0);
@@ -140,6 +143,7 @@ public class PlayerMenu extends VBox{
 				centralMenu.getPlayerMenu().setVisible(false);
 			}
 		});
+		getGetBack().setId("switch_button");
 	}
 	public Image[] initializeLeaderPortraits() {
 		Image[] sprites = new Image[7];

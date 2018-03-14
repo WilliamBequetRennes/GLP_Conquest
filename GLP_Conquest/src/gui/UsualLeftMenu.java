@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 public class UsualLeftMenu extends VBox{
 
 	private GridPane playerArray;
-	private Label[] playerList;
+	private Button[] playerList;
 	private Label squareType;
 	private Label attackBoost;
 	private Label defenseBoost;
@@ -31,11 +31,11 @@ public class UsualLeftMenu extends VBox{
 	
 	public void initializePlayerArray(Game game, GameBlock gameBlock){
 		setPlayerArray(new GridPane());
-		setPlayerList(new Label[game.getPlayersNumber()]);
+		setPlayerList(new Button[game.getPlayersNumber()]);
 		for (int i = 1; i<=getPlayerList().length; i++) {
 			int country = i-1;
-			getPlayerList()[i-1] = new Label();
-			getPlayerList()[i-1].setText("player"+i);
+			getPlayerList()[i-1] = new Button();
+			getPlayerList()[i-1].setText("Player "+i);
 			getPlayerList()[i-1].setOnMouseClicked(new EventHandler<MouseEvent>() {
 				public void handle(MouseEvent mouseEvent) {
 					gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[country]);
@@ -45,6 +45,7 @@ public class UsualLeftMenu extends VBox{
 					gameBlock.getCentralMenu().getLeaderMenu().setVisible(false);
 				}
 			});
+			getPlayerList()[i-1].setId("player_button"+i);
 		}
 		switch(game.getPlayersNumber()) {
 			case(4):getPlayerArray().add(getPlayerList()[3], 1, 1);
@@ -79,6 +80,7 @@ public class UsualLeftMenu extends VBox{
 				}
 			}
 		});
+		getLevelUp().setId("menu_bar_button");
 	}
 
 	public void displayContent() {
@@ -98,11 +100,11 @@ public class UsualLeftMenu extends VBox{
 		this.playerArray = playerArray;
 	}
 
-	public Label[] getPlayerList() {
+	public Button[] getPlayerList() {
 		return playerList;
 	}
 
-	public void setPlayerList(Label[] playerList) {
+	public void setPlayerList(Button[] playerList) {
 		this.playerList = playerList;
 	}
 

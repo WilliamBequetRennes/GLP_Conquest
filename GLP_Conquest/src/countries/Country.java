@@ -13,7 +13,7 @@ public class Country {
 	private final static int STARTING_OIL = 5000;
 	private final static int STARTING_ELECTRICITY = 5000;
 
-	private int player;
+	private int player; //from 1 to 4
 	private Leader leader;
 	private Resources resources;
 	private Resources gains;

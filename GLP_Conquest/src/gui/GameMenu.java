@@ -26,17 +26,18 @@ public class GameMenu extends VBox{
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		
 		initializeButtons();
-		initializeGetBackClick(gameBlock);
+		initializeGetBackClick(gameBlock, menusBlock);
 		initializeMenuClick(menusBlock);
 		displayContent();
 		setAlignment(Pos.CENTER);
 	}
-	public void initializeGetBackClick(GameBlock gameBlock) {
+	public void initializeGetBackClick(GameBlock gameBlock, MenusBlock menusBlock) {
 		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 				gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 				gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+				menusBlock.getPlayableBlock().getCentralBlock().getMenuBar().setMenuClicked(false);
 			}
 		});
 	}
@@ -49,7 +50,7 @@ public class GameMenu extends VBox{
 		
 		getSave().setText("Save game");
 		getLoad().setText("Load game");
-		getMenu().setText("Back to main menu");
+		getMenu().setText("Back to menu");
 		getGetBack().setText("Back to game");
 		
 		setMenuBox(new VBox());
@@ -58,6 +59,14 @@ public class GameMenu extends VBox{
 		getBackBox().setPrefHeight(getBlockSize().getHeight()*BACK_BOX);
 		getMenuBox().setAlignment(Pos.TOP_CENTER);
 		getBackBox().setAlignment(Pos.BOTTOM_CENTER);
+
+		getSave().setId("menu_bar_button");
+		getLoad().setId("menu_bar_button");
+		getMenu().setId("menu_bar_button");
+		getGetBack().setId("menu_bar_button");
+		
+		getBackBox().setId("spacing");
+		getMenuBox().setId("spacing");
 	}
 	
 	public void initializeMenuClick(MenusBlock menusBlock) {

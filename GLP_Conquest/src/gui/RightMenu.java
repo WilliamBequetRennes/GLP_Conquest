@@ -15,6 +15,8 @@ public class RightMenu extends StackPane{
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		setUsualRightMenu(new UsualRightMenu(game, gameBlock));
 		getChildren().add(getUsualRightMenu());
+		
+		setId("padding");
 	}
 
 	public BlockSize getBlockSize() {
