@@ -1,6 +1,6 @@
 package exceptions;
 
-import datas.Position;
+import data.Position;
 
 public class AlreadyMaxLevelException extends Exception{
 	public AlreadyMaxLevelException (Position position) {

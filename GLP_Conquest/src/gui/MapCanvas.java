@@ -115,6 +115,8 @@ public class MapCanvas extends Canvas{
 		double radius = HEIGHT_SQUARE/2;
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
+				clearMenus(gameBlock); //Clear other menus
+				
 				double mouseX = mouseEvent.getX();
 				double mouseY = mouseEvent.getY();
 				for(PositionDouble current : squares.keySet()) {
@@ -155,7 +157,7 @@ public class MapCanvas extends Canvas{
 						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
 						
 						//Unit creation part in the right menu
-						if(game.getCurrentSquare().getType()==9) {
+						if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
 							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
 						}
 						else {
@@ -165,7 +167,7 @@ public class MapCanvas extends Canvas{
 						//Square level part in the left menu
 						if(game.getCurrentSquare().getType()>4) {
 							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
-							if(game.getCurrentSquare().getLevel()<3) {
+							if(game.getCurrentSquare().getLevel()<3 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
 								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
 							}
 							else {
@@ -180,6 +182,18 @@ public class MapCanvas extends Canvas{
 				}
 			}
 		});
+	}
+	
+	public void clearMenus(GameBlock gameBlock) {
+		//reset left menu
+		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
+		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
+		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+
+		//reset left menu
+		gameBlock.getRightMenu().getUsualRightMenu().setVisible(true);
+		gameBlock.getRightMenu().getUsualRightMenu().toFront();
+		gameBlock.getRightMenu().getUnitCreationMenu().setVisible(false);
 	}
 	
 	public Image[] initializeSquareSprites() {

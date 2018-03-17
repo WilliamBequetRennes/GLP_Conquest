@@ -1,4 +1,4 @@
-package datas;
+package data;
 
 public class Resources {
 	private float money;

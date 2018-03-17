@@ -3,7 +3,7 @@ package game;
 import java.util.HashMap;
 
 import countries.Country;
-import datas.Position;
+import data.Position;
 import map.Map;
 import squares.Square;
 import units.Unit;

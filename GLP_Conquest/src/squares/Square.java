@@ -1,8 +1,8 @@
 package squares;
 
-import datas.Bonus;
-import datas.Position;
-import datas.Resources;
+import data.Bonus;
+import data.Position;
+import data.Resources;
 import exceptions.AlreadyMaxLevelException;
 
 public abstract class Square {

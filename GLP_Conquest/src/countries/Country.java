@@ -2,16 +2,16 @@ package countries;
 
 import java.util.HashMap;
 
-import datas.Position;
-import datas.Resources;
+import data.Position;
+import data.Resources;
 import squares.Square;
 import units.Unit;
 
 public class Country {
-	private final static int STARTING_MONEY = 5000;
-	private final static int STARTING_FOOD = 5000;
-	private final static int STARTING_OIL = 5000;
-	private final static int STARTING_ELECTRICITY = 5000;
+	private final static int STARTING_MONEY = 4500;
+	private final static int STARTING_FOOD = 4500;
+	private final static int STARTING_OIL = 4500;
+	private final static int STARTING_ELECTRICITY = 4500;
 
 	private int player; //from 1 to 4
 	private Leader leader;

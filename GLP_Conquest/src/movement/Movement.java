@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import countries.Country;
-import datas.Position;
+import data.Position;
 import exceptions.AttributeException;
 import exceptions.OutOfRangeException;
 import game.Game;

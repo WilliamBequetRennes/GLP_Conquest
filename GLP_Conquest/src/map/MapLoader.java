@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import datas.Position;
+import data.Position;
 import squares.City;
 import squares.Desert;
 import squares.Farm;

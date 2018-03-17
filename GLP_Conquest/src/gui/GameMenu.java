@@ -10,8 +10,8 @@ import javafx.scene.layout.VBox;
 
 public class GameMenu extends VBox{
 	
-	private final static double MENU_BOX = 0.75 ;
-	private final static double BACK_BOX = 0.25 ;
+	private final static double MENU_BOX = 0.80 ;
+	private final static double BACK_BOX = 0.20 ;
 	private BlockSize blockSize;
 	private Button save;
 	private Button load;

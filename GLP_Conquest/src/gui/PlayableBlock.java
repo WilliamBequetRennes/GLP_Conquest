@@ -3,9 +3,10 @@ package gui;
 import gui_datas.PositionDouble;
 import countries.Country;
 import countries.Leader;
-import datas.Position;
+import data.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
+import game.Turn;
 import gui_datas.BlockSize;
 import javafx.scene.layout.GridPane;
 import map.Map;
@@ -99,6 +100,8 @@ public class PlayableBlock extends GridPane{
 			}
 			setGame(new Game(getPlayersNumber(), getTurnsNumber(), getMapSize(), map));
 			getGame().setPlayers(initializePlayers(leaders));
+			Turn turn = new Turn();
+			turn.startTurns(getGame());
 		} catch (InvalidMapSizeNumberException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

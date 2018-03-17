@@ -1,6 +1,6 @@
 package map;
 
-import datas.Position;
+import data.Position;
 import squares.Square;
 
 public class Map {

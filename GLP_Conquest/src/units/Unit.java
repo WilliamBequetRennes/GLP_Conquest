@@ -1,7 +1,7 @@
 package units;
 
-import datas.Resources;
-import datas.Position;
+import data.Position;
+import data.Resources;
 
 public abstract class Unit{	
 

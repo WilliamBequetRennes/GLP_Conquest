@@ -2,7 +2,7 @@ package movement;
 
 import java.util.ArrayList;
 
-import datas.Position;
+import data.Position;
 
 public class IndexPosition extends Position {
 	private int jPosition;

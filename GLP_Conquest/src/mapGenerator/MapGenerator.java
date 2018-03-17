@@ -1,6 +1,6 @@
 package mapGenerator;
 
-import datas.Position;
+import data.Position;
 import exceptions.InvalidBiomeNumberException;
 import exceptions.InvalidMapSizeNumberException;
 import exceptions.InvalidSquareNumberException;

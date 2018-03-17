@@ -17,6 +17,7 @@ public class PlayerMenu extends VBox{
 	
 	private BlockSize blockSize;
 	
+	private int playerNumber;
 	private Label player;
 	private Image[] leaderPortraits;
 	private ImageView portrait;
@@ -53,15 +54,36 @@ public class PlayerMenu extends VBox{
 	}
 	
 	public void update(Country country) {
+		setPlayerNumber(country.getPlayer());
 		float money = country.getGains().getMoney()-country.getSpents().getMoney();
 		float food = country.getGains().getFood()-country.getSpents().getFood();
 		float oil = country.getGains().getOil()-country.getSpents().getOil();
 		float electricity = country.getGains().getElectricity()-country.getSpents().getElectricity();
-		getPlayer().setText("Player "+country.getPlayer());
-		getMoney().setText("Money : "+country.getResources().getMoney()+" (+"+money+")");
-		getFood().setText("Food : "+country.getResources().getFood()+" (+"+food+")");
-		getOil().setText("Oil : "+country.getResources().getOil()+" (+"+oil+")");
-		getElectricity().setText("Electricity : "+country.getResources().getElectricity()+" (+"+electricity+")");
+		getPlayer().setText("Player "+getPlayerNumber());
+		if(money>=0) {
+			getMoney().setText("Money : "+country.getResources().getMoney()+" (+"+money+")");
+		}
+		else {
+			getMoney().setText("Money : "+country.getResources().getMoney()+" ("+money+")");
+		}
+		if(food>=0) {
+			getFood().setText("Food : "+country.getResources().getFood()+" (+"+food+")");
+		}
+		else {
+			getFood().setText("Food : "+country.getResources().getFood()+" ("+food+")");
+		}
+		if(oil>=0) {
+			getOil().setText("Oil : "+country.getResources().getOil()+" (+"+oil+")");
+		}
+		else {
+			getOil().setText("Oil : "+country.getResources().getOil()+" ("+oil+")");
+		}
+		if(electricity>=0) {
+			getElectricity().setText("Electricity : "+country.getResources().getElectricity()+" (+"+electricity+")");
+		}
+		else {
+			getElectricity().setText("Electricity : "+country.getResources().getElectricity()+" ("+electricity+")");
+		}
 		
 		int mines = 0;
 		int farms = 0;
@@ -360,6 +382,14 @@ public class PlayerMenu extends VBox{
 
 	public void setCountryLeader(int countryLeader) {
 		this.countryLeader = countryLeader;
+	}
+
+	public int getPlayerNumber() {
+		return playerNumber;
+	}
+
+	public void setPlayerNumber(int playerNumber) {
+		this.playerNumber = playerNumber;
 	}
 
 }

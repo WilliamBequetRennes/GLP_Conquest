@@ -1,8 +1,8 @@
 package squares;
 
-import datas.Bonus;
-import datas.Position;
-import datas.Resources;
+import data.Bonus;
+import data.Position;
+import data.Resources;
 
 public class City extends Square{
 

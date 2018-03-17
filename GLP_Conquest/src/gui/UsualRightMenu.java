@@ -23,7 +23,7 @@ public class UsualRightMenu extends VBox{
 	private Label electricity;
 	private Button createUnit;
 	
-	public UsualRightMenu(Game game, GameBlock gameBlock) {
+	public UsualRightMenu(Game game, GameBlock gameBlock, RightMenu rightMenu) {
 		super();
 		initializeCurrentPlayer(game, gameBlock);
 		setLeaderPortraits(initializeLeaderPortraits());
@@ -31,7 +31,7 @@ public class UsualRightMenu extends VBox{
 		initializePortraitClick(gameBlock.getCentralMenu(), game);
 		initializeNumberOfSquares(game);
 		initializeResources(game);
-		initializeCreateUnitButton(game);
+		initializeCreateUnitButton(game, rightMenu);
 		
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
@@ -98,11 +98,20 @@ public class UsualRightMenu extends VBox{
 		getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
 	}
 	
-	public void initializeCreateUnitButton(Game game) {
+	public void initializeCreateUnitButton(Game game, RightMenu rightMenu) {
 		setCreateUnit(new Button());
 		getCreateUnit().setText("Create Unit");
 		getCreateUnit().setVisible(false);
 		getCreateUnit().setId("menu_bar_button");
+		
+		getCreateUnit().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				rightMenu.getUnitCreationMenu().setVisible(true);
+				rightMenu.getUnitCreationMenu().toFront();
+				rightMenu.getUsualRightMenu().setVisible(false);
+			}
+		});
+		
 	}
 	public void displayContent() {
 		getChildren().add(getCurrentPlayer());

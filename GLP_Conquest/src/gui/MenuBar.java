@@ -1,6 +1,7 @@
 package gui;
 
 import game.Game;
+import game.Turn;
 import gui_datas.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -22,6 +23,7 @@ public class MenuBar extends HBox{
 	private Label turnNumber;
 	private Button endTurn;
 	
+	Turn turn;
 	private boolean menuClicked;
 	
 	public MenuBar(BlockSize blockSize, Game game, CentralBlock centralBlock) {
@@ -88,15 +90,14 @@ public class MenuBar extends HBox{
 	public void initializeEndTurnButton(Game game, CentralBlock centralBlock) {
 		setEndTurn(new Button());
 		getEndTurn().setText("End turn");
+		turn = new Turn();
+		MenuBar thisMenuBar = this;
 		getEndTurn().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				game.setCurrentPlayer(game.getCurrentPlayer()+1);
-				if(game.getCurrentPlayer()>game.getPlayersNumber()) {
-					game.setCurrentPlayer(1);
-					game.setCurrentTurn(game.getCurrentTurn()+1);
-					getTurnNumber().setText("turn : "+game.getCurrentTurn());
-				}
+				turn.nextTurn(game, thisMenuBar);
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
+				int playerNumber = centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().getPlayerNumber();
+				centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
 			}
 		});
 		getEndTurn().setId("switch_button");
