@@ -20,10 +20,11 @@ public abstract class Unit{
 	private int[] crossable;
 	private Resources cost;
 	private int type;
+	private String name;
 	
 	public Unit(float maxHealth, float currentHealth, Position position, int id, int faction, float maxMovement,
 			float movement, int range, int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type) {
+			Resources cost, int type, String name) {
 		setMaxHealth(maxHealth);
 		setCurrentHealth(currentHealth);
 		setPosition(position);
@@ -39,12 +40,13 @@ public abstract class Unit{
 		setCrossable(crossable);
 		setCost(cost);
 		setType(type);
+		setName(name);
 	}
 	public Unit(float maxHealth, Position position, int id, int faction, float maxMovement, int range,
 			int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type) {
+			Resources cost, int type, String name) {
 		this(maxHealth, maxHealth, position, id, faction, maxMovement, maxMovement, range, attack, defense, 
-				vision, attribute, crossable, cost, type);
+				vision, attribute, crossable, cost, type, name);
 	}
 
 	public float getMaxHealth() {
@@ -165,6 +167,12 @@ public abstract class Unit{
 
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

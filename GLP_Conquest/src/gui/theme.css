@@ -160,7 +160,17 @@ Label{
 	
 	/* G A M E */
 	
-	
+	#creation_menu{
+		-fx-font-size: 20pt;
+		-fx-font-weight: bold;
+		-fx-text-fill:rgb(220,220,220);
+	}
+	#type{
+		-fx-text-fill: rgb(220,220,220);
+		-fx-font-size: 14pt;
+		-fx-font-weight: bold;
+		-fx-font-style: italic;
+	}
 
 /* B U T T O N S */
 

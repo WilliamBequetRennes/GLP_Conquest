@@ -1,5 +1,6 @@
 package gui;
 
+import exceptions.InvalidUnitNumberException;
 import game.Game;
 import gui_datas.BlockSize;
 import javafx.event.EventHandler;
@@ -13,13 +14,17 @@ public class UnitCreationMenu extends VBox{
 
 	private final static double CREATION_BOX = 0.80 ;
 	private final static double BACK_BOX = 0.20 ;
+	private final static int[] INFANTRY = {0,1};
+	private final static int[] ARMORED = {4,5};
+	private final static int[] ROBOT = {2,3};
+	private final static int[] SHIP = {6,7};
 	private BlockSize blockSize;
 	
 	private Label unitsCreation;
-	private Button infants;
+	private Button infantry;
 	private Button armored;
-	private Button robots;
-	private Button ships;
+	private Button robot;
+	private Button ship;
 	private Button getBack;
 	
 	private VBox creationBox;
@@ -34,6 +39,7 @@ public class UnitCreationMenu extends VBox{
 		initializeBoxes();
 		
 		initializeGetBackClick(rightMenu);
+		initializeCreationClick(rightMenu);
 		
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
@@ -42,23 +48,24 @@ public class UnitCreationMenu extends VBox{
 	public void initializeContent() {
 		setUnitsCreation(new Label());
 		getUnitsCreation().setText("Unit Creation");
+		getUnitsCreation().setId("creation_menu");
 		
-		setInfants(new Button());
+		setInfantry(new Button());
 		setArmored(new Button());
-		setRobots(new Button());
-		setShips(new Button());
+		setRobot(new Button());
+		setShip(new Button());
 		setGetBack(new Button());
 
-		getInfants().setText("Infants");
+		getInfantry().setText("Infantry");
 		getArmored().setText("Armored");
-		getRobots().setText("Robots");
-		getShips().setText("Ships");
+		getRobot().setText("Robot");
+		getShip().setText("Ship");
 		getGetBack().setText("Back");
 		
-		getInfants().setId("menu_bar_button");
+		getInfantry().setId("menu_bar_button");
 		getArmored().setId("menu_bar_button");
-		getRobots().setId("menu_bar_button");
-		getShips().setId("menu_bar_button");
+		getRobot().setId("menu_bar_button");
+		getShip().setId("menu_bar_button");
 		getGetBack().setId("menu_bar_button");
 	}
 	public void initializeBoxes() {
@@ -75,15 +82,70 @@ public class UnitCreationMenu extends VBox{
 	}
 	public void displayContent() {
 		getCreationBox().getChildren().add(getUnitsCreation());
-		getCreationBox().getChildren().add(getInfants());
+		getCreationBox().getChildren().add(getInfantry());
 		getCreationBox().getChildren().add(getArmored());
-		getCreationBox().getChildren().add(getRobots());
-		getCreationBox().getChildren().add(getShips());
+		getCreationBox().getChildren().add(getRobot());
+		getCreationBox().getChildren().add(getShip());
 		
 		getBackBox().getChildren().add(getGetBack());
 		
 		getChildren().add(getCreationBox());
 		getChildren().add(getBackBox());
+	}
+	
+	public void initializeCreationClick(RightMenu rightMenu) {
+		getInfantry().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				try {
+					rightMenu.getUnitCreator().update(INFANTRY, "Infantry");
+				} catch (InvalidUnitNumberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				rightMenu.getUnitCreator().setVisible(true);
+				rightMenu.getUnitCreator().toFront();
+				rightMenu.getUnitCreationMenu().setVisible(false);
+			}
+		});
+		getArmored().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				try {
+					rightMenu.getUnitCreator().update(ARMORED, "Armored");
+				} catch (InvalidUnitNumberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				rightMenu.getUnitCreator().setVisible(true);
+				rightMenu.getUnitCreator().toFront();
+				rightMenu.getUnitCreationMenu().setVisible(false);
+			}
+		});
+		getRobot().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				try {
+					rightMenu.getUnitCreator().update(ROBOT, "Robot");
+				} catch (InvalidUnitNumberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				rightMenu.getUnitCreator().setVisible(true);
+				rightMenu.getUnitCreator().toFront();
+				rightMenu.getUnitCreationMenu().setVisible(false);
+			}
+		});
+		getShip().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				try {
+					rightMenu.getUnitCreator().update(SHIP, "Ship");
+				} catch (InvalidUnitNumberException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				rightMenu.getUnitCreator().setVisible(true);
+				rightMenu.getUnitCreator().toFront();
+				rightMenu.getUnitCreationMenu().setVisible(false);
+			}
+		});
 	}
 	
 	public void initializeGetBackClick(RightMenu rightMenu) {
@@ -107,13 +169,13 @@ public class UnitCreationMenu extends VBox{
 	}
 
 
-	public Button getInfants() {
-		return infants;
+	public Button getInfantry() {
+		return infantry;
 	}
 
 
-	public void setInfants(Button infants) {
-		this.infants = infants;
+	public void setInfantry(Button infantry) {
+		this.infantry = infantry;
 	}
 
 
@@ -127,23 +189,23 @@ public class UnitCreationMenu extends VBox{
 	}
 
 
-	public Button getRobots() {
-		return robots;
+	public Button getRobot() {
+		return robot;
 	}
 
 
-	public void setRobots(Button robots) {
-		this.robots = robots;
+	public void setRobot(Button robot) {
+		this.robot = robot;
 	}
 
 
-	public Button getShips() {
-		return ships;
+	public Button getShip() {
+		return ship;
 	}
 
 
-	public void setShips(Button ships) {
-		this.ships = ships;
+	public void setShip(Button ship) {
+		this.ship = ship;
 	}
 
 

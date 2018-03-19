@@ -1,6 +1,7 @@
 package gui;
 
 import game.Game;
+import game.SquaresScanner;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,10 +23,12 @@ public class UsualRightMenu extends VBox{
 	private Label oil;
 	private Label electricity;
 	private Button createUnit;
+	private SquaresScanner squaresScanner;
 	
 	public UsualRightMenu(Game game, GameBlock gameBlock, RightMenu rightMenu) {
 		super();
 		initializeCurrentPlayer(game, gameBlock);
+		setSquaresScanner(new SquaresScanner(game));
 		setLeaderPortraits(initializeLeaderPortraits());
 		initializePortrait(game.getPlayers()[0].getLeader().getNumber());
 		initializePortraitClick(gameBlock.getCentralMenu(), game);
@@ -40,7 +43,7 @@ public class UsualRightMenu extends VBox{
 	public void initializeCurrentPlayer(Game game, GameBlock gameBlock) {
 		setCurrentPlayer(new Button());
 		getCurrentPlayer().setText("Player "+game.getCurrentPlayer());
-		getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
+		getCurrentPlayer().setId("player_button"+(game.getCurrentPlayer()));
 		getCurrentPlayer().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[game.getCurrentPlayer()-1]);
@@ -109,6 +112,12 @@ public class UsualRightMenu extends VBox{
 				rightMenu.getUnitCreationMenu().setVisible(true);
 				rightMenu.getUnitCreationMenu().toFront();
 				rightMenu.getUsualRightMenu().setVisible(false);
+				if(getSquaresScanner().scan(0)) {
+					rightMenu.getUnitCreationMenu().getShip().setVisible(true);
+				}
+				else {
+					rightMenu.getUnitCreationMenu().getShip().setVisible(false);
+				}
 			}
 		});
 		
@@ -201,6 +210,14 @@ public class UsualRightMenu extends VBox{
 
 	public void setLeader(int leader) {
 		this.leader = leader;
+	}
+
+	public SquaresScanner getSquaresScanner() {
+		return squaresScanner;
+	}
+
+	public void setSquaresScanner(SquaresScanner squaresScanner) {
+		this.squaresScanner = squaresScanner;
 	}
 	
 }

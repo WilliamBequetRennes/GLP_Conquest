@@ -17,6 +17,7 @@ public class Transport extends Unit{
 	private static final int ATTRIBUTE = 3;
 	private static final int[] CROSSABLE = {0};
 	private static final int TYPE = 8;
+	private static final String NAME = "Transport";
 	/*
 	* Cost definition
 	*/
@@ -30,6 +31,6 @@ public class Transport extends Unit{
 	*/
 	public Transport(Position position, int id, int faction) {
 		super(MAX_HEALTH, position, id, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
-				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE);
+				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE, NAME);
 	}
 }

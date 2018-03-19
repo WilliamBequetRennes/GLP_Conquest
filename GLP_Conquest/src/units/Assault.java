@@ -17,6 +17,7 @@ public class Assault extends Unit{
 	private static final int ATTRIBUTE = 1;
 	private static final int[] CROSSABLE = {1,2,3,4,5,6,7,8,9};
 	private static final int TYPE = 0;
+	private static final String NAME = "Assault";
 	/*
 	* Cost definition
 	*/
@@ -27,6 +28,6 @@ public class Assault extends Unit{
 
 	public Assault(Position position, int id, int faction) {
 		super(MAX_HEALTH, position, id, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
-				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE);
+				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE, NAME);
 	}
 }

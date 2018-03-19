@@ -63,7 +63,7 @@ public class MapCanvas extends Canvas{
 	
 	}
 	
-	public void animatedMap(PositionDouble tracking, Game game, GameBlock gameBlock) {
+	public void animatedMap(PositionDouble tracking, Game game, GameBlock gameBlock, MenusBlock menusBlock) {
 		new AnimationTimer() {
 			public void handle(long now) {
 				getBoard().setFill(BACKGROUND);
@@ -104,18 +104,18 @@ public class MapCanvas extends Canvas{
 						}
 					}
 				}
-				initializeSquareClicks(game, displayedSquares, gameBlock);
+				initializeSquareClicks(game, displayedSquares, gameBlock, menusBlock);
 			}
 		}.start();
 	}
 	
-	public void initializeSquareClicks(Game game, HashMap<PositionDouble,Square> squares, GameBlock gameBlock) {
+	public void initializeSquareClicks(Game game, HashMap<PositionDouble,Square> squares, GameBlock gameBlock, MenusBlock menusBlock) {
 		double xCenter = (WIDTH_SQUARE/2);
 		double yCenter = (HEIGHT_SQUARE/2);
 		double radius = HEIGHT_SQUARE/2;
 		setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				clearMenus(gameBlock); //Clear other menus
+				clearMenus(gameBlock, menusBlock); //Clear other menus
 				
 				double mouseX = mouseEvent.getX();
 				double mouseY = mouseEvent.getY();
@@ -156,44 +156,56 @@ public class MapCanvas extends Canvas{
 						gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
 						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
 						
-						//Unit creation part in the right menu
-						if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
-							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
-						}
-						else {
-							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
-						}
-						
-						//Square level part in the left menu
-						if(game.getCurrentSquare().getType()>4) {
-							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
-							if(game.getCurrentSquare().getLevel()<3 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
-								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
-							}
-							else {
-								gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
-							}
-						}
-						else {
-							gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(false);
-							gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
-						}
+						changeVisibility(game, gameBlock);
 					}
 				}
 			}
 		});
 	}
 	
-	public void clearMenus(GameBlock gameBlock) {
+	public void changeVisibility(Game game, GameBlock gameBlock) {
+		//Unit creation part in the right menu
+		if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
+			gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
+		}
+		else {
+			gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
+		}
+		
+		//Square level part in the left menu
+		if(game.getCurrentSquare().getType()>4) {
+			gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
+			if(game.getCurrentSquare().getLevel()<3 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
+				gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
+			}
+			else {
+				gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
+			}
+		}
+		else {
+			gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(false);
+			gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
+		}
+		
+		//Informations in the left menu
+		gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setVisible(true);
+		gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setVisible(true);
+		gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setVisible(true);
+		gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
+	}
+	
+	public void clearMenus(GameBlock gameBlock, MenusBlock menusBlock) {
 		//reset left menu
 		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+		menusBlock.getPlayableBlock().getCentralBlock().getMenuBar().setMenuClicked(false);
 
 		//reset left menu
 		gameBlock.getRightMenu().getUsualRightMenu().setVisible(true);
 		gameBlock.getRightMenu().getUsualRightMenu().toFront();
 		gameBlock.getRightMenu().getUnitCreationMenu().setVisible(false);
+		gameBlock.getRightMenu().getUnitCreator().setVisible(false);
 	}
 	
 	public Image[] initializeSquareSprites() {

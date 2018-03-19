@@ -62,10 +62,12 @@ public class UsualLeftMenu extends VBox{
 		setDefenseBoost(new Label());
 		setSquareLevel(new Label());
 		
-		/*getSquareType().setVisible(false);
+		getSquareType().setVisible(false);
 		getAttackBoost().setVisible(false);
-		getDefenseBoost().setVisible(false);*/
+		getDefenseBoost().setVisible(false);
 		getSquareLevel().setVisible(false);
+		
+		getSquareType().setId("type");
 	}
 	public void initializeLevelUpButton(Game game) {
 		setLevelUp(new Button());

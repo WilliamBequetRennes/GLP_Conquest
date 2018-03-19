@@ -9,11 +9,13 @@ public class RightMenu extends StackPane{
 	private BlockSize blockSize;
 	private UsualRightMenu usualRightMenu;
 	private UnitCreationMenu unitCreationMenu;
+	private UnitCreator unitCreator;
 	
 	public RightMenu(BlockSize blockSize, Game game, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
+		setUnitCreator(new UnitCreator(game, getBlockSize(), this));
 		setUnitCreationMenu(new UnitCreationMenu(game, getBlockSize(), this));
 		setUsualRightMenu(new UsualRightMenu(game, gameBlock, this));
 		displayContent();
@@ -21,8 +23,10 @@ public class RightMenu extends StackPane{
 		setId("padding");
 	}
 	public void displayContent() {
+		getChildren().add(getUnitCreator());
 		getChildren().add(getUnitCreationMenu());
 		getChildren().add(getUsualRightMenu());
+		getUnitCreator().setVisible(false);
 		getUnitCreationMenu().setVisible(false);
 		getUsualRightMenu().setVisible(true);
 	}
@@ -49,5 +53,11 @@ public class RightMenu extends StackPane{
 
 	public void setUnitCreationMenu(UnitCreationMenu unitCreationMenu) {
 		this.unitCreationMenu = unitCreationMenu;
+	}
+	public UnitCreator getUnitCreator() {
+		return unitCreator;
+	}
+	public void setUnitCreator(UnitCreator unitCreator) {
+		this.unitCreator = unitCreator;
 	}
 }

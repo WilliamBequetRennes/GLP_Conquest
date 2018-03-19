@@ -94,10 +94,16 @@ public class MenuBar extends HBox{
 		MenuBar thisMenuBar = this;
 		getEndTurn().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
+				setMenuClicked(false);
 				turn.nextTurn(game, thisMenuBar);
+				clearMenus(centralBlock.getGameBlock());
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
 				int playerNumber = centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().getPlayerNumber();
+				if(playerNumber==0) {
+					playerNumber++;
+				}
 				centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
+				reinitializeUsualLeftMenu(centralBlock.getGameBlock().getLeftMenu().getUsualLeftMenu(), game);
 			}
 		});
 		getEndTurn().setId("switch_button");
@@ -105,8 +111,16 @@ public class MenuBar extends HBox{
 		getRightSide().getChildren().add(getEndTurn());
 	}
 	
+	public void reinitializeUsualLeftMenu(UsualLeftMenu menu, Game game) {
+		menu.getSquareType().setVisible(false);
+		menu.getAttackBoost().setVisible(false);
+		menu.getDefenseBoost().setVisible(false);
+		menu.getSquareLevel().setVisible(false);
+		menu.getLevelUp().setVisible(false);
+	}
+	
 	public void refreshUsualRightMenu(UsualRightMenu menu, Game game) {
-		menu.getCurrentPlayer().setText("Player : "+game.getCurrentPlayer());
+		menu.getCurrentPlayer().setText("Player "+game.getCurrentPlayer());
 		menu.updatePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
 		menu.getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
 		menu.getMoney().setText("Money : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney());
@@ -114,6 +128,22 @@ public class MenuBar extends HBox{
 		menu.getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
 		menu.getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
 		menu.getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
+		menu.getCreateUnit().setVisible(false);
+		
+	}
+	
+	public void clearMenus(GameBlock gameBlock) {
+		//reset left menu
+		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
+		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
+		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+		setMenuClicked(false);
+
+		//reset left menu
+		gameBlock.getRightMenu().getUsualRightMenu().setVisible(true);
+		gameBlock.getRightMenu().getUsualRightMenu().toFront();
+		gameBlock.getRightMenu().getUnitCreationMenu().setVisible(false);
+		gameBlock.getRightMenu().getUnitCreator().setVisible(false);
 	}
 	public HBox getLeftSide() {
 		return leftSide;

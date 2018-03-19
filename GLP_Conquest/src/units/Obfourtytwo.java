@@ -17,6 +17,7 @@ public class Obfourtytwo extends Unit{
 	private static final int ATTRIBUTE = 2;
 	private static final int[] CROSSABLE = {1,2,3,4,5,6,7,8,9};
 	private static final int TYPE = 2; 
+	private static final String NAME = "OB-42";
 	/*
 	* Cost definition
 	*/
@@ -30,6 +31,6 @@ public class Obfourtytwo extends Unit{
 	*/
 	public Obfourtytwo(Position position, int id, int faction) {
 		super(MAX_HEALTH, position, id, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
-				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE);
+				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE, NAME);
 	}
 }

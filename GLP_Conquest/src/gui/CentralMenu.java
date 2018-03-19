@@ -13,7 +13,7 @@ public class CentralMenu extends StackPane{
 	private PlayerMenu playerMenu;
 	private LeaderMenu leaderMenu;
 	
-	public CentralMenu(BlockSize blockSize, Game game, PositionDouble tracking, GameBlock gameBlock) {
+	public CentralMenu(BlockSize blockSize, Game game, PositionDouble tracking, GameBlock gameBlock, MenusBlock menusBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
@@ -22,7 +22,7 @@ public class CentralMenu extends StackPane{
 		setPlayerMenu(new PlayerMenu(blockSize, this));
 		try {
 			setMapCanvas(new MapCanvas(getBlockSize().getWidth(), getBlockSize().getHeight(), game));
-			getMapCanvas().animatedMap(tracking, game, gameBlock);
+			getMapCanvas().animatedMap(tracking, game, gameBlock, menusBlock);
 		} catch (InvalidMapSizeNumberException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
