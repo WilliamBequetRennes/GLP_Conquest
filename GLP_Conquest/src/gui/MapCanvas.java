@@ -165,7 +165,7 @@ public class MapCanvas extends Canvas{
 	
 	public void changeVisibility(Game game, GameBlock gameBlock) {
 		//Unit creation part in the right menu
-		if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
+		if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer() && !game.getCurrentSquare().getUnit()) {
 			gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(true);
 		}
 		else {

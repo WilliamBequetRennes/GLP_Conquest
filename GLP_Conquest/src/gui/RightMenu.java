@@ -15,7 +15,7 @@ public class RightMenu extends StackPane{
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
-		setUnitCreator(new UnitCreator(game, getBlockSize(), this));
+		setUnitCreator(new UnitCreator(game, getBlockSize(), gameBlock));
 		setUnitCreationMenu(new UnitCreationMenu(game, getBlockSize(), this));
 		setUsualRightMenu(new UsualRightMenu(game, gameBlock, this));
 		displayContent();

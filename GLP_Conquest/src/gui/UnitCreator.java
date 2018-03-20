@@ -2,6 +2,7 @@ package gui;
 
 import exceptions.InvalidUnitNumberException;
 import game.Game;
+import game.UnitPurchase;
 import gui_datas.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -27,6 +28,7 @@ public class UnitCreator extends VBox{
 	private final static int UNITS_NUMBER = 2;
 	private BlockSize blockSize;
 
+	private int[] types;
 	private Label unitType;
 	private int unitsNumber;
 	private Button[] create;
@@ -39,18 +41,20 @@ public class UnitCreator extends VBox{
 	private Label[] upkeep;
 	private GridPane[] grid;
 	private Button getBack;
+	private UnitPurchase unitPurchase;
 	
 	private VBox creationBox;
 	private VBox backBox;
 	
-	public UnitCreator(Game game, BlockSize blockSize, RightMenu rightMenu) {
+	public UnitCreator(Game game, BlockSize blockSize, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		
 		initializeContent(UNITS_NUMBER);
 		initializeBoxes();
-		initializeGetBackClick(rightMenu);
+		initializeGetBackClick(gameBlock);
+		initializeCreationClicks(game, gameBlock);
 		
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
@@ -124,20 +128,21 @@ public class UnitCreator extends VBox{
 		getChildren().add(getCreationBox());
 		getChildren().add(getBackBox());
 	}
-	public void initializeGetBackClick(RightMenu rightMenu) {
+	public void initializeGetBackClick(GameBlock gameBlock) {
 		getGetBack().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				rightMenu.getUnitCreationMenu().setVisible(true);
-				rightMenu.getUnitCreationMenu().toFront();
-				rightMenu.getUnitCreator().setVisible(false);
+				gameBlock.getRightMenu().getUnitCreationMenu().setVisible(true);
+				gameBlock.getRightMenu().getUnitCreationMenu().toFront();
+				gameBlock.getRightMenu().getUnitCreator().setVisible(false);
 			}
 		});
 	}
 	public void update(int[] types, String unitType) throws InvalidUnitNumberException{
+		setTypes(types);
 		getUnitType().setText(unitType);
 		Unit[] units = new Unit[getUnitsNumber()];
 		for(int i = 0; i<units.length; i++) {
-			switch(types[i]) {
+			switch(getTypes()[i]) {
 			case(0):units[i] = new Assault(null, 0, 0);
 			break;
 			case(1):units[i] = new Sniper(null, 0, 0);
@@ -175,7 +180,42 @@ public class UnitCreator extends VBox{
 				getUpkeep()[i].setText("Upkeep : "+units[i].getCost().getOil()+" oil");
 			}
 		}
-		//Pay attention to boats. If there is no water around a city, it must be impossible to generate a ship
+	}
+	public void initializeCreationClicks(Game game, GameBlock gameBlock) {
+		setTypes(new int[getUnitsNumber()]);
+		setUnitPurchase(new UnitPurchase());
+		for(int i = 0; i<getCreate().length; i++) {
+			int type = i;
+			getCreate()[i].setOnMouseClicked(new EventHandler<MouseEvent>() {
+				public void handle(MouseEvent mouseEvent) {
+					try {
+						boolean purchase = getUnitPurchase().purchase(game, getTypes()[type]);
+						if(purchase) {
+							int playerNumber = gameBlock.getCentralMenu().getPlayerMenu().getPlayerNumber();
+							if(playerNumber == 0) {
+								playerNumber++;
+							}
+							gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
+							gameBlock.getRightMenu().getUsualRightMenu().setVisible(true);
+							gameBlock.getRightMenu().getUsualRightMenu().toFront();
+							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
+							gameBlock.getRightMenu().getUnitCreator().setVisible(false);
+						}
+					} catch (InvalidUnitNumberException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+	}
+
+	public int[] getTypes() {
+		return types;
+	}
+
+	public void setTypes(int[] types) {
+		this.types = types;
 	}
 
 	public BlockSize getBlockSize() {
@@ -296,6 +336,14 @@ public class UnitCreator extends VBox{
 
 	public void setUnitType(Label unitType) {
 		this.unitType = unitType;
+	}
+
+	public UnitPurchase getUnitPurchase() {
+		return unitPurchase;
+	}
+
+	public void setUnitPurchase(UnitPurchase unitPurchase) {
+		this.unitPurchase = unitPurchase;
 	}
 	
 }

@@ -15,63 +15,55 @@ import units.Unit;
 
 public class UnitPurchase {
 	
-	private Game game;
-	public UnitPurchase(Game game) {
-		setGame(game);
+	public UnitPurchase() {
 	}
-	public boolean purchase(int type) throws InvalidUnitNumberException{
+	public boolean purchase(Game game, int type) throws InvalidUnitNumberException{
 		Unit unit = null;
-		float money = getGame().getPlayers()[getGame().getCurrentPlayer()].getResources().getMoney();
+		float money = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney();
 		switch(type) {
-		case(0):unit = new Assault(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(0):unit = new Assault(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(1):unit = new Sniper(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(1):unit = new Sniper(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(2):unit = new Obfourtytwo(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(2):unit = new Obfourtytwo(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(3):unit = new Bfgninethousand(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(3):unit = new Bfgninethousand(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(4):unit = new Tank(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(4):unit = new Tank(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(5):unit = new Turret(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(5):unit = new Turret(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(6):unit = new Destroyer(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(6):unit = new Destroyer(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(7):unit = new Battleship(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(7):unit = new Battleship(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
-		case(8):unit = new Transport(getGame().getCurrentSquare().getPosition(), 0, getGame().getCurrentPlayer());
+		case(8):unit = new Transport(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
 		break;
 		default:throw new InvalidUnitNumberException(type);
 		}
 		if(money >= unit.getCost().getMoney()) {
 			//if the country has enough money to buy the unit
 			money-=unit.getCost().getMoney();
-			getGame().getPlayers()[getGame().getCurrentPlayer()].getResources().setMoney(money);
-			getGame().getPlayers()[getGame().getCurrentPlayer()].getUnits().put(unit.getPosition(), unit);
+			game.getPlayers()[game.getCurrentPlayer()-1].getResources().setMoney(money);
+			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().put(unit.getPosition(), unit);
 			
-			float moneySpents = getGame().getPlayers()[getGame().getCurrentPlayer()].getSpents().getMoney();
-			float food = getGame().getPlayers()[getGame().getCurrentPlayer()].getSpents().getFood();
-			float oil = getGame().getPlayers()[getGame().getCurrentPlayer()].getSpents().getOil();
-			float electricity = getGame().getPlayers()[getGame().getCurrentPlayer()].getSpents().getElectricity();
+			float moneySpents = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getMoney();
+			float food = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getFood();
+			float oil = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getOil();
+			float electricity = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getElectricity();
 			
 			food += unit.getCost().getFood();
 			oil += unit.getCost().getOil();
 			electricity += unit.getCost().getElectricity();
 			
 			Resources spents = new Resources(moneySpents, food, oil, electricity);
-			getGame().getPlayers()[getGame().getCurrentPlayer()].setSpents(spents);
-			
+			game.getPlayers()[game.getCurrentPlayer()-1].setSpents(spents);
+			game.getCurrentSquare().setUnit(true);
 			return true;
 		}
 		else {
 			//if the country doesn't have enough money to buy the unit
 			return false;
 		}
-	}
-	public Game getGame() {
-		return game;
-	}
-	public void setGame(Game game) {
-		this.game = game;
 	}
 }
