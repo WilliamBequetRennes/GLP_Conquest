@@ -14,7 +14,8 @@ import javafx.scene.layout.VBox;
 import squares.Square;
 
 public class PlayerMenu extends VBox{
-	
+
+	private final static int NUMBER_OF_LEADERS = 6;
 	private BlockSize blockSize;
 	
 	private int playerNumber;
@@ -168,14 +169,13 @@ public class PlayerMenu extends VBox{
 		getGetBack().setId("switch_button");
 	}
 	public Image[] initializeLeaderPortraits() {
-		Image[] sprites = new Image[7];
+		Image[] sprites = new Image[NUMBER_OF_LEADERS];
 		sprites[0] = new Image(getClass().getResource("\\sprites\\CaptainIgloo.png").toString());
 		sprites[1] = new Image(getClass().getResource("\\sprites\\Trump.png").toString());
 		sprites[2] = new Image(getClass().getResource("\\sprites\\Hollande.png").toString());
-		sprites[3] = new Image(getClass().getResource("\\sprites\\Governator.png").toString());
-		sprites[4] = new Image(getClass().getResource("\\sprites\\Jesus.png").toString());
-		sprites[5] = new Image(getClass().getResource("\\sprites\\Moses.png").toString());
-		sprites[6] = new Image(getClass().getResource("\\sprites\\Poutine.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\GordonRamsay.png").toString());
+		sprites[4] = new Image(getClass().getResource("\\sprites\\Governator.png").toString());
+		sprites[5] = new Image(getClass().getResource("\\sprites\\Poutine.png").toString());
 		return sprites;
 	}
 	public void displayContent() {

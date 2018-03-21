@@ -18,7 +18,8 @@ import javafx.scene.layout.VBox;
 
 public class LeaderSelection extends VBox {
 	
-	private final static int MAX_LEADER = 6;
+	private final static int NUMBER_OF_LEADERS = 6;
+	private final static int MAX_LEADER = NUMBER_OF_LEADERS-1;
 	private final static double PLAYER_BOXES_WIDTH = 0.24;
 	private final static double LEADERS_BOX_HEIGHT = 0.9;
 	private final static double MENU_MOVES_HEIGHT = 0.1;
@@ -207,14 +208,13 @@ public class LeaderSelection extends VBox {
 	}
 	
 	public Image[] initializeLeaderPortraits() {
-		Image[] sprites = new Image[7];
+		Image[] sprites = new Image[NUMBER_OF_LEADERS];
 		sprites[0] = new Image(getClass().getResource("\\sprites\\CaptainIgloo.png").toString());
 		sprites[1] = new Image(getClass().getResource("\\sprites\\Trump.png").toString());
 		sprites[2] = new Image(getClass().getResource("\\sprites\\Hollande.png").toString());
-		sprites[3] = new Image(getClass().getResource("\\sprites\\Governator.png").toString());
-		sprites[4] = new Image(getClass().getResource("\\sprites\\Jesus.png").toString());
-		sprites[5] = new Image(getClass().getResource("\\sprites\\Moses.png").toString());
-		sprites[6] = new Image(getClass().getResource("\\sprites\\Poutine.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\GordonRamsay.png").toString());
+		sprites[4] = new Image(getClass().getResource("\\sprites\\Governator.png").toString());
+		sprites[5] = new Image(getClass().getResource("\\sprites\\Poutine.png").toString());
 		return sprites;
 	}
 	public void initializeButtons(MenusBlock menusBlock) {

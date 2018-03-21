@@ -1,7 +1,6 @@
 0#Captain Igloo#The true captain's treasure#Naval units movement is increased by 1#Battleships range is increased by 1
-1#Donald Trump#It's black gold from Texas#Units attack and defense are decreased by 20% but their cost is also decreased by 20%#Oil wells generate 10% more oil each turn
+1#Donald Trump#It's black gold from Texas#Units attack and defense are decreased by 20% but their cost is also decreased by 20%#Buildings generate 10% more oil each turn
 2#François Hollande#Me, I'm a normal president#Units attack and defense are decreased by 20% and their cost is increased by 20%#Buildings generate 10% less resources each turn
-3#Governator#Chill out, dickwad#Melee units have 20% more attack and defense#Long range units have -1 range to attack
-4#Jesus#Walking on the water#Infants can move on water squares#+10% generated food each turn
-5#Moses#Fourty years through desert#Units have no drawbacks moving on desert squares#
-6#Vladimir Putin#Nuclear Winter#Units attack and defense are increased by 20% but their cost is also increased by 20%#Nuclear plants generate 10% more electricity each turn
+3#Gordon Ramsay#Command & Cooker#Buildings generate 20% more food each turn
+4#Governator#Chill out, dickwad#Melee units have 20% more attack and defense#Long range units have -1 range to attack
+5#Vladimir Putin#Nuclear Winter#Units attack and defense are increased by 20% but their cost is also increased by 20%#Buildings generate 10% more electricity each turn
