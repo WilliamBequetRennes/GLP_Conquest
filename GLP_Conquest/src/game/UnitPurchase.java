@@ -52,9 +52,10 @@ public class UnitPurchase {
 			float oil = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getOil();
 			float electricity = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getElectricity();
 			
-			food += unit.getCost().getFood();
-			oil += unit.getCost().getOil();
-			electricity += unit.getCost().getElectricity();
+			moneySpents += unit.getUpkeep().getMoney();
+			food += unit.getUpkeep().getFood();
+			oil += unit.getUpkeep().getOil();
+			electricity += unit.getUpkeep().getElectricity();
 			
 			Resources spents = new Resources(moneySpents, food, oil, electricity);
 			game.getPlayers()[game.getCurrentPlayer()-1].setSpents(spents);

@@ -18,11 +18,12 @@ public abstract class Unit{
 	private int attribute;
 	private int[] crossable;
 	private Resources cost;
+	private Resources upkeep;
 	private int type;
 	
 	public Unit(float maxHealth, float currentHealth, Position position, int faction, float maxMovement,
 			float movement, int range, int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type) {
+			Resources cost, Resources upkeep, int type) {
 		setMaxHealth(maxHealth);
 		setCurrentHealth(currentHealth);
 		setPosition(position);
@@ -36,13 +37,14 @@ public abstract class Unit{
 		setAttribute(attribute);
 		setCrossable(crossable);
 		setCost(cost);
+		setUpkeep(upkeep);
 		setType(type);
 	}
 	public Unit(float maxHealth, Position position, int faction, float maxMovement, int range,
 			int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type) {
+			Resources cost, Resources upkeep, int type) {
 		this(maxHealth, maxHealth, position, faction, maxMovement, maxMovement, range, attack, defense, 
-				vision, attribute, crossable, cost, type);
+				vision, attribute, crossable, cost, upkeep, type);
 	}
 
 	public float getMaxHealth() {
@@ -147,6 +149,14 @@ public abstract class Unit{
 
 	public void setCost(Resources cost) {
 		this.cost = cost;
+	}
+	
+	public Resources getUpkeep() {
+		return upkeep;
+	}
+
+	public void setUpkeep(Resources upkeep) {
+		this.upkeep = upkeep;
 	}
 
 	public int getType() {

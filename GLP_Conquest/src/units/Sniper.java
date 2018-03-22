@@ -20,8 +20,12 @@ public class Sniper extends Unit{
 	/*
 	* Cost definition
 	*/
-	private static final int MONEY_UPKEEP = 0;
-	private static final int FOOD_UPKEEP = 0;
+	private static final int MONEY_COST = 20;
+	private static final int FOOD_COST = 0;
+	private static final int OIL_COST = 0;
+	private static final int ELECTRICITY_COST = 0;
+	private static final int MONEY_UPKEEP = 3;
+	private static final int FOOD_UPKEEP = 2;
 	private static final int OIL_UPKEEP = 0;
 	private static final int ELECTRICTY_UPKEEP = 0;
 	
@@ -29,7 +33,7 @@ public class Sniper extends Unit{
 	* Default constructor
 	*/
 	public Sniper(Position position, int faction) {
-		super(MAX_HEALTH, position, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
+		super(MAX_HEALTH, position, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,new Resources(MONEY_COST,FOOD_COST,OIL_COST,ELECTRICITY_COST),
 				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE);
 	}
 }

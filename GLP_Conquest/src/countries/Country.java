@@ -83,6 +83,18 @@ public class Country {
 	public void setSpents(Resources spents) {
 		this.spents = spents;
 	}
+	
+	public void addSpents (Resources spent) {
+		float money = this.spents.getMoney();
+		money+=spent.getMoney();
+		float food = this.spents.getFood();
+		food+=spent.getFood();
+		float oil = this.spents.getOil();
+		oil+=spent.getOil();
+		float electricity = this.spents.getElectricity();
+		electricity+=spent.getElectricity();
+		this.setSpents(new Resources(money,food,oil,electricity));
+	}
 
 	public int getSquareNumber() {
 		return squareNumber;
