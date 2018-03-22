@@ -21,23 +21,23 @@ public class UnitPurchase {
 		Unit unit = null;
 		float money = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney();
 		switch(type) {
-		case(0):unit = new Assault(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(0):unit = new Assault(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(1):unit = new Sniper(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(1):unit = new Sniper(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(2):unit = new Obfourtytwo(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(2):unit = new Obfourtytwo(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(3):unit = new Bfgninethousand(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(3):unit = new Bfgninethousand(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(4):unit = new Tank(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(4):unit = new Tank(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(5):unit = new Turret(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(5):unit = new Turret(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(6):unit = new Destroyer(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(6):unit = new Destroyer(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(7):unit = new Battleship(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(7):unit = new Battleship(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
-		case(8):unit = new Transport(game.getCurrentSquare().getPosition(), 0, game.getCurrentPlayer());
+		case(8):unit = new Transport(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
 		default:throw new InvalidUnitNumberException(type);
 		}
