@@ -15,9 +15,8 @@ public class Battleship extends Unit{
 	private static final int DEFENSE = 85;
 	private static final float VISION = 4;
 	private static final int ATTRIBUTE = 3;
-	private static final int[] CROSSABLE = {0,9};
+	private static final int[] CROSSABLE = {0};
 	private static final int TYPE = 7;
-	private static final String NAME = "Battleship";
 	/*
 	* Cost definition
 	*/
@@ -29,8 +28,8 @@ public class Battleship extends Unit{
 	/*
 	* Default constructor
 	*/
-	public Battleship(Position position, int id, int faction) {
-		super(MAX_HEALTH, position, id, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
-				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE, NAME);
+	public Battleship(Position position, int faction) {
+		super(MAX_HEALTH, position, faction, MAX_MOVEMENT, RANGE, ATTACK, DEFENSE, VISION, ATTRIBUTE, CROSSABLE,
+				new Resources(MONEY_UPKEEP, FOOD_UPKEEP, OIL_UPKEEP, ELECTRICTY_UPKEEP), TYPE);
 	}
 }

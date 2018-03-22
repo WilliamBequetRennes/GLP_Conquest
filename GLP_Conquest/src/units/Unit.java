@@ -8,7 +8,6 @@ public abstract class Unit{
 	private float maxHealth;
 	private float currentHealth;
 	private Position position;
-	private int id;
 	private int faction;
 	private float maxMovement;
 	private float movement;
@@ -20,15 +19,13 @@ public abstract class Unit{
 	private int[] crossable;
 	private Resources cost;
 	private int type;
-	private String name;
 	
-	public Unit(float maxHealth, float currentHealth, Position position, int id, int faction, float maxMovement,
+	public Unit(float maxHealth, float currentHealth, Position position, int faction, float maxMovement,
 			float movement, int range, int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type, String name) {
+			Resources cost, int type) {
 		setMaxHealth(maxHealth);
 		setCurrentHealth(currentHealth);
 		setPosition(position);
-		setId(id);
 		setFaction(faction);
 		setMaxMovement(maxMovement);
 		setMovement(movement);
@@ -40,13 +37,12 @@ public abstract class Unit{
 		setCrossable(crossable);
 		setCost(cost);
 		setType(type);
-		setName(name);
 	}
-	public Unit(float maxHealth, Position position, int id, int faction, float maxMovement, int range,
+	public Unit(float maxHealth, Position position, int faction, float maxMovement, int range,
 			int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, int type, String name) {
-		this(maxHealth, maxHealth, position, id, faction, maxMovement, maxMovement, range, attack, defense, 
-				vision, attribute, crossable, cost, type, name);
+			Resources cost, int type) {
+		this(maxHealth, maxHealth, position, faction, maxMovement, maxMovement, range, attack, defense, 
+				vision, attribute, crossable, cost, type);
 	}
 
 	public float getMaxHealth() {
@@ -71,14 +67,6 @@ public abstract class Unit{
 
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public int getFaction() {
@@ -167,12 +155,6 @@ public abstract class Unit{
 
 	public void setType(int type) {
 		this.type = type;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 }
