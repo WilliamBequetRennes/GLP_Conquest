@@ -21,9 +21,9 @@ public class Movement {
 	public Movement(Unit unit, Game game) {
 		setUnit(unit);
 		IndexPosition position = (IndexPosition) unit.getPosition();
-		setGraph(position);
 		setMap(map);
 		setGame(game);
+		setGraph(position);
 	}
 	
 	public boolean parity(int YPosition) {
@@ -197,6 +197,56 @@ public class Movement {
 		}
 	}
 	
+	public float[] calculate(Unit attackUnit, Unit defenseUnit) throws AttributeException {
+		double attributeBonus = 1;
+				
+//		Country[] countries = game.getPlayers();
+//		Country attackerCountry = countries[game.getCurrentPlayer()];
+		
+		int attackerAttack = attackUnit.getAttack();
+		int attackerDefense = attackUnit.getDefense();
+		float attackerHealth = attackUnit.getCurrentHealth();
+		int attackerRange = attackUnit.getRange();
+		int attackerAttribute = attackUnit.getAttribute();
+//		String attackerBoost = attackUnit.getFaction().getLeader();
+		float attackerBonus = map.getSquareType(attackUnit.getPosition()).getBonus().getAttack(); 
+		
+		int defenderAttack = defenseUnit.getAttack();
+		int defenderDefense = defenseUnit.getDefense();
+		float defenderHealth = defenseUnit.getCurrentHealth();
+		int defenderRange = defenseUnit.getRange();
+		int defenderAttribute = defenseUnit.getAttribute();
+//		String defenderBoost = defenseUnit.getFaction().getLeader();
+		float defenderBonus = map.getSquareType(defenseUnit.getPosition()).getBonus().getDefense();
+//		Position defenderPosition = defenseUnit.getPosition();
+		
+		double damage = attackerAttack*/*attackerBoost**/attackerBonus*attackerHealth/100 - defenderDefense*/*defenderBoost**/defenderBonus;
+		
+		attributeBonus = attributeBonus(attackerAttribute, defenderAttribute);
+		damage = damage*attributeBonus;
+		
+		float defenderDamage = (float) damage;
+		defenderHealth = (float) (defenderHealth-damage);
+				
+		if (defenderHealth > 0) {
+			if(defenderRange == attackerRange) {
+				attackerBonus = map.getSquareType(attackUnit.getPosition()).getBonus().getDefense(); 
+				defenderBonus = map.getSquareType(defenseUnit.getPosition()).getBonus().getAttack();
+				damage = defenderAttack*/*defenderBoost**/defenderBonus*defenderHealth/100 - attackerDefense*/*attackerBoost**/attackerBonus;
+				damage = damage*1/attributeBonus;
+				
+				attackerHealth = (float) (attackerHealth - damage);
+				attackUnit.setCurrentHealth(attackerHealth);
+			}
+		}
+		else {
+			damage = 0;
+		}		
+	float[] damages = {defenderDamage, defenderHealth, (float)damage, attackerHealth};
+		
+	return damages;
+	}
+	
 	public void fight(Unit attackUnit, Unit defenseUnit) throws AttributeException {
 
 		double attributeBonus = 1;
@@ -316,7 +366,7 @@ public class Movement {
 	}
 	
 	public void setGraph(IndexPosition position) {
-		this.graph = new Graph(position);
+		this.graph = new Graph(position, getMap(), getGame());
 	}
 	
 	public Graph getGraph() {
@@ -333,5 +383,9 @@ public class Movement {
 	
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 }

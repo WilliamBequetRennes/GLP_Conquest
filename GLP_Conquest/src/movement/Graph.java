@@ -1,17 +1,26 @@
 package movement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import game.Game;
+import map.Map;
+import units.Unit;
 
 public class Graph {
 	private ArrayList<IndexPosition> graph;
+	private Map map;
+	private Game game;
 	
-	public Graph(IndexPosition position) {
+	public Graph(IndexPosition position, Map map, Game game) {
 		if (parity(position.getIPosition())){
 			this.graph = evenYGraph(position);
 		}
 		else {
 			this.graph = unevenYGraph(position);
 		}
+		setMap(map);
+		setGame(game);
 	}
 	
 	public boolean parity(int YPosition) {
@@ -118,4 +127,100 @@ public class Graph {
 		return this.graph;
 	}
 	
+//	public int containsBuilding() {
+//		/*0 = none
+//		 *1 = one defended
+//		 *2 = one free
+//		 *3 = at least one defended and only one free
+//		 *4 = at least one defended and some free
+//		 *5 = all defended
+//		 *6 = all free
+//		 */
+//		int status = 0;
+//		Iterator<IndexPosition> graphIterator = graph.iterator();
+//		IndexPosition position;
+//		while(graphIterator.hasNext()) {
+//			position = graphIterator.next();
+//			if (map.getSquareType(position).getType() > 4) {
+//				if (status == 0) {
+//					if (map.getSquareType(position).getUnit()) {
+//						status = 1;
+//					}
+//					else {
+//						status = 2;
+//					}
+//				}
+//				else if (status == 1) {
+//					if (map.getSquareType(position).getUnit()) {
+//						status = 5;
+//					}
+//					else {
+//						status = 3;
+//					}
+//				}
+//				else if (status == 2) {
+//					if (map.getSquareType(position).getUnit()) {
+//						status = 3;
+//					}
+//					else {
+//						status = 6;
+//					}
+//				}
+//				else if (status == 3) {
+//					if (!map.getSquareType(position).getUnit()) {
+//						status = 4;
+//					}
+//				}
+//				else if (status == 5) {
+//					if (!map.getSquareType(position).getUnit()) {
+//						status = 3;
+//					}
+//				}
+//				else if (status == 6) {
+//					if (map.getSquareType(position).getUnit()) {
+//						status = 4;
+//					}
+//				}
+//			}
+//		}
+//		return status;
+//	}
+	
+	public ArrayList<IndexPosition> containsBuilding() {
+		ArrayList<IndexPosition> building = new ArrayList<IndexPosition>();
+		Iterator<IndexPosition> graphIterator = graph.iterator();
+		IndexPosition position;
+		while(graphIterator.hasNext()) {
+			position = graphIterator.next();
+			if (map.getSquareType(position).getType()>4) {
+				building.add(position);
+			}
+		}
+		return building;
+	}
+	
+	public ArrayList<Unit> containsUnit() {
+		ArrayList<Unit> unit = new ArrayList<Unit>();
+		Iterator<IndexPosition> graphIterator = graph.iterator();
+		IndexPosition position;
+		while(graphIterator.hasNext()) {
+			position = graphIterator.next();
+			if (map.getSquareType(position).getUnit()) {
+				unit.add(game.getUnits().get(position));
+			}
+		}
+		return unit;
+	}
+	
+	public void setMap(Map map) {
+		this.map = map;
+	}
+	
+	public Map getMap() {
+		return this.map;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
+	}
 }

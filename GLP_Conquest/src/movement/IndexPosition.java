@@ -63,4 +63,9 @@ public class IndexPosition extends Position {
 	public ArrayList<Position> getLocalPath() {
 		return this.localPath;
 	}
+	
+	public Position toPosition() {
+		Position position = new Position(iPosition,jPosition);
+		return  position;
+	}
 }
