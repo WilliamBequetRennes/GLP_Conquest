@@ -1,13 +1,13 @@
 package gui;
 
-import gui_datas.PositionDouble;
 import countries.Country;
 import countries.Leader;
 import data.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
 import game.Turn;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
+import gui_data.PositionDouble;
 import javafx.scene.layout.GridPane;
 import map.Map;
 import map.MapLoader;

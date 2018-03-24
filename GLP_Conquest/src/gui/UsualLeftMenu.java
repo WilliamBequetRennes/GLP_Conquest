@@ -8,22 +8,34 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import units.Unit;
 
 public class UsualLeftMenu extends VBox{
 
 	private GridPane playerArray;
 	private Button[] playerList;
+	
 	private Label squareType;
 	private Label attackBoost;
 	private Label defenseBoost;
 	private Label squareLevel;
 	private Button levelUp;
 	
+	private GridPane unitData;
+	private Label unitType;
+	private Label healthPoints;
+	private Label movePoints;
+	private Label attack;
+	private Label defense;
+	private Label range;
+	private Label upkeep;
+	
 	public UsualLeftMenu(Game game, GameBlock gameBlock) {
 		super();
 		initializePlayerArray(game, gameBlock);
-		initializeCurrentSquare(game);
+		initializeCurrentSquare();
 		initializeLevelUpButton(game);
+		initializeUnit();
 
 		setAlignment(Pos.TOP_CENTER);
 		displayContent();
@@ -56,7 +68,7 @@ public class UsualLeftMenu extends VBox{
 		}	
 		getPlayerArray().setAlignment(Pos.CENTER);
 	}
-	public void initializeCurrentSquare(Game game){
+	public void initializeCurrentSquare(){
 		setSquareType(new Label());
 		setAttackBoost(new Label());
 		setDefenseBoost(new Label());
@@ -84,6 +96,107 @@ public class UsualLeftMenu extends VBox{
 		});
 		getLevelUp().setId("menu_bar_button");
 	}
+	public void initializeUnit(){
+		setUnitData(new GridPane());
+		setUnitType(new Label());
+		setAttack(new Label());
+		setDefense(new Label());
+		setHealthPoints(new Label());
+		setMovePoints(new Label());
+		setRange(new Label());
+		setUpkeep(new Label());
+		
+		getUnitData().setVisible(false);
+		getUnitType().setVisible(false);
+		getAttack().setVisible(false);
+		getDefense().setVisible(false);
+		getHealthPoints().setVisible(false);
+		getMovePoints().setVisible(false);
+		getRange().setVisible(false);
+		getUpkeep().setVisible(false);
+		
+		getUnitType().setId("type");
+		getUnitData().setAlignment(Pos.CENTER);
+	}
+	
+	public void update(Game game) {
+		String type = "";
+		switch(game.getCurrentSquare().getType()) {
+			case(0):type="Water";
+			break;
+			case(1):type="Land";
+			break;
+			case(2):type="Desert";
+			break;
+			case(3):type="Forest";
+			break;
+			case(4):type="Mont";
+			break;
+			case(5):type="Mine";
+			break;
+			case(6):type="Farm";
+			break;
+			case(7):type="Oil well";
+			break;
+			case(8):type="Nuclear plant";
+			break;
+			case(9):type="City";
+			break;
+		}
+		String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
+		String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
+		String level = "Level : "+game.getCurrentSquare().getLevel();
+		
+		getSquareType().setText(type);
+		getAttackBoost().setText(attackBoost);
+		getDefenseBoost().setText(defenseBoost);
+		getSquareLevel().setText(level);
+		
+		if(game.getCurrentSquare().getUnit()){
+			int faction = game.getCurrentSquare().getFaction();
+			Unit unit = game.getPlayers()[faction-1].getUnits().get(game.getCurrentSquare().getPosition());
+			
+			getUnitType().setText(unit.getName());
+			getHealthPoints().setText("HP : "+unit.getCurrentHealth()+"/"+unit.getMaxHealth());
+			getMovePoints().setText("MP : "+unit.getMovement()+"/"+unit.getMaxMovement());
+			getAttack().setText("ATK : "+unit.getAttack());
+			getDefense().setText("DEF : "+unit.getDefense());
+			getRange().setText("Range : "+unit.getRange());
+			switch(unit.getType()) {
+			case(0):
+			case(1):getUpkeep().setText("Upkeep : "+unit.getUpkeep().getFood()+" Food");
+			break;
+			case(2):
+			case(3):getUpkeep().setText("Upkeep : "+unit.getUpkeep().getElectricity()+" Elec");
+			break;
+			case(4):
+			case(5):
+			case(6):
+			case(7):getUpkeep().setText("Upkeep : "+unit.getUpkeep().getOil()+" Oil");
+			break;
+			}
+			
+			getUnitData().setVisible(true);
+			getUnitType().setVisible(true);
+			getAttack().setVisible(true);
+			getDefense().setVisible(true);
+			getHealthPoints().setVisible(true);
+			getMovePoints().setVisible(true);
+			getRange().setVisible(true);
+			getUpkeep().setVisible(true);
+		}
+		else {
+			getUnitData().setVisible(false);
+			getUnitType().setVisible(false);
+			getAttack().setVisible(false);
+			getDefense().setVisible(false);
+			getHealthPoints().setVisible(false);
+			getMovePoints().setVisible(false);
+			getRange().setVisible(false);
+			getUpkeep().setVisible(false);
+		}
+		
+	}
 
 	public void displayContent() {
 		getChildren().add(getPlayerArray());
@@ -92,6 +205,16 @@ public class UsualLeftMenu extends VBox{
 		getChildren().add(getDefenseBoost());
 		getChildren().add(getSquareLevel());	
 		getChildren().add(getLevelUp());	
+
+		getUnitData().add(getMovePoints(), 0, 0);
+		getUnitData().add(getRange(), 1, 0);
+		getUnitData().add(getAttack(), 0, 1);
+		getUnitData().add(getDefense(), 1, 1);
+
+		getChildren().add(getUnitType());
+		getChildren().add(getHealthPoints());
+		getChildren().add(getUnitData());
+		getChildren().add(getUpkeep());
 	}
 	
 	public GridPane getPlayerArray() {
@@ -148,6 +271,70 @@ public class UsualLeftMenu extends VBox{
 
 	public void setLevelUp(Button levelUp) {
 		this.levelUp = levelUp;
+	}
+
+	public Label getUnitType() {
+		return unitType;
+	}
+
+	public void setUnitType(Label unitType) {
+		this.unitType = unitType;
+	}
+
+	public Label getHealthPoints() {
+		return healthPoints;
+	}
+
+	public void setHealthPoints(Label healthPoints) {
+		this.healthPoints = healthPoints;
+	}
+
+	public Label getMovePoints() {
+		return movePoints;
+	}
+
+	public void setMovePoints(Label movePoints) {
+		this.movePoints = movePoints;
+	}
+
+	public Label getRange() {
+		return range;
+	}
+
+	public void setRange(Label range) {
+		this.range = range;
+	}
+
+	public Label getUpkeep() {
+		return upkeep;
+	}
+
+	public void setUpkeep(Label upkeep) {
+		this.upkeep = upkeep;
+	}
+
+	public Label getAttack() {
+		return attack;
+	}
+
+	public void setAttack(Label attack) {
+		this.attack = attack;
+	}
+
+	public Label getDefense() {
+		return defense;
+	}
+
+	public void setDefense(Label defense) {
+		this.defense = defense;
+	}
+
+	public GridPane getUnitData() {
+		return unitData;
+	}
+
+	public void setUnitData(GridPane unitData) {
+		this.unitData = unitData;
 	}
 
 }

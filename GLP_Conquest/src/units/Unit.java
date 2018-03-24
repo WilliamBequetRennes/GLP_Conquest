@@ -20,10 +20,11 @@ public abstract class Unit{
 	private Resources cost;
 	private Resources upkeep;
 	private int type;
+	private String name;
 	
 	public Unit(float maxHealth, float currentHealth, Position position, int faction, float maxMovement,
 			float movement, int range, int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, Resources upkeep, int type) {
+			Resources cost, Resources upkeep, int type, String name) {
 		setMaxHealth(maxHealth);
 		setCurrentHealth(currentHealth);
 		setPosition(position);
@@ -39,12 +40,13 @@ public abstract class Unit{
 		setCost(cost);
 		setUpkeep(upkeep);
 		setType(type);
+		setName(name);
 	}
 	public Unit(float maxHealth, Position position, int faction, float maxMovement, int range,
 			int attack, int defense, float vision, int attribute, int[] crossable,
-			Resources cost, Resources upkeep, int type) {
-		this(maxHealth, maxHealth, position, faction, maxMovement, maxMovement, range, attack, defense, 
-				vision, attribute, crossable, cost, upkeep, type);
+			Resources cost, Resources upkeep, int type, String name) {
+		this(maxHealth, maxHealth, position, faction, maxMovement, 0, range, attack, defense, 
+				vision, attribute, crossable, cost, upkeep, type, name);
 	}
 
 	public float getMaxHealth() {
@@ -150,14 +152,6 @@ public abstract class Unit{
 	public void setCost(Resources cost) {
 		this.cost = cost;
 	}
-	
-	public Resources getUpkeep() {
-		return upkeep;
-	}
-
-	public void setUpkeep(Resources upkeep) {
-		this.upkeep = upkeep;
-	}
 
 	public int getType() {
 		return type;
@@ -165,6 +159,18 @@ public abstract class Unit{
 
 	public void setType(int type) {
 		this.type = type;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Resources getUpkeep() {
+		return upkeep;
+	}
+	public void setUpkeep(Resources upkeep) {
+		this.upkeep = upkeep;
 	}
 	
 }

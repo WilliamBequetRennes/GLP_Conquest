@@ -10,6 +10,7 @@ import units.Unit;
 
 public class Turn {
 	
+	private static final float COEF_HP_RECOVER = 0.2f;
 	public Turn() {
 	}
 	
@@ -35,6 +36,7 @@ public class Turn {
 			updateSpents(game);
 			buildingGains(game);
 			unitsCosts(game);
+			unitsRest(game);
 		}
 	}
 	
@@ -108,6 +110,19 @@ public class Turn {
 				spents.setElectricity(spents.getElectricity()+current.getCost().getElectricity());
 			}
 			game.getPlayers()[i].setSpents(spents);
+		}
+	}
+	
+	public void unitsRest(Game game) {
+		for(Unit current : game.getPlayers()[game.getCurrentPlayer()-1].getUnits().values()) {
+			current.setMovement(current.getMaxMovement());
+			//if the unit is on a building it will recover some HP
+			if(game.getPlayers()[game.getCurrentPlayer()-1].getBuildings().containsKey(current.getPosition())) {
+				current.setCurrentHealth(current.getCurrentHealth()+current.getMaxHealth()*COEF_HP_RECOVER);
+				if(current.getCurrentHealth()>current.getMaxHealth()) {
+					current.setCurrentHealth(current.getMaxHealth());
+				}
+			}
 		}
 	}
 }

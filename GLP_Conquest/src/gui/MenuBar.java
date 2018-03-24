@@ -2,7 +2,7 @@ package gui;
 
 import game.Game;
 import game.Turn;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -117,6 +117,14 @@ public class MenuBar extends HBox{
 		menu.getDefenseBoost().setVisible(false);
 		menu.getSquareLevel().setVisible(false);
 		menu.getLevelUp().setVisible(false);
+		menu.getUnitData().setVisible(false);
+		menu.getUnitType().setVisible(false);
+		menu.getAttack().setVisible(false);
+		menu.getDefense().setVisible(false);
+		menu.getHealthPoints().setVisible(false);
+		menu.getMovePoints().setVisible(false);
+		menu.getRange().setVisible(false);
+		menu.getUpkeep().setVisible(false);
 	}
 	
 	public void refreshUsualRightMenu(UsualRightMenu menu, Game game) {

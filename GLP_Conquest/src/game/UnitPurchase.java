@@ -20,6 +20,10 @@ public class UnitPurchase {
 	public boolean purchase(Game game, int type) throws InvalidUnitNumberException{
 		Unit unit = null;
 		float money = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney();
+		float food = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood();
+		float oil = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil();
+		float electricity = game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity();
+		
 		switch(type) {
 		case(0):unit = new Assault(game.getCurrentSquare().getPosition(), game.getCurrentPlayer());
 		break;
@@ -41,29 +45,51 @@ public class UnitPurchase {
 		break;
 		default:throw new InvalidUnitNumberException(type);
 		}
-		if(money >= unit.getCost().getMoney()) {
-			//if the country has enough money to buy the unit
+		boolean buyable = true;
+		if(money < unit.getCost().getMoney()) {
+			buyable = false;
+		}
+		if(food < unit.getCost().getFood()) {
+			buyable = false;
+		}
+		if(oil < unit.getCost().getOil()) {
+			buyable = false;
+		}
+		if(electricity < unit.getCost().getElectricity()) {
+			buyable = false;
+		}
+		//if the country has enough money to buy the unit
+		if(buyable) {
+			//Reduce the country's resources by the unit's cost
 			money-=unit.getCost().getMoney();
-			game.getPlayers()[game.getCurrentPlayer()-1].getResources().setMoney(money);
-			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().put(unit.getPosition(), unit);
+			food-=unit.getCost().getFood();
+			oil-=unit.getCost().getOil();
+			electricity-=unit.getCost().getElectricity();
 			
+			Resources resources = new Resources(money, food, oil, electricity);
+			game.getPlayers()[game.getCurrentPlayer()-1].setResources(resources);
+			
+			//Add the unit's upkeep the the country's spents
 			float moneySpents = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getMoney();
-			float food = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getFood();
-			float oil = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getOil();
-			float electricity = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getElectricity();
+			float foodSpents = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getFood();
+			float oilSpents = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getOil();
+			float electricitySpents = game.getPlayers()[game.getCurrentPlayer()-1].getSpents().getElectricity();
 			
 			moneySpents += unit.getUpkeep().getMoney();
-			food += unit.getUpkeep().getFood();
-			oil += unit.getUpkeep().getOil();
-			electricity += unit.getUpkeep().getElectricity();
+			foodSpents += unit.getUpkeep().getFood();
+			oilSpents += unit.getUpkeep().getOil();
+			electricitySpents += unit.getUpkeep().getElectricity();
 			
-			Resources spents = new Resources(moneySpents, food, oil, electricity);
+			Resources spents = new Resources(moneySpents, foodSpents, oilSpents, electricitySpents);
 			game.getPlayers()[game.getCurrentPlayer()-1].setSpents(spents);
+
+			//create the unit in the game
+			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().put(unit.getPosition(), unit);
 			game.getCurrentSquare().setUnit(true);
 			return true;
 		}
+		//if the country doesn't have enough money to buy the unit
 		else {
-			//if the country doesn't have enough money to buy the unit
 			return false;
 		}
 	}

@@ -1,6 +1,6 @@
 package gui;
 
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
 import javafx.scene.layout.StackPane;
 
 public class MenusBlock extends StackPane {

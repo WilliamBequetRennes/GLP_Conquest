@@ -53,25 +53,25 @@ public class MapLoader {
 						for(int j = 0; j < dimensions; j++) {
 							squareType = Integer.valueOf(squaresList[currentSquare]).intValue();
 							switch(squareType) {
-							case(0):squares[i][j] = new Water(new Position(j, i));
+							case(0):squares[i][j] = new Water(new Position(i,j));
 							break;
-							case(1):squares[i][j] = new Land(new Position(j, i));
+							case(1):squares[i][j] = new Land(new Position(i,j));
 							break;
-							case(2):squares[i][j] = new Desert(new Position(j, i));
+							case(2):squares[i][j] = new Desert(new Position(i,j));
 							break;
-							case(3):squares[i][j] = new Forest(new Position(j, i));
+							case(3):squares[i][j] = new Forest(new Position(i,j));
 							break;
-							case(4):squares[i][j] = new Mont(new Position(j, i));
+							case(4):squares[i][j] = new Mont(new Position(i,j));
 							break;
-							case(5):squares[i][j] = new Mine(new Position(j, i));
+							case(5):squares[i][j] = new Mine(new Position(i,j));
 							break;
-							case(6):squares[i][j] = new Farm(new Position(j, i));
+							case(6):squares[i][j] = new Farm(new Position(i,j));
 							break;
-							case(7):squares[i][j] = new OilWell(new Position(j, i));
+							case(7):squares[i][j] = new OilWell(new Position(i,j));
 							break;
-							case(8):squares[i][j] = new NuclearPlant(new Position(j, i));
+							case(8):squares[i][j] = new NuclearPlant(new Position(i,j));
 							break;
-							case(9):squares[i][j] = new City(new Position(j, i));
+							case(9):squares[i][j] = new City(new Position(i,j));
 							break;
 							}
 							currentSquare++;

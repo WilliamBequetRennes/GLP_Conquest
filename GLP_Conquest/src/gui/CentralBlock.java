@@ -1,8 +1,8 @@
 package gui;
 
-import gui_datas.PositionDouble;
 import game.Game;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
+import gui_data.PositionDouble;
 import javafx.scene.layout.VBox;
 
 public class CentralBlock extends VBox{

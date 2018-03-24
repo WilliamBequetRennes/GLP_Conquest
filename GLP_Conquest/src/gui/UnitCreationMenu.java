@@ -2,7 +2,7 @@ package gui;
 
 import exceptions.InvalidUnitNumberException;
 import game.Game;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

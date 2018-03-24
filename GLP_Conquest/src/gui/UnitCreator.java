@@ -3,7 +3,7 @@ package gui;
 import exceptions.InvalidUnitNumberException;
 import game.Game;
 import game.UnitPurchase;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -37,7 +37,8 @@ public class UnitCreator extends VBox{
 	private Label[] def;
 	private Label[] mov;
 	private Label[] range;
-	private Label[] cost;
+	private Label[] moneyCost;
+	private Label[] resourceCost;
 	private Label[] upkeep;
 	private GridPane[] grid;
 	private Button getBack;
@@ -75,7 +76,8 @@ public class UnitCreator extends VBox{
 		setDef(new Label[getUnitsNumber()]);
 		setMov(new Label[getUnitsNumber()]);
 		setRange(new Label[getUnitsNumber()]);
-		setCost(new Label[getUnitsNumber()]);
+		setMoneyCost(new Label[getUnitsNumber()]);
+		setResourceCost(new Label[getUnitsNumber()]);
 		setUpkeep(new Label[getUnitsNumber()]);
 		setGrid(new GridPane[getUnitsNumber()]);
 		
@@ -86,7 +88,8 @@ public class UnitCreator extends VBox{
 			getDef()[i] = new Label();
 			getMov()[i] = new Label();
 			getRange()[i] = new Label();
-			getCost()[i] = new Label();
+			getMoneyCost()[i] = new Label();
+			getResourceCost()[i] = new Label();
 			getUpkeep()[i] = new Label();
 			getGrid()[i] = new GridPane();
 			
@@ -96,10 +99,11 @@ public class UnitCreator extends VBox{
 			
 			getGrid()[i].add(getAtk()[i], 0, 0);
 			getGrid()[i].add(getDef()[i], 1, 0);
-			getGrid()[i].add(getCost()[i], 0, 1);
-			getGrid()[i].add(getMov()[i], 1, 1);
-			getGrid()[i].add(getUpkeep()[i], 0, 2);
-			getGrid()[i].add(getRange()[i], 1, 2);
+			getGrid()[i].add(getMov()[i], 0, 1);
+			getGrid()[i].add(getRange()[i], 1, 1);
+			getGrid()[i].add(getMoneyCost()[i], 0, 2);
+			getGrid()[i].add(getResourceCost()[i], 1, 2);
+			getGrid()[i].add(getUpkeep()[i], 0, 3);
 			getGrid()[i].setAlignment(Pos.CENTER);
 		}
 	}
@@ -143,21 +147,21 @@ public class UnitCreator extends VBox{
 		Unit[] units = new Unit[getUnitsNumber()];
 		for(int i = 0; i<units.length; i++) {
 			switch(getTypes()[i]) {
-			case(0):units[i] = new Assault(null, 0, 0);
+			case(0):units[i] = new Assault(null, 0);
 			break;
-			case(1):units[i] = new Sniper(null, 0, 0);
+			case(1):units[i] = new Sniper(null, 0);
 			break;
-			case(2):units[i] = new Obfourtytwo(null, 0, 0);
+			case(2):units[i] = new Obfourtytwo(null, 0);
 			break;
-			case(3):units[i] = new Bfgninethousand(null, 0, 0);
+			case(3):units[i] = new Bfgninethousand(null, 0);
 			break;
-			case(4):units[i] = new Tank(null, 0, 0);
+			case(4):units[i] = new Tank(null, 0);
 			break;
-			case(5):units[i] = new Turret(null, 0, 0);
+			case(5):units[i] = new Turret(null, 0);
 			break;
-			case(6):units[i] = new Destroyer(null, 0, 0);
+			case(6):units[i] = new Destroyer(null, 0);
 			break;
-			case(7):units[i] = new Battleship(null, 0, 0);
+			case(7):units[i] = new Battleship(null, 0);
 			break;
 			default:throw new InvalidUnitNumberException(types[i]);
 			}
@@ -166,18 +170,22 @@ public class UnitCreator extends VBox{
 			getDef()[i].setText("DEF : "+units[i].getDefense());
 			getMov()[i].setText("MOV : "+units[i].getMovement());
 			getRange()[i].setText("Range : "+units[i].getRange());
-			getCost()[i].setText("Cost : "+units[i].getCost().getMoney()+" money");
+			getMoneyCost()[i].setText("Cost : "+units[i].getCost().getMoney()+" money");
 			if(units[i].getType()==0 || units[i].getType()==1) {
-				getUpkeep()[i].setText("Upkeep : "+units[i].getCost().getFood()+" food");
+				getResourceCost()[i].setText(units[i].getCost().getFood()+" food");
+				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getFood()+" food");
 			}
 			if(units[i].getType()==2 || units[i].getType()==3) {
-				getUpkeep()[i].setText("Upkeep : "+units[i].getCost().getElectricity()+" elec");
+				getResourceCost()[i].setText(units[i].getCost().getElectricity()+" elec");
+				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getElectricity()+" elec");
 			}
 			if(units[i].getType()==4 || units[i].getType()==5) {
-				getUpkeep()[i].setText("Upkeep : "+units[i].getCost().getOil()+" oil");
+				getResourceCost()[i].setText(units[i].getCost().getOil()+" oil");
+				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getOil()+" oil");
 			}
 			if(units[i].getType()==6 || units[i].getType()==7) {
-				getUpkeep()[i].setText("Upkeep : "+units[i].getCost().getOil()+" oil");
+				getResourceCost()[i].setText(units[i].getCost().getOil()+" oil");
+				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getOil()+" oil");
 			}
 		}
 	}
@@ -200,6 +208,7 @@ public class UnitCreator extends VBox{
 							gameBlock.getRightMenu().getUsualRightMenu().toFront();
 							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
 							gameBlock.getRightMenu().getUnitCreator().setVisible(false);
+							gameBlock.getLeftMenu().getUsualLeftMenu().update(game);
 						}
 					} catch (InvalidUnitNumberException e) {
 						// TODO Auto-generated catch block
@@ -298,14 +307,6 @@ public class UnitCreator extends VBox{
 		this.range = range;
 	}
 
-	public Label[] getCost() {
-		return cost;
-	}
-
-	public void setCost(Label[] cost) {
-		this.cost = cost;
-	}
-
 	public Label[] getUpkeep() {
 		return upkeep;
 	}
@@ -344,6 +345,22 @@ public class UnitCreator extends VBox{
 
 	public void setUnitPurchase(UnitPurchase unitPurchase) {
 		this.unitPurchase = unitPurchase;
+	}
+
+	public Label[] getMoneyCost() {
+		return moneyCost;
+	}
+
+	public void setMoneyCost(Label[] moneyCost) {
+		this.moneyCost = moneyCost;
+	}
+
+	public Label[] getResourceCost() {
+		return resourceCost;
+	}
+
+	public void setResourceCost(Label[] resourceCost) {
+		this.resourceCost = resourceCost;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package gui_datas;
+package gui_data;
 
 public class BlockSize {
 	

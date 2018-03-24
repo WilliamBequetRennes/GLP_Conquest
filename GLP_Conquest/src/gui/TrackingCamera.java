@@ -1,7 +1,7 @@
 package gui;
 
-import gui_datas.BlockSize;
-import gui_datas.PositionDouble;
+import gui_data.BlockSize;
+import gui_data.PositionDouble;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

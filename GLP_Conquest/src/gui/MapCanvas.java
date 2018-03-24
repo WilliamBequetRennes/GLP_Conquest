@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
-import gui_datas.BlockSize;
-import gui_datas.PositionDouble;
+import gui_data.BlockSize;
+import gui_data.PositionDouble;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -63,13 +63,14 @@ public class MapCanvas extends Canvas{
 	
 	}
 	
-	public void animatedMap(PositionDouble tracking, Game game, GameBlock gameBlock, MenusBlock menusBlock) {
+	public void createAnimatedMap(PositionDouble tracking, Game game, GameBlock gameBlock, MenusBlock menusBlock) {
 		new AnimationTimer() {
 			public void handle(long now) {
 				getBoard().setFill(BACKGROUND);
 				getBoard().fillRect(0, 0, getWidth(), getHeight());
 				int squareType = 0;
 				int squareOwner = 0;
+				//set the limits of the camera's tracking
 				if((tracking.getX()<=0 && getCameraPositionX()>-VIEWABLE_VOID) || (tracking.getX()>=0 && getCameraPositionX()<getMapDimensions().getWidth()-getWidth()+VIEWABLE_VOID)) {
 					setCameraPositionX(getCameraPositionX()+tracking.getX());
 				}
@@ -90,7 +91,7 @@ public class MapCanvas extends Canvas{
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
 									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
 									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
+									displayedSquares.put(new PositionDouble(x, y, i, j), game.getMap().getSquares()[i][j]);
 								}
 							}
 							else {
@@ -98,7 +99,7 @@ public class MapCanvas extends Canvas{
 								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
 									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
 									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y), game.getMap().getSquares()[i][j]);
+									displayedSquares.put(new PositionDouble(x, y, i, j), game.getMap().getSquares()[i][j]);
 								}
 							}
 						}
@@ -123,39 +124,9 @@ public class MapCanvas extends Canvas{
 					double xPosition = Math.abs(current.getX()+xCenter-mouseX);
 					double yPosition = Math.abs(current.getY()+yCenter-mouseY);
 					if(Math.pow(xPosition, 2) + Math.pow(yPosition, 2) <= Math.pow(radius, 2)){
-						game.setCurrentSquare(squares.get(current));
-						String type = "";
-						switch(game.getCurrentSquare().getType()) {
-							case(0):type="Water";
-							break;
-							case(1):type="Land";
-							break;
-							case(2):type="Desert";
-							break;
-							case(3):type="Forest";
-							break;
-							case(4):type="Mont";
-							break;
-							case(5):type="Mine";
-							break;
-							case(6):type="Farm";
-							break;
-							case(7):type="Oil well";
-							break;
-							case(8):type="Nuclear plant";
-							break;
-							case(9):type="City";
-							break;
-						}
-						String attackBoost = "Attack x"+game.getCurrentSquare().getBonus().getAttack();	
-						String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
-						String level = "Level : "+game.getCurrentSquare().getLevel();
-						
-						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setText(type);
-						gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setText(attackBoost);
-						gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setText(defenseBoost);
-						gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setText(level);
-						
+						Square clicked = game.getMap().getSquares()[current.getI()][current.getJ()];
+						game.setCurrentSquare(clicked);
+						gameBlock.getLeftMenu().getUsualLeftMenu().update(game);
 						changeVisibility(game, gameBlock);
 					}
 				}

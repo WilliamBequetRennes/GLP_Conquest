@@ -2,7 +2,7 @@ package gui;
 	
 import java.awt.Dimension;
 
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;

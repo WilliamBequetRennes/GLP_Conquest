@@ -2,8 +2,8 @@ package gui;
 
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
-import gui_datas.PositionDouble;
-import gui_datas.BlockSize;
+import gui_data.BlockSize;
+import gui_data.PositionDouble;
 import javafx.scene.layout.StackPane;
 
 public class CentralMenu extends StackPane{
@@ -22,7 +22,7 @@ public class CentralMenu extends StackPane{
 		setPlayerMenu(new PlayerMenu(blockSize, this));
 		try {
 			setMapCanvas(new MapCanvas(getBlockSize().getWidth(), getBlockSize().getHeight(), game));
-			getMapCanvas().animatedMap(tracking, game, gameBlock, menusBlock);
+			getMapCanvas().createAnimatedMap(tracking, game, gameBlock, menusBlock);
 		} catch (InvalidMapSizeNumberException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

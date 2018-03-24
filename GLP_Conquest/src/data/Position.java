@@ -4,9 +4,9 @@ public class Position {
 	private int jPosition;
 	private int iPosition;
 	
-	public Position(int jPosition, int iPosition) {
-		setJPosition(jPosition);
+	public Position(int iPosition, int jPosition) {
 		setIPosition(iPosition);
+		setJPosition(jPosition);
 	}
 	public Position() {
 		this(0,0);
