@@ -14,7 +14,10 @@ public class IndexPosition extends Position {
 		setJPosition(jPosition);
 		setIPosition(iPosition);
 		setDefaultCost();
-		setDefaultLocalPath();
+		setLocalPath(new ArrayList<Position>());
+	}
+	public IndexPosition(Position position) {
+		super(position.getJPosition(), position.getIPosition());
 	}
 	public IndexPosition() {
 		this(0,0);
@@ -57,7 +60,7 @@ public class IndexPosition extends Position {
 	}
 	
 	public void addLocalPath(Position position) {
-		this.localPath.add(position);
+		getLocalPath().add(position);
 	}
 	
 	public ArrayList<Position> getLocalPath() {

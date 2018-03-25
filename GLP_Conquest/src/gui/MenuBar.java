@@ -1,5 +1,6 @@
 package gui;
 
+import data.Position;
 import game.Game;
 import game.Turn;
 import gui_data.BlockSize;
@@ -104,6 +105,7 @@ public class MenuBar extends HBox{
 				}
 				centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
 				reinitializeUsualLeftMenu(centralBlock.getGameBlock().getLeftMenu().getUsualLeftMenu(), game);
+				reinitializeMapCanvas(centralBlock.getGameBlock().getCentralMenu().getMapCanvas(), game);
 			}
 		});
 		getEndTurn().setId("switch_button");
@@ -111,11 +113,15 @@ public class MenuBar extends HBox{
 		getRightSide().getChildren().add(getEndTurn());
 	}
 	
+	public void reinitializeMapCanvas(MapCanvas map, Game game) {
+		map.setSelectedSquare(new Position());
+	}
 	public void reinitializeUsualLeftMenu(UsualLeftMenu menu, Game game) {
 		menu.getSquareType().setVisible(false);
 		menu.getAttackBoost().setVisible(false);
 		menu.getDefenseBoost().setVisible(false);
 		menu.getSquareLevel().setVisible(false);
+		menu.getCostLevelUp().setVisible(false);
 		menu.getLevelUp().setVisible(false);
 		menu.getUnitData().setVisible(false);
 		menu.getUnitType().setVisible(false);
@@ -128,16 +134,8 @@ public class MenuBar extends HBox{
 	}
 	
 	public void refreshUsualRightMenu(UsualRightMenu menu, Game game) {
-		menu.getCurrentPlayer().setText("Player "+game.getCurrentPlayer());
-		menu.updatePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
-		menu.getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
-		menu.getMoney().setText("Money : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney());
-		menu.getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
-		menu.getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
-		menu.getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
-		menu.getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
+		menu.update(game);
 		menu.getCreateUnit().setVisible(false);
-		
 	}
 	
 	public void clearMenus(GameBlock gameBlock) {

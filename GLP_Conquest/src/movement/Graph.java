@@ -3,24 +3,21 @@ package movement;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import data.Position;
 import game.Game;
 import map.Map;
 import units.Unit;
 
 public class Graph {
 	private ArrayList<IndexPosition> graph;
-	private Map map;
-	private Game game;
 	
-	public Graph(IndexPosition position, Map map, Game game) {
+	public Graph(IndexPosition position) {
 		if (parity(position.getIPosition())){
 			this.graph = evenYGraph(position);
 		}
 		else {
 			this.graph = unevenYGraph(position);
 		}
-		setMap(map);
-		setGame(game);
 	}
 	
 	public boolean parity(int YPosition) {
@@ -123,6 +120,17 @@ public class Graph {
 		return graph;	
 	}
 	
+	public IndexPosition findIndexPosition(Position position) {
+		IndexPosition result = new IndexPosition(position);
+		for(IndexPosition current : getGraph()) {
+			if(current.getIPosition() == position.getIPosition() 
+					&& current.getJPosition() == position.getJPosition()) {
+				result = current;
+			}
+		}
+		return result;
+	}
+	
 	public ArrayList<IndexPosition> getGraph(){
 		return this.graph;
 	}
@@ -186,9 +194,9 @@ public class Graph {
 //		return status;
 //	}
 	
-	public ArrayList<IndexPosition> containsBuilding() {
+	public ArrayList<IndexPosition> containsBuilding(Map map) {
 		ArrayList<IndexPosition> building = new ArrayList<IndexPosition>();
-		Iterator<IndexPosition> graphIterator = graph.iterator();
+		Iterator<IndexPosition> graphIterator = getGraph().iterator();
 		IndexPosition position;
 		while(graphIterator.hasNext()) {
 			position = graphIterator.next();
@@ -199,9 +207,9 @@ public class Graph {
 		return building;
 	}
 	
-	public ArrayList<Unit> containsUnit() {
+	public ArrayList<Unit> containsUnit(Map map, Game game) {
 		ArrayList<Unit> unit = new ArrayList<Unit>();
-		Iterator<IndexPosition> graphIterator = graph.iterator();
+		Iterator<IndexPosition> graphIterator = getGraph().iterator();
 		IndexPosition position;
 		while(graphIterator.hasNext()) {
 			position = graphIterator.next();
@@ -211,16 +219,8 @@ public class Graph {
 		}
 		return unit;
 	}
-	
-	public void setMap(Map map) {
-		this.map = map;
-	}
-	
-	public Map getMap() {
-		return this.map;
-	}
-	
-	public void setGame(Game game) {
-		this.game = game;
+
+	public void setGraph(ArrayList<IndexPosition> graph) {
+		this.graph = graph;
 	}
 }

@@ -4,7 +4,19 @@ import data.Position;
 import data.Resources;
 
 public abstract class Unit{	
-
+	
+	/*
+	 * 0 = assault
+	 * 1 = sniper
+	 * 2 = OB-42
+	 * 3 = BFG-9000
+	 * 4 = tank
+	 * 5 = turret
+	 * 6 = destroyer
+	 * 7 = Battleship
+	 * 8 = transport
+	 */
+	
 	private float maxHealth;
 	private float currentHealth;
 	private Position position;

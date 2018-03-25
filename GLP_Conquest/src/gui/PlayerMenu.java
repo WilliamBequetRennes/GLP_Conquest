@@ -1,6 +1,7 @@
 package gui;
 
 import countries.Country;
+import game.Game;
 import gui_data.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -54,6 +55,9 @@ public class PlayerMenu extends VBox{
 		setAlignment(Pos.CENTER);
 	}
 	
+	public void update(Game game) {
+		update(game.getPlayers()[game.getCurrentPlayer()-1]);
+	}
 	public void update(Country country) {
 		setPlayerNumber(country.getPlayer());
 		float money = country.getGains().getMoney()-country.getSpents().getMoney();

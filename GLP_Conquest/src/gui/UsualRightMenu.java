@@ -122,6 +122,17 @@ public class UsualRightMenu extends VBox{
 		});
 		
 	}
+	
+	public void update(Game game) {
+		getCurrentPlayer().setText("Player "+game.getCurrentPlayer());
+		updatePortrait(game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getNumber());
+		getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
+		getMoney().setText("Money : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getMoney());
+		getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
+		getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
+		getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
+		getCurrentPlayer().setId("player_button"+game.getCurrentPlayer());
+	}
 	public void displayContent() {
 		getChildren().add(getCurrentPlayer());
 		getChildren().add(getPortrait());

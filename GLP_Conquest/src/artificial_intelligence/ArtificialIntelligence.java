@@ -30,8 +30,9 @@ public class ArtificialIntelligence {
 		setCountry(game.getPlayers()[turnNumber]);
 		setWaiting(new HashMap<Position,Unit>());
 	}
-
-	public void unitsManagement() throws AttributeException, OutOfRangeException {
+	
+	//Mettre à jour avec les modifications du package movement
+	/*public void unitsManagement() throws AttributeException, OutOfRangeException {
 		HashMap<Position,Unit> units = this.country.getUnits();
 		Set<Entry<Position,Unit>> unitsSet = units.entrySet();
 		Iterator<Entry<Position,Unit>> unitsIterator = unitsSet.iterator();
@@ -207,7 +208,7 @@ public class ArtificialIntelligence {
 			}
 		}
 		return optimize;
-	}
+	}*/
 	
 	public void setWaiting(HashMap<Position, Unit> hashMap) {
 		this.waiting = hashMap;

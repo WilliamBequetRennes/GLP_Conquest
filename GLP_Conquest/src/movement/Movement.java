@@ -15,15 +15,21 @@ import units.Unit;
 public class Movement {
 	private Unit unit;
 	private Graph graph;
-	private Map map;
-	private Game game;
 	
-	public Movement(Unit unit, Game game) {
+	public Movement(Unit unit) {
 		setUnit(unit);
-		IndexPosition position = (IndexPosition) unit.getPosition();
-		setMap(map);
-		setGame(game);
-		setGraph(position);
+		IndexPosition position = new IndexPosition(unit.getPosition());
+		setGraph(new Graph(position));
+	}
+	
+	public Movement(Unit unit, Graph graph) {
+		setUnit(unit);
+		setGraph(graph);
+	}
+	
+	public Graph scanArea(Map map){
+		availableMovement(map);
+		return getGraph();
 	}
 	
 	public boolean parity(int YPosition) {
@@ -37,7 +43,7 @@ public class Movement {
 		return test;	
 	}
 	
-	public ArrayList<Position> adjacentSquare(Position interPosition){
+	public ArrayList<Position> adjacentSquare(Position interPosition, Map map){
 		ArrayList<Position> adjacent = new ArrayList<Position>();
 		int jPosition = interPosition.getJPosition();
 		int iPosition = interPosition.getIPosition();
@@ -84,22 +90,22 @@ public class Movement {
 		return adjacent; 
 	}
 	
-	public void availableMovement(){
+	public void availableMovement(Map map){
 		
-		Iterator<IndexPosition> positionIterator0 = graph.getGraph().iterator();
+		Iterator<IndexPosition> positionIterator0 = getGraph().getGraph().iterator();
 		float previousCost = 0;
 		ArrayList<Position> previousPath = new ArrayList<Position>();
-		IndexPosition position = (IndexPosition) unit.getPosition();
-		int movement = (int) unit.getMovement();
+		IndexPosition position = new IndexPosition(getUnit().getPosition());
+		int movement = (int) getUnit().getMovement();
 		position.setLocalCost(0);
 		
 		//For each position
 		while (positionIterator0.hasNext()) {
 			IndexPosition testedPosition0 = positionIterator0.next();
-			ArrayList<Position> adjacent1 = adjacentSquare(position);
+			ArrayList<Position> adjacent1 = adjacentSquare(position, map);
 			//if it is next to the unit's position
 			if (adjacent1.contains(testedPosition0)) {
-				//set datas
+				//set data
 				testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost());
 				testedPosition0.addLocalPath(testedPosition0);
 			}
@@ -111,7 +117,7 @@ public class Movement {
 				while (positionIterator1.hasNext()) {
 					Position testedPosition1 = positionIterator1.next();
 					previousCost += map.getSquareType(testedPosition1).getMoveCost();
-					ArrayList<Position> adjacent2 = adjacentSquare(testedPosition0);
+					ArrayList<Position> adjacent2 = adjacentSquare(testedPosition0, map);
 					if (adjacent2.contains(testedPosition0)) {
 						if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
 							testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
@@ -126,7 +132,7 @@ public class Movement {
 						while (positionIterator2.hasNext()) {
 							Position testedPosition2 = positionIterator2.next();
 							previousCost += map.getSquareType(testedPosition2).getMoveCost();
-							ArrayList<Position> adjacent3 = adjacentSquare(testedPosition0);
+							ArrayList<Position> adjacent3 = adjacentSquare(testedPosition0, map);
 							if (adjacent3.contains(testedPosition0)) {
 								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
 									testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
@@ -139,16 +145,17 @@ public class Movement {
 				}
 			}
 		}
-		Iterator<IndexPosition> sortIterator = graph.getGraph().iterator();
-		while (sortIterator.hasNext()) {
-			IndexPosition sortPosition = sortIterator.next();
-			if (sortPosition.getLocalCost() > movement) {
-				graph.getGraph().remove(sortPosition);
+
+		ArrayList<IndexPosition> graphResult = new ArrayList<IndexPosition>();
+		for(IndexPosition current : getGraph().getGraph()) {
+			if (current.getLocalCost() <= movement) {
+				graphResult.add(current);
 			}
 		}
+		getGraph().setGraph(graphResult);
 	}
 	
-	public int goTo(IndexPosition position) throws OutOfRangeException, AttributeException {
+	public int goTo(IndexPosition position, Map map, Game game) throws OutOfRangeException, AttributeException {
 		// Event : 
 		//0 : movement
 		//1 : battle
@@ -156,27 +163,27 @@ public class Movement {
 		int event = 0;
 		Position interPosition;
 		Position testedPosition;
-		if (graph.getGraph().contains(position)) {
-			if (map.getSquareType(position).getFaction() != map.getSquareType(unit.getPosition()).getFaction()) {
+		if (getGraph().getGraph().contains(position)) {
+			if (map.getSquareType(position).getFaction() != map.getSquareType(getUnit().getPosition()).getFaction()) {
 				ArrayList<Position> localPath = position.getLocalPath();
 				Iterator<Position> iterator = localPath.iterator();
 				while (iterator.hasNext()) {
 					interPosition = iterator.next();
-					ArrayList<Position> adjacent = adjacentSquare(interPosition);
+					ArrayList<Position> adjacent = adjacentSquare(interPosition, map);
 					Iterator<Position> interIterator = adjacent.iterator();
 					while (interIterator.hasNext()) {
 						testedPosition = interIterator.next();
-						if (map.getSquareType(testedPosition).getFaction() != map.getSquareType(unit.getPosition()).getFaction() && !map.getSquareType(testedPosition).getUnit()) {
-							map.getSquareType(testedPosition).setFaction(unit.getFaction());
+						if (map.getSquareType(testedPosition).getFaction() != map.getSquareType(getUnit().getPosition()).getFaction() && !map.getSquareType(testedPosition).getUnit()) {
+							map.getSquareType(testedPosition).setFaction(getUnit().getFaction());
 						}
 					}
 				}
-				float movement = unit.getMovement()-position.getLocalCost();
-				unit.setMovement(movement);
+				float movement = getUnit().getMovement()-position.getLocalCost();
+				getUnit().setMovement(movement);
 				if (map.getSquareType(position).getUnit()) {
 					event = 1;
 					Unit defenderUnit = game.getUnits().get(position);
-					fight(unit, defenderUnit);
+					fight(getUnit(), defenderUnit, game, map);
 					return event;
 				}
 				else {
@@ -185,9 +192,9 @@ public class Movement {
 				}
 			}
 			else {
-				unit.setPosition(position);
-				float movement = unit.getMovement()-position.getLocalCost();
-				unit.setMovement(movement);
+				getUnit().setPosition(position);
+				float movement = getUnit().getMovement()-position.getLocalCost();
+				getUnit().setMovement(movement);
 				return event;
 			}
 		}
@@ -197,7 +204,7 @@ public class Movement {
 		}
 	}
 	
-	public float[] calculate(Unit attackUnit, Unit defenseUnit) throws AttributeException {
+	public float[] calculate(Unit attackUnit, Unit defenseUnit, Map map) throws AttributeException {
 		double attributeBonus = 1;
 				
 //		Country[] countries = game.getPlayers();
@@ -247,7 +254,7 @@ public class Movement {
 	return damages;
 	}
 	
-	public void fight(Unit attackUnit, Unit defenseUnit) throws AttributeException {
+	public void fight(Unit attackUnit, Unit defenseUnit, Game game, Map map) throws AttributeException {
 
 		double attributeBonus = 1;
 		
@@ -292,8 +299,8 @@ public class Movement {
 				if(attackerHealth < 0) {
 					
 					HashMap<Position, Unit> units = attackerCountry.getUnits();
-					Position position = unit.getPosition();
-					units.remove(position,unit);
+					Position position = getUnit().getPosition();
+					units.remove(position,getUnit());
 					attackerCountry.setUnits(units);
 				}
 			}
@@ -365,27 +372,11 @@ public class Movement {
 		return unit;
 	}
 	
-	public void setGraph(IndexPosition position) {
-		this.graph = new Graph(position, getMap(), getGame());
+	public void setGraph(Graph graph) {
+		this.graph = graph;
 	}
 	
 	public Graph getGraph() {
 		return graph;
-	}
-	
-	public void setMap(Map map) {
-		this.map = map;
-	}
-	
-	public Map getMap() {
-		return map;
-	}
-	
-	public void setGame(Game game) {
-		this.game = game;
-	}
-	
-	public Game getGame() {
-		return game;
 	}
 }

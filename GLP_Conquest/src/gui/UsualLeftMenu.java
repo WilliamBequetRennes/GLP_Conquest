@@ -1,6 +1,7 @@
 package gui;
 
 import game.Game;
+import game.LevelUp;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,6 +13,9 @@ import units.Unit;
 
 public class UsualLeftMenu extends VBox{
 
+	private static final int LEVEL_MAX = 3;
+	private static final int[] COST_LEVEL = {1000,1000,1000};
+	
 	private GridPane playerArray;
 	private Button[] playerList;
 	
@@ -19,6 +23,7 @@ public class UsualLeftMenu extends VBox{
 	private Label attackBoost;
 	private Label defenseBoost;
 	private Label squareLevel;
+	private Label costLevelUp;
 	private Button levelUp;
 	
 	private GridPane unitData;
@@ -34,7 +39,7 @@ public class UsualLeftMenu extends VBox{
 		super();
 		initializePlayerArray(game, gameBlock);
 		initializeCurrentSquare();
-		initializeLevelUpButton(game);
+		initializeLevelUpButton(game, gameBlock);
 		initializeUnit();
 
 		setAlignment(Pos.TOP_CENTER);
@@ -81,17 +86,24 @@ public class UsualLeftMenu extends VBox{
 		
 		getSquareType().setId("type");
 	}
-	public void initializeLevelUpButton(Game game) {
+	public void initializeLevelUpButton(Game game, GameBlock gameBlock) {
+		setCostLevelUp(new Label());
+		getCostLevelUp().setVisible(false);
+		
 		setLevelUp(new Button());
 		getLevelUp().setText("Level Up");
 		getLevelUp().setVisible(false);
 		getLevelUp().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
-				game.getCurrentSquare().setLevel(game.getCurrentSquare().getLevel()+1);
+				LevelUp levelUp = new LevelUp();
+				levelUp.up(game);
 				getSquareLevel().setText("Level : "+game.getCurrentSquare().getLevel());
 				if(game.getCurrentSquare().getLevel()==3) {
+					getCostLevelUp().setVisible(false);
 					getLevelUp().setVisible(false);
 				}
+				gameBlock.getCentralMenu().getPlayerMenu().update(game);
+				gameBlock.getRightMenu().getUsualRightMenu().update(game);
 			}
 		});
 		getLevelUp().setId("menu_bar_button");
@@ -147,11 +159,32 @@ public class UsualLeftMenu extends VBox{
 		String defenseBoost = "Defense x"+game.getCurrentSquare().getBonus().getDefense();
 		String level = "Level : "+game.getCurrentSquare().getLevel();
 		
+		getSquareType().setVisible(true);
+		getAttackBoost().setVisible(true);
+		getDefenseBoost().setVisible(true);
+		
 		getSquareType().setText(type);
 		getAttackBoost().setText(attackBoost);
 		getDefenseBoost().setText(defenseBoost);
 		getSquareLevel().setText(level);
 		
+		if(game.getCurrentSquare().getType()>4) {
+			getSquareLevel().setVisible(true);
+			if(game.getCurrentSquare().getFaction()==game.getCurrentPlayer() && game.getCurrentSquare().getLevel()<LEVEL_MAX){
+				getCostLevelUp().setText("Cost : "+COST_LEVEL[game.getCurrentSquare().getLevel()]+" Money");
+				getCostLevelUp().setVisible(true);
+				getLevelUp().setVisible(true);
+			}
+			else {
+				getCostLevelUp().setVisible(false);
+				getLevelUp().setVisible(false);
+			}	
+		}
+		else {
+			getSquareLevel().setVisible(false);
+			getCostLevelUp().setVisible(false);
+			getLevelUp().setVisible(false);
+		}
 		if(game.getCurrentSquare().getUnit()){
 			int faction = game.getCurrentSquare().getFaction();
 			Unit unit = game.getPlayers()[faction-1].getUnits().get(game.getCurrentSquare().getPosition());
@@ -203,7 +236,8 @@ public class UsualLeftMenu extends VBox{
 		getChildren().add(getSquareType());
 		getChildren().add(getAttackBoost());
 		getChildren().add(getDefenseBoost());
-		getChildren().add(getSquareLevel());	
+		getChildren().add(getSquareLevel());		
+		getChildren().add(getCostLevelUp());	
 		getChildren().add(getLevelUp());	
 
 		getUnitData().add(getMovePoints(), 0, 0);
@@ -335,6 +369,14 @@ public class UsualLeftMenu extends VBox{
 
 	public void setUnitData(GridPane unitData) {
 		this.unitData = unitData;
+	}
+
+	public Label getCostLevelUp() {
+		return costLevelUp;
+	}
+
+	public void setCostLevelUp(Label costLevelUp) {
+		this.costLevelUp = costLevelUp;
 	}
 
 }

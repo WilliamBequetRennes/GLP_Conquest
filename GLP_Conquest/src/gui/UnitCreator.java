@@ -168,7 +168,7 @@ public class UnitCreator extends VBox{
 			getName()[i].setText(units[i].getName());
 			getAtk()[i].setText("ATK : "+units[i].getAttack());
 			getDef()[i].setText("DEF : "+units[i].getDefense());
-			getMov()[i].setText("MOV : "+units[i].getMovement());
+			getMov()[i].setText("MOV : "+units[i].getMaxMovement());
 			getRange()[i].setText("Range : "+units[i].getRange());
 			getMoneyCost()[i].setText("Cost : "+units[i].getCost().getMoney()+" money");
 			if(units[i].getType()==0 || units[i].getType()==1) {

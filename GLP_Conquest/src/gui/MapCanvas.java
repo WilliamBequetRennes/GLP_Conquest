@@ -1,8 +1,12 @@
 package gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import data.Position;
+import exceptions.AttributeException;
 import exceptions.InvalidMapSizeNumberException;
+import exceptions.OutOfRangeException;
 import game.Game;
 import gui_data.BlockSize;
 import gui_data.PositionDouble;
@@ -14,7 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import mapGenerator.MapGenerator;
+import movement.Graph;
+import movement.IndexPosition;
+import movement.Movement;
 import squares.Square;
+import units.Unit;
 
 public class MapCanvas extends Canvas{
 
@@ -30,16 +38,34 @@ public class MapCanvas extends Canvas{
 	
 	private Image[] squaresSprites;
 	private Image[] frontierSprites;
+	private Image selectedSquareSprite;
+	private Position selectedSquare;
 	private double cameraPositionX;
 	private double cameraPositionY;
+	
+	private Image[] unitsSprites;
+	private Image[] unitBackgroundsSprites;
+	
+	private Image possibleMoveSprite;
+	private ArrayList<Position> possibleMoves;
+	private Graph movesGraph;
+	private boolean moveAvailable;
+	private Unit movingUnit;
 
 	public MapCanvas (double blockWidth, double blockHeight, Game game) throws InvalidMapSizeNumberException {
 		super();
 		initializeMapDimensions(blockWidth, blockHeight, game.getMapSize());
+		
 		setSquaresSprites(initializeSquareSprites());
 		setFrontierSprites(initializeFrontierSprites());
+		setUnitsSprites(initializeUnitsSprites());
+		setUnitBackgroundsSprites(initializeUnitBackgroundsSprites());
+		initializeFeedbackSprites();
+		
 		setCameraPositionX(0);
 		setCameraPositionY(0);
+		
+		initializeMoves();
 		
 		setBoard(getGraphicsContext2D());
 		
@@ -63,6 +89,12 @@ public class MapCanvas extends Canvas{
 	
 	}
 	
+	public void initializeMoves() {
+		setPossibleMoves(new ArrayList<Position>());
+		setMoveAvailable(false);
+		setMovingUnit(null);
+	}
+	
 	public void createAnimatedMap(PositionDouble tracking, Game game, GameBlock gameBlock, MenusBlock menusBlock) {
 		new AnimationTimer() {
 			public void handle(long now) {
@@ -70,6 +102,7 @@ public class MapCanvas extends Canvas{
 				getBoard().fillRect(0, 0, getWidth(), getHeight());
 				int squareType = 0;
 				int squareOwner = 0;
+				boolean squareUnit;
 				//set the limits of the camera's tracking
 				if((tracking.getX()<=0 && getCameraPositionX()>-VIEWABLE_VOID) || (tracking.getX()>=0 && getCameraPositionX()<getMapDimensions().getWidth()-getWidth()+VIEWABLE_VOID)) {
 					setCameraPositionX(getCameraPositionX()+tracking.getX());
@@ -82,24 +115,32 @@ public class MapCanvas extends Canvas{
 					for (int j=0; j<getNumberOfSquares(); j++) {
 						squareType = game.getMap().getSquares()[i][j].getType();
 						squareOwner = game.getMap().getSquares()[i][j].getFaction();
+						squareUnit = game.getMap().getSquares()[i][j].getUnit();
+						Position position = new Position(i,j);
 						
 						double x = j*WIDTH_SQUARE*3/4-getCameraPositionX();
 						double y = 0;
 						if(x > -WIDTH_SQUARE && x < getWidth()+WIDTH_SQUARE) {
 							if(j%2==0) {
 								y = HEIGHT_SQUARE*i-getCameraPositionY();
-								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
-									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y, i, j), game.getMap().getSquares()[i][j]);
-								}
 							}
 							else {
 								y = HEIGHT_SQUARE*(i+0.5)-getCameraPositionY();
-								if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
-									getBoard().drawImage(getSquaresSprites()[squareType], x, y);
-									getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
-									displayedSquares.put(new PositionDouble(x, y, i, j), game.getMap().getSquares()[i][j]);
+							}
+							if(y > -HEIGHT_SQUARE && y < getHeight()+HEIGHT_SQUARE) {
+								getBoard().drawImage(getSquaresSprites()[squareType], x, y);
+								getBoard().drawImage(getFrontierSprites()[squareOwner], x, y);
+								if(squareUnit) {
+									getBoard().drawImage(getUnitBackgroundsSprites()[squareOwner-1], x, y);
+									int unit = game.getPlayers()[squareOwner-1].getUnits().get(position).getType();
+									getBoard().drawImage(getUnitsSprites()[unit], x, y);
+								}
+								displayedSquares.put(new PositionDouble(x, y, i, j), game.getMap().getSquares()[i][j]);
+								if(getSelectedSquare().equals(position)) {
+									getBoard().drawImage(getSelectedSquareSprite(), x, y);
+								}
+								if(getPossibleMoves().contains(position)) {
+									getBoard().drawImage(getPossibleMoveSprite(), x, y);
 								}
 							}
 						}
@@ -126,6 +167,8 @@ public class MapCanvas extends Canvas{
 					if(Math.pow(xPosition, 2) + Math.pow(yPosition, 2) <= Math.pow(radius, 2)){
 						Square clicked = game.getMap().getSquares()[current.getI()][current.getJ()];
 						game.setCurrentSquare(clicked);
+						setSelectedSquare(clicked.getPosition());
+						movement(game);
 						gameBlock.getLeftMenu().getUsualLeftMenu().update(game);
 						changeVisibility(game, gameBlock);
 					}
@@ -134,6 +177,42 @@ public class MapCanvas extends Canvas{
 		});
 	}
 	
+	public void movement(Game game) {
+		//If the unit is controled by the player it can be moved
+		if (game.getCurrentSquare().getFaction() == game.getCurrentPlayer()
+				&& game.getCurrentSquare().getUnit()) {
+			setMovingUnit(game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getSelectedSquare()));
+			Movement move = new Movement(getMovingUnit());
+			setMovesGraph(move.scanArea(game.getMap()));
+			getPossibleMoves().clear();
+			for(IndexPosition current : getMovesGraph().getGraph()) {
+				getPossibleMoves().add(new Position(current.getJPosition(), current.getIPosition()));
+			}
+			setMoveAvailable(true);
+		}
+		//if a unit is moving and the square is empty, the unit can move on it
+		else if (isMoveAvailable() && !game.getCurrentSquare().getUnit() &&
+				getPossibleMoves().contains(getSelectedSquare())) {
+			Movement move = new Movement(getMovingUnit(), getMovesGraph());
+			try {
+				move.goTo(getMovesGraph().findIndexPosition(getSelectedSquare()), game.getMap(), game);
+			} catch (OutOfRangeException | AttributeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//if a unit is moving and the square is occupied by an ennemy, the fight menu is opened
+		else if (isMoveAvailable() && game.getCurrentSquare().getUnit()) {
+			//afficher l'écran de prévisualisation de combat avec un bouton Attack
+			//pour lancer le combat
+		}
+		//if the square isn't occupied by a player's unit and the moving unit is to far
+		//or if there is no moving unit, there is no possible action
+		else {
+			getPossibleMoves().clear();
+			setMoveAvailable(false);
+		}
+	}
 	public void changeVisibility(Game game, GameBlock gameBlock) {
 		//Unit creation part in the right menu
 		if(game.getCurrentSquare().getType()==9 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer() && !game.getCurrentSquare().getUnit()) {
@@ -142,27 +221,6 @@ public class MapCanvas extends Canvas{
 		else {
 			gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
 		}
-		
-		//Square level part in the left menu
-		if(game.getCurrentSquare().getType()>4) {
-			gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
-			if(game.getCurrentSquare().getLevel()<3 && game.getCurrentSquare().getFaction()==game.getCurrentPlayer()) {
-				gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(true);
-			}
-			else {
-				gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
-			}
-		}
-		else {
-			gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(false);
-			gameBlock.getLeftMenu().getUsualLeftMenu().getLevelUp().setVisible(false);
-		}
-		
-		//Informations in the left menu
-		gameBlock.getLeftMenu().getUsualLeftMenu().getSquareType().setVisible(true);
-		gameBlock.getLeftMenu().getUsualLeftMenu().getAttackBoost().setVisible(true);
-		gameBlock.getLeftMenu().getUsualLeftMenu().getDefenseBoost().setVisible(true);
-		gameBlock.getLeftMenu().getUsualLeftMenu().getSquareLevel().setVisible(true);
 	}
 	
 	public void clearMenus(GameBlock gameBlock, MenusBlock menusBlock) {
@@ -201,6 +259,33 @@ public class MapCanvas extends Canvas{
 		sprites[2] = new Image(getClass().getResource("\\sprites\\Player2_Frontier.png").toString());
 		sprites[3] = new Image(getClass().getResource("\\sprites\\Player3_Frontier.png").toString());
 		sprites[4] = new Image(getClass().getResource("\\sprites\\Player4_Frontier.png").toString());
+		return sprites;
+	}
+	
+	public void initializeFeedbackSprites() {
+		setSelectedSquare(new Position(getNumberOfSquares(), getNumberOfSquares()));
+		setSelectedSquareSprite(new Image(getClass().getResource("\\sprites\\Selection.png").toString()));
+		setPossibleMoveSprite(new Image(getClass().getResource("\\sprites\\PossibleMove.png").toString()));
+	}
+	
+	public Image[] initializeUnitsSprites() {
+		Image[] sprites = new Image[8];
+		sprites[0] = new Image(getClass().getResource("\\sprites\\assault.png").toString());
+		sprites[1] = new Image(getClass().getResource("\\sprites\\sniper.png").toString());
+		sprites[2] = new Image(getClass().getResource("\\sprites\\OB42.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\BFG9000.png").toString());
+		sprites[4] = new Image(getClass().getResource("\\sprites\\tank.png").toString());
+		sprites[5] = new Image(getClass().getResource("\\sprites\\turret.png").toString());
+		sprites[6] = new Image(getClass().getResource("\\sprites\\destroyer.png").toString());
+		sprites[7] = new Image(getClass().getResource("\\sprites\\battleship.png").toString());
+		return sprites;
+	}
+	public Image[] initializeUnitBackgroundsSprites() {
+		Image[] sprites = new Image[4];
+		sprites[0] = new Image(getClass().getResource("\\sprites\\Player1_unit.png").toString());
+		sprites[1] = new Image(getClass().getResource("\\sprites\\Player2_unit.png").toString());
+		sprites[2] = new Image(getClass().getResource("\\sprites\\Player3_unit.png").toString());
+		sprites[3] = new Image(getClass().getResource("\\sprites\\Player4_unit.png").toString());
 		return sprites;
 	}
 
@@ -268,5 +353,76 @@ public class MapCanvas extends Canvas{
 		this.mapDimensions = mapDimensions;
 	}
 
+	public Image getSelectedSquareSprite() {
+		return selectedSquareSprite;
+	}
+
+	public void setSelectedSquareSprite(Image selectedSquareSprite) {
+		this.selectedSquareSprite = selectedSquareSprite;
+	}
+
+	public Position getSelectedSquare() {
+		return selectedSquare;
+	}
+
+	public void setSelectedSquare(Position selectedSquare) {
+		this.selectedSquare = selectedSquare;
+	}
+
+	public Image[] getUnitsSprites() {
+		return unitsSprites;
+	}
+
+	public void setUnitsSprites(Image[] unitsSprites) {
+		this.unitsSprites = unitsSprites;
+	}
+
+	public Image[] getUnitBackgroundsSprites() {
+		return unitBackgroundsSprites;
+	}
+
+	public void setUnitBackgroundsSprites(Image[] unitBackgroundsSprites) {
+		this.unitBackgroundsSprites = unitBackgroundsSprites;
+	}
+
+	public ArrayList<Position> getPossibleMoves() {
+		return possibleMoves;
+	}
+
+	public void setPossibleMoves(ArrayList<Position> possibleMoves) {
+		this.possibleMoves = possibleMoves;
+	}
+
+	public boolean isMoveAvailable() {
+		return moveAvailable;
+	}
+
+	public void setMoveAvailable(boolean moveAvailable) {
+		this.moveAvailable = moveAvailable;
+	}
+
+	public Graph getMovesGraph() {
+		return movesGraph;
+	}
+
+	public void setMovesGraph(Graph movesGraph) {
+		this.movesGraph = movesGraph;
+	}
+
+	public Unit getMovingUnit() {
+		return movingUnit;
+	}
+
+	public void setMovingUnit(Unit movingUnit) {
+		this.movingUnit = movingUnit;
+	}
+
+	public Image getPossibleMoveSprite() {
+		return possibleMoveSprite;
+	}
+
+	public void setPossibleMoveSprite(Image possibleMoveSprite) {
+		this.possibleMoveSprite = possibleMoveSprite;
+	}
 	
 }
