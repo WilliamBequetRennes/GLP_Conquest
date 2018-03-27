@@ -180,6 +180,7 @@ public class Movement {
 				}
 				float movement = getUnit().getMovement()-position.getLocalCost();
 				getUnit().setMovement(movement);
+				
 				if (map.getSquareType(position).getUnit()) {
 					event = 1;
 					Unit defenderUnit = game.getUnits().get(position);

@@ -11,6 +11,12 @@ import units.Unit;
 public class Turn {
 	
 	private static final float COEF_HP_RECOVER = 0.2f;
+	private static final int TERRAIN_POINT = 1;
+	private static final int BUILDING_POINT = 3;
+	private static final int CITY_POINT = 5;
+	
+	private Results results;
+	
 	public Turn() {
 	}
 	
@@ -21,15 +27,15 @@ public class Turn {
 		unitsCosts(game);
 	}
 	
-	public void nextTurn(Game game, MenuBar menuBar) {
+	public int nextTurn(Game game, MenuBar menuBar) {
 		game.setCurrentPlayer(game.getCurrentPlayer()+1);
 		if(game.getCurrentPlayer()>game.getPlayersNumber()) {
 			game.setCurrentPlayer(1);
 			game.setCurrentTurn(game.getCurrentTurn()+1);
-			menuBar.getTurnNumber().setText("turn : "+game.getCurrentTurn());
 		}
 		if(game.getCurrentTurn() > game.getTurnsNumber()) {
-			//End game
+			gameOver(game);
+			return 2;
 		}
 		else {
 			updateGains(game);
@@ -37,6 +43,12 @@ public class Turn {
 			buildingGains(game);
 			unitsCosts(game);
 			unitsRest(game);
+		}
+		if(game.getCurrentPlayer()==1) {
+			return 1;
+		}
+		else {
+			return 0;
 		}
 	}
 	
@@ -124,5 +136,72 @@ public class Turn {
 				}
 			}
 		}
+	}
+	
+	public void gameOver(Game game) {
+		int playersNumber = game.getPlayersNumber();
+		int[] leaders = new int[playersNumber];
+		int[] ranks = new int[playersNumber];
+		int[] totalPoints = new int[playersNumber];
+		int[] numberOfTerrains = new int[playersNumber];
+		int[] numberOfBuildings = new int[playersNumber];
+		int[] numberOfCities = new int[playersNumber];
+		int[] terrainPoints = new int[playersNumber];
+		int[] buildingPoints = new int[playersNumber];
+		int[] cityPoints = new int[playersNumber];
+		
+		for(int i = 0; i<playersNumber; i++) {
+			leaders[i] = 0;
+			ranks[i] = 0;
+			totalPoints[i] = 0;
+			numberOfTerrains[i] = 0;
+			numberOfBuildings[i] = 0;
+			numberOfCities[i] = 0;
+			terrainPoints[i] = 0;
+			buildingPoints[i] = 0;
+			cityPoints[i] = 0;
+			
+			leaders[i] = game.getPlayers()[i].getLeader().getNumber();
+			for(Square current : game.getPlayers()[i].getBuildings().values()) {
+				if(current.getType() == 9) {
+					numberOfCities[i]++;
+				}
+				else {
+					numberOfBuildings[i]++;
+				}
+			}
+			numberOfTerrains[i] = game.getPlayers()[i].getSquareNumber();
+			numberOfTerrains[i] -= numberOfCities[i];
+			numberOfTerrains[i] -= numberOfBuildings[i];
+			
+			terrainPoints[i] = numberOfTerrains[i]*TERRAIN_POINT;
+			buildingPoints[i] = numberOfBuildings[i]*BUILDING_POINT;
+			cityPoints[i] = numberOfCities[i]*CITY_POINT;
+			
+			totalPoints[i] = terrainPoints[i]+buildingPoints[i]+cityPoints[i];
+		}
+		
+		for(int i = 0; i<playersNumber; i++) {
+			ranks[i] = 1;
+			for(int j = 0; j<playersNumber; j++) {
+				if(j!=i) {
+					if(totalPoints[i]<totalPoints[j]) {
+						ranks[i]++;
+					}
+				}
+			}
+		}
+		
+		setResults(new Results(playersNumber, ranks, totalPoints, terrainPoints, 
+				buildingPoints, cityPoints, numberOfTerrains, numberOfBuildings, 
+				numberOfCities, leaders));
+	}
+
+	public Results getResults() {
+		return results;
+	}
+
+	public void setResults(Results results) {
+		this.results = results;
 	}
 }

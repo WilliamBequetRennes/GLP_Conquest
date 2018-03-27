@@ -1,5 +1,6 @@
 package gui;
 
+import game.Results;
 import gui_data.BlockSize;
 import javafx.scene.layout.StackPane;
 
@@ -10,6 +11,7 @@ public class MenusBlock extends StackPane {
 	private GameOptions gameOptions;
 	private LeaderSelection leaderSelection;
 	private PlayableBlock playableBlock;
+	private GameOverMenu gameOverMenu;
 	
 	private int playersNumber;
 	private int turnsNumber;
@@ -51,6 +53,13 @@ public class MenusBlock extends StackPane {
 		getPlayableBlock().toFront();
 		getPlayableBlock().setVisible(true);
 		getLeaderSelection().setVisible(false);
+	}
+	public void initializeGameOverMenu(Results results) {
+		setGameOverMenu(new GameOverMenu(getScreenSize(), results, this));
+		getChildren().add(getGameOverMenu());
+		getGameOverMenu().toFront();
+		getGameOverMenu().setVisible(true);
+		getPlayableBlock().setVisible(false);
 	}
 	public void comeBackToStartMenu() {
 		getGameOptions().setVisible(false);
@@ -145,6 +154,14 @@ public class MenusBlock extends StackPane {
 
 	public void setMapNumber(int mapNumber) {
 		this.mapNumber = mapNumber;
+	}
+
+	public GameOverMenu getGameOverMenu() {
+		return gameOverMenu;
+	}
+
+	public void setGameOverMenu(GameOverMenu gameOverMenu) {
+		this.gameOverMenu = gameOverMenu;
 	}
 
 }

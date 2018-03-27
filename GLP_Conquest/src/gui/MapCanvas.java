@@ -193,13 +193,21 @@ public class MapCanvas extends Canvas{
 		//if a unit is moving and the square is empty, the unit can move on it
 		else if (isMoveAvailable() && !game.getCurrentSquare().getUnit() &&
 				getPossibleMoves().contains(getSelectedSquare())) {
-			Movement move = new Movement(getMovingUnit(), getMovesGraph());
-			try {
-				move.goTo(getMovesGraph().findIndexPosition(getSelectedSquare()), game.getMap(), game);
-			} catch (OutOfRangeException | AttributeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				Movement move = new Movement(getMovingUnit(), getMovesGraph());
+				try {
+					move.goTo(getMovesGraph().findIndexPosition(getSelectedSquare()), game.getMap(), game);
+				} catch (OutOfRangeException | AttributeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Unit unit = game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getSelectedSquare());
+				move = new Movement(unit);
+				setMovesGraph(move.scanArea(game.getMap()));
+				getPossibleMoves().clear();
+				for(IndexPosition current : getMovesGraph().getGraph()) {
+					getPossibleMoves().add(new Position(current.getJPosition(), current.getIPosition()));
+				}
+			
 		}
 		//if a unit is moving and the square is occupied by an ennemy, the fight menu is opened
 		else if (isMoveAvailable() && game.getCurrentSquare().getUnit()) {

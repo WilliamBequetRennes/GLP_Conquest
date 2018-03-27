@@ -27,7 +27,7 @@ public class MenuBar extends HBox{
 	Turn turn;
 	private boolean menuClicked;
 	
-	public MenuBar(BlockSize blockSize, Game game, CentralBlock centralBlock) {
+	public MenuBar(BlockSize blockSize, Game game, CentralBlock centralBlock, MenusBlock menusBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
@@ -35,7 +35,7 @@ public class MenuBar extends HBox{
 		initializeMenuButton(game);
 		initializeMapNumber(game);
 		initializeTurnNumber(game);
-		initializeEndTurnButton(game, centralBlock);
+		initializeEndTurnButton(game, centralBlock, menusBlock);
 		initializeMenuClick(centralBlock.getGameBlock());
 	}
 	
@@ -85,18 +85,24 @@ public class MenuBar extends HBox{
 	}
 	public void initializeTurnNumber(Game game) {
 		setTurnNumber(new Label());
-		getTurnNumber().setText("turn : "+game.getCurrentTurn());
+		getTurnNumber().setText("turn : "+game.getCurrentTurn()+"/"+game.getTurnsNumber());
 		getRightSide().getChildren().add(getTurnNumber());
 	}
-	public void initializeEndTurnButton(Game game, CentralBlock centralBlock) {
+	public void initializeEndTurnButton(Game game, CentralBlock centralBlock, MenusBlock menusBlock) {
 		setEndTurn(new Button());
 		getEndTurn().setText("End turn");
-		turn = new Turn();
+		setTurn(new Turn());
 		MenuBar thisMenuBar = this;
 		getEndTurn().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				setMenuClicked(false);
-				turn.nextTurn(game, thisMenuBar);
+				int result = getTurn().nextTurn(game, thisMenuBar);
+				if(result==1){
+					getTurnNumber().setText("turn : "+game.getCurrentTurn()+"/"+game.getTurnsNumber());
+				}
+				if(result==2) {
+					menusBlock.initializeGameOverMenu(getTurn().getResults());
+				}
 				clearMenus(centralBlock.getGameBlock());
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
 				int playerNumber = centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().getPlayerNumber();
@@ -213,5 +219,13 @@ public class MenuBar extends HBox{
 
 	public void setMenuClicked(boolean menuClicked) {
 		this.menuClicked = menuClicked;
+	}
+
+	public Turn getTurn() {
+		return turn;
+	}
+
+	public void setTurn(Turn turn) {
+		this.turn = turn;
 	}
 }

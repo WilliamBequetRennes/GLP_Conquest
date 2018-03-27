@@ -23,7 +23,7 @@ public class CentralBlock extends VBox{
 		BlockSize gameBlockSize = new BlockSize(getBlockSize().getWidth(), getBlockSize().getHeight()*GAME_BLOCK_HEIGHT);
 
 		setGameBlock(new GameBlock(gameBlockSize, game, tracking, menusBlock));
-		setMenuBar(new MenuBar(menuBarSize, game, this));
+		setMenuBar(new MenuBar(menuBarSize, game, this, menusBlock));
 		
 		getChildren().add(getMenuBar());
 		getChildren().add(getGameBlock());

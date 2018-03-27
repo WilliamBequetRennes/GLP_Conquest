@@ -141,6 +141,11 @@ Label{
 #player4, #player_button4{
 	-fx-text-fill: rgb(255,250,107);
 }
+#rank{
+	-fx-font-size: 22pt; 
+	-fx-text-fill: rgb(220,220,220);
+	-fx-font-weight: bold;
+}
 
 	/* M E N U S */
 	
