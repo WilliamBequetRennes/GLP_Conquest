@@ -1,6 +1,6 @@
 package gui;
 
-import game.Results;
+import data.Results;
 import gui_data.BlockSize;
 import javafx.scene.layout.StackPane;
 
@@ -73,6 +73,11 @@ public class MenusBlock extends StackPane {
 	}
 	public void quitGame() {
 		getPlayableBlock().setVisible(false);
+		getStartMenu().toFront();
+		getStartMenu().setVisible(true);
+	}
+	public void gameOver() {
+		getGameOverMenu().setVisible(false);
 		getStartMenu().toFront();
 		getStartMenu().setVisible(true);
 	}

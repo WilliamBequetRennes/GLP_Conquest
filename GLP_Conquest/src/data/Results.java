@@ -1,4 +1,4 @@
-package game;
+package data;
 
 public class Results {
 	private int playersNumber;

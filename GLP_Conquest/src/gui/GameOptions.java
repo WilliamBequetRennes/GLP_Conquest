@@ -20,7 +20,7 @@ public class GameOptions extends VBox{
 	private final static double OPTIONS_HEIGHT = 0.9;
 	private final static double MENU_MOVES_HEIGHT = 0.1;
 	private final static double SIDE_MENU_MOVES_WIDTH = 0.5;
-	private final static int BASIC_TURN_COEFF = 2;
+	private final static int BASIC_TURN_COEFF = 30;
 	
 	private BlockSize screenSize;
 	private ImageView logo;

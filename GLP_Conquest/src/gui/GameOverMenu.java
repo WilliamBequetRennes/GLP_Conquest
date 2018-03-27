@@ -5,21 +5,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import game.Results;
+import data.Results;
 import gui_data.BlockSize;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class GameOverMenu extends HBox{
+public class GameOverMenu extends VBox{
 
 	private final static int NUMBER_OF_LEADERS = 6;
 	private final static double PLAYER_BOXES_WIDTH = 0.24;
-	private final static double PLAYER_BOXES_HEIGHT = 0.80;
+	private final static double PLAYER_BOXES_HEIGHT = 0.70;
 	
 	private BlockSize screenSize;
 	private String leadersFile;
@@ -42,6 +45,10 @@ public class GameOverMenu extends HBox{
 	private Label[] buildingPoints;
 	private Label[] totalPoints;
 	
+	private Label gameOver;
+	private HBox gameOverBlock;
+	private Button mainMenuButton;
+	
 	public GameOverMenu(BlockSize screenSize, Results results, MenusBlock menusBlock) {
 		super();
 		setScreenSize(screenSize);
@@ -55,13 +62,17 @@ public class GameOverMenu extends HBox{
 		initializeLabels();
 		initializeLeaders();
 		initializeGrids();
+		initializeMainMenuButton(menusBlock);
 		
 		displayContent();
 		setAlignment(Pos.CENTER);
-		setMaxHeight(getScreenSize().getHeight()*PLAYER_BOXES_HEIGHT);
 	}
 	
 	public void initializeLadder() {
+		setGameOverBlock(new HBox());
+		getGameOverBlock().setAlignment(Pos.CENTER);
+		getGameOverBlock().setPrefHeight(getScreenSize().getHeight()*PLAYER_BOXES_HEIGHT);
+		
 		setLadder(new VBox[getResults().getPlayersNumber()]);
 		for(int i = 0; i<getResults().getPlayersNumber(); i++) {
 			getLadder()[i] = new VBox();
@@ -75,6 +86,10 @@ public class GameOverMenu extends HBox{
 	}
 	
 	public void initializeLabels() {
+		setGameOver(new Label());
+		getGameOver().setText("Game Over");
+		getGameOver().setId("menu_title");
+		
 		setPlayers(new Label[getResults().getPlayersNumber()]);
 		setRanks(new Label[getResults().getPlayersNumber()]);
 		
@@ -167,6 +182,17 @@ public class GameOverMenu extends HBox{
 		return sprites;
 	}
 	
+	public void initializeMainMenuButton(MenusBlock menusBlock) {
+		setMainMenuButton(new Button());
+		getMainMenuButton().setText("Main Menu");
+		getMainMenuButton().setId("menu_button");
+		getMainMenuButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				menusBlock.gameOver();
+			}
+		});
+	}
+	
 	public void displayContent() {
 		for(int i = 0; i<getResults().getPlayersNumber(); i++) {
 			getLadder()[i].getChildren().add(getRanks()[i]);
@@ -175,8 +201,11 @@ public class GameOverMenu extends HBox{
 			getLadder()[i].getChildren().add(getGrids()[i]);
 			getLadder()[i].getChildren().add(getNames()[i]);
 			getLadder()[i].getChildren().add(getLeaders()[i]);
-			getChildren().add(getLadder()[i]);
+			getGameOverBlock().getChildren().add(getLadder()[i]);
 		}
+		getChildren().add(getGameOver());
+		getChildren().add(getGameOverBlock());
+		getChildren().add(getMainMenuButton());
 	}
 	
 	public BlockSize getScreenSize() {
@@ -314,5 +343,29 @@ public class GameOverMenu extends HBox{
 
 	public void setGrids(GridPane[] grids) {
 		this.grids = grids;
+	}
+
+	public HBox getGameOverBlock() {
+		return gameOverBlock;
+	}
+
+	public void setGameOverBlock(HBox gameOverBlock) {
+		this.gameOverBlock = gameOverBlock;
+	}
+
+	public Button getMainMenuButton() {
+		return mainMenuButton;
+	}
+
+	public void setMainMenuButton(Button mainMenuButton) {
+		this.mainMenuButton = mainMenuButton;
+	}
+
+	public Label getGameOver() {
+		return gameOver;
+	}
+
+	public void setGameOver(Label gameOver) {
+		this.gameOver = gameOver;
 	}
 }

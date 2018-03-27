@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import data.Resources;
+import data.Results;
 import gui.MenuBar;
 import squares.Square;
 import units.Unit;
