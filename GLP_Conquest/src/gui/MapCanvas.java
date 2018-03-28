@@ -7,6 +7,7 @@ import data.Position;
 import exceptions.AttributeException;
 import exceptions.InvalidMapSizeNumberException;
 import exceptions.OutOfRangeException;
+import fight.AreaScanner;
 import game.Game;
 import gui_data.BlockSize;
 import gui_data.PositionDouble;
@@ -51,6 +52,10 @@ public class MapCanvas extends Canvas{
 	private Graph movesGraph;
 	private boolean moveAvailable;
 	private Unit movingUnit;
+	
+	private Image possibleAttackSprite;
+	private ArrayList<Position> possibleAttacks;
+	private AreaScanner areaScanner;
 
 	public MapCanvas (double blockWidth, double blockHeight, Game game) throws InvalidMapSizeNumberException {
 		super();
@@ -93,6 +98,9 @@ public class MapCanvas extends Canvas{
 		setPossibleMoves(new ArrayList<Position>());
 		setMoveAvailable(false);
 		setMovingUnit(null);
+		
+		setPossibleAttacks(new ArrayList<Position>());
+		setAreaScanner(new AreaScanner());
 	}
 	
 	public void createAnimatedMap(PositionDouble tracking, Game game, GameBlock gameBlock, MenusBlock menusBlock) {
@@ -142,6 +150,9 @@ public class MapCanvas extends Canvas{
 								if(getPossibleMoves().contains(position)) {
 									getBoard().drawImage(getPossibleMoveSprite(), x, y);
 								}
+								if(getPossibleAttacks().contains(position)) {
+									getBoard().drawImage(getPossibleAttackSprite(), x, y);
+								}
 							}
 						}
 					}
@@ -169,12 +180,34 @@ public class MapCanvas extends Canvas{
 						game.setCurrentSquare(clicked);
 						setSelectedSquare(clicked.getPosition());
 						movement(game);
+						attacks(game);
 						gameBlock.getLeftMenu().getUsualLeftMenu().update(game);
 						changeVisibility(game, gameBlock);
 					}
 				}
 			}
 		});
+	}
+	
+	public void attacks(Game game) {
+		//If the unit is controled by the player and have all its move points, it can attack
+		if (game.getCurrentSquare().getFaction() == game.getCurrentPlayer()
+				&& game.getCurrentSquare().getUnit()) {
+			if(getMovingUnit().getMovement()==getMovingUnit().getMaxMovement()) {
+				setPossibleAttacks(getAreaScanner().SearchTargets(getMovingUnit(), game.getMap()));
+				for(Position current : getPossibleAttacks()) {
+					if (getPossibleMoves().contains(current)) {
+						getPossibleMoves().remove(current);
+					}
+				}
+			}
+			else {
+				getPossibleAttacks().clear();
+			}
+		}
+		else {
+			getPossibleAttacks().clear();
+		}
 	}
 	
 	public void movement(Game game) {
@@ -274,6 +307,7 @@ public class MapCanvas extends Canvas{
 		setSelectedSquare(new Position(getNumberOfSquares(), getNumberOfSquares()));
 		setSelectedSquareSprite(new Image(getClass().getResource("\\sprites\\Selection.png").toString()));
 		setPossibleMoveSprite(new Image(getClass().getResource("\\sprites\\PossibleMove.png").toString()));
+		setPossibleAttackSprite(new Image(getClass().getResource("\\sprites\\PossibleAttack.png").toString()));
 	}
 	
 	public Image[] initializeUnitsSprites() {
@@ -431,6 +465,30 @@ public class MapCanvas extends Canvas{
 
 	public void setPossibleMoveSprite(Image possibleMoveSprite) {
 		this.possibleMoveSprite = possibleMoveSprite;
+	}
+
+	public ArrayList<Position> getPossibleAttacks() {
+		return possibleAttacks;
+	}
+
+	public void setPossibleAttacks(ArrayList<Position> possibleAttacks) {
+		this.possibleAttacks = possibleAttacks;
+	}
+
+	public AreaScanner getAreaScanner() {
+		return areaScanner;
+	}
+
+	public void setAreaScanner(AreaScanner areaScanner) {
+		this.areaScanner = areaScanner;
+	}
+
+	public Image getPossibleAttackSprite() {
+		return possibleAttackSprite;
+	}
+
+	public void setPossibleAttackSprite(Image possibleAttackSprite) {
+		this.possibleAttackSprite = possibleAttackSprite;
 	}
 	
 }
