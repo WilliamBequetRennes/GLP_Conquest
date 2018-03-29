@@ -39,7 +39,6 @@ public class Save {
 			string += ".sav";
 		}
 		this.save = new File(string);
-		setGame(game);
 	}
 	
 	public Save(File file) {
@@ -47,29 +46,30 @@ public class Save {
 		setGame(new Game(0,0,0,null));
 	}
 	
-	public void saveGame() throws IOException {
+	public void saveGame(Game game) throws IOException {
+		setGame(game);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(this.save));
-		int currentPlayer = game.getCurrentPlayer();
-		int playersNumber = game.getPlayersNumber();
+		int currentPlayer = getGame().getCurrentPlayer();
+		int playersNumber = getGame().getPlayersNumber();
 		writer.write("<");
-		writer.write(game.getCurrentTurn());
+		writer.write(getGame().getCurrentTurn());
 		writer.write("#");
-		writer.write(game.getTurnsNumber());
+		writer.write(getGame().getTurnsNumber());
 		writer.write("#");
 		writer.write(playersNumber);
 		writer.write("#");
 		//Get Map Code
 		//writer.write("#");
-		writer.write(game.getCurrentSquare().getPosition().getIPosition());
+		writer.write(getGame().getCurrentSquare().getPosition().getIPosition());
 		writer.write("#");
-		writer.write(game.getCurrentSquare().getPosition().getJPosition());
+		writer.write(getGame().getCurrentSquare().getPosition().getJPosition());
 		writer.write("#");
 		writer.write(currentPlayer);
 		writer.write(">");
 
 		for (int i=0; i<playersNumber; i++) {
 			writer.write("<");
-			Country country = game.getPlayers()[i];
+			Country country = getGame().getPlayers()[i];
 			writer.write(i);
 			writer.write("#");
 			writer.write(country.getLeader().getNumber());
@@ -101,11 +101,11 @@ public class Save {
 			writer.write(country.getSquareNumber());
 			
 			HashMap<Position, Square> buildings = country.getBuildings();
-			Set buildingsSet = buildings.entrySet();
-			Iterator iterator = buildingsSet.iterator();
-			while(iterator.hasNext()) {
+			Set<Entry<Position, Square>> buildingsSet = buildings.entrySet();
+			Iterator<Entry<Position, Square>> iteratorSquare = buildingsSet.iterator();
+			while(iteratorSquare.hasNext()) {
 				writer.write("#");
-				Entry building = (Entry) iterator.next();
+				Entry<Position, Square> building = (Entry<Position, Square>) iteratorSquare.next();
 				Position position = (Position) building.getKey();
 				writer.write(position.getIPosition());
 				writer.write("#");
@@ -114,10 +114,10 @@ public class Save {
 			writer.write("&");
 			
 			HashMap<Position, Unit> units = country.getUnits();
-			Set unitsSet = units.entrySet();
-			iterator = unitsSet.iterator();
-			while(iterator.hasNext()) {
-				Entry unit = (Entry) iterator.next();
+			Set<Entry<Position, Unit>> unitsSet = units.entrySet();
+			Iterator<Entry<Position, Unit>> iteratorUnit = unitsSet.iterator();
+			while(iteratorUnit.hasNext()) {
+				Entry<Position, Unit> unit = (Entry<Position, Unit>) iteratorUnit.next();
 				Position position = (Position) unit.getKey();
 				Unit warResource = (Unit) unit.getValue();
 				writer.write(position.getIPosition());
@@ -133,9 +133,9 @@ public class Save {
 			writer.write(">");
 		}
 		writer.write("<");
-		Map map = game.getMap();
-		for(int i = 0; i < game.getMapSize(); i++) {
-			for (int j = 0; j < game.getMapSize(); j++) {
+		Map map = getGame().getMap();
+		for(int i = 0; i < getGame().getMapSize(); i++) {
+			for (int j = 0; j < getGame().getMapSize(); j++) {
 				writer.write(map.getSquares()[i][j].getFaction());
 			}
 		}
@@ -144,8 +144,8 @@ public class Save {
 		writer.close();
 	}
 	
-	public void loadGame() throws IOException,LeaderException,UnitException {
-		FileReader reader = new FileReader(this.save);
+	public Game loadGame() throws IOException,LeaderException,UnitException {
+		FileReader reader = new FileReader(getSave());
 		char lastChar = (char) reader.read();
 		String storage = "";
 		while(lastChar != '#'){
@@ -154,7 +154,7 @@ public class Save {
 			}
 			lastChar = (char) reader.read();
 		}
-		game.setCurrentTurn(Integer.parseInt(storage));
+		getGame().setCurrentTurn(Integer.parseInt(storage));
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
@@ -163,7 +163,7 @@ public class Save {
 			}
 			lastChar = (char) reader.read();
 		}
-		game.setTurnsNumber(Integer.parseInt(storage));
+		getGame().setTurnsNumber(Integer.parseInt(storage));
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
@@ -172,7 +172,7 @@ public class Save {
 			}
 			lastChar = (char) reader.read();
 		}
-		game.setPlayersNumber(Integer.parseInt(storage));
+		getGame().setPlayersNumber(Integer.parseInt(storage));
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
@@ -200,14 +200,14 @@ public class Save {
 			}
 			lastChar = (char) reader.read();
 		}
-		game.setCurrentPlayer(Integer.parseInt(storage));
+		getGame().setCurrentPlayer(Integer.parseInt(storage));
 		Country country1 = new Country(null, 1, null, null, null, 0, new HashMap<Position, Square>(), new HashMap<Position, Unit>());
 		Country country2 = new Country(null, 2, null, null, null, 0, new HashMap<Position, Square>(), new HashMap<Position, Unit>());
 		Country country3 = new Country(null, 3, null, null, null, 0, new HashMap<Position, Square>(), new HashMap<Position, Unit>());
 		Country country4 = new Country(null, 4, null, null, null, 0, new HashMap<Position, Square>(), new HashMap<Position, Unit>());
 		Country[] countries = {country1, country2, country3, country4};
 		Country currentCountry;
-		for (int i = 0; i < game.getPlayersNumber(); i++) {
+		for (int i = 0; i < getGame().getPlayersNumber(); i++) {
 			currentCountry = countries[i];
 			lastChar = (char) reader.read();
 			storage="";
@@ -368,7 +368,7 @@ public class Save {
 					lastChar = (char) reader.read();
 				}
 				Position position = new Position(iPosition, Integer.parseInt(storage));
-				Square square = game.getMap().getSquareType(position);
+				Square square = getGame().getMap().getSquareType(position);
 				currentCountry.getBuildings().put(position,  square);
 			}
 			currentCountry.setUnits(new HashMap<Position, Unit>());
@@ -441,17 +441,19 @@ public class Save {
 			}
 		}
 		lastChar = (char) reader.read();
-		Map map = game.getMap();
+		Map map = getGame().getMap();
 		Square[][] squares = map.getSquares();
 		lastChar = (char) reader.read();
-		for (int i = 0; i<game.getMapSize();i++) {
-			for (int j = 0; j<game.getMapSize();j++) {
+		for (int i = 0; i<getGame().getMapSize();i++) {
+			for (int j = 0; j<getGame().getMapSize();j++) {
 				squares[i][j].setFaction(reader.read());
 			}
 		}
 		
 		reader.close();
-		}
+		
+		return getGame();
+	}
 	
 	
 	public void setGame(Game game) {
@@ -459,5 +461,13 @@ public class Save {
 	}
 	public void setSave(File file) {
 		this.save = file;
+	}
+
+	public File getSave() {
+		return save;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 }

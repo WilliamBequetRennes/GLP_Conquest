@@ -52,7 +52,8 @@ public class PlayableBlock extends GridPane{
 	private MapSaver mapSaver;
 	private MapLoader mapLoader;
 	
-	public PlayableBlock(BlockSize screenSize, int playersNumber, int turnsNumber, int mapSize, int[] leaders, int mapNumber, MenusBlock menusBlock) {
+	public PlayableBlock(BlockSize screenSize, int playersNumber, int turnsNumber, 
+			int mapSize, int[] leaders, int mapNumber, MenusBlock menusBlock) {
 		super();
 		setMapSize(mapSize);
 		setPlayersNumber(playersNumber);
@@ -64,6 +65,25 @@ public class PlayableBlock extends GridPane{
 		setMapLoader(new MapLoader());
 		initializeTracking();
 		initializeGame(leaders, mapNumber);
+		
+		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()-(CORNER_WIDTH*2), getScreenSize().getHeight()-(CORNER_HEIGHT*2));
+		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));
+		add(centralBlock, 1, 1);
+		
+	}
+	public PlayableBlock (BlockSize screenSize, Game game, MenusBlock menusBlock) {
+		super();
+		setMapSize(game.getMapSize());
+		setPlayersNumber(game.getPlayersNumber());
+		setTurnsNumber(game.getTurnsNumber());
+		setScreenSize(getScreenSize());
+
+		setTracking(new PositionDouble());
+		setMapGenerator(new MapGenerator());
+		setMapSaver(new MapSaver());
+		setMapLoader(new MapLoader());
+		initializeTracking();
+		setGame(game);
 		
 		BlockSize centerSize = new BlockSize(getScreenSize().getWidth()-(CORNER_WIDTH*2), getScreenSize().getHeight()-(CORNER_HEIGHT*2));
 		setCentralBlock(new CentralBlock(centerSize, getGame(), getTracking(), menusBlock));

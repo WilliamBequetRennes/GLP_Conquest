@@ -1,5 +1,7 @@
 package gui;
 
+import java.io.IOException;
+
 import game.Game;
 import gui_data.BlockSize;
 import javafx.event.EventHandler;
@@ -7,18 +9,22 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import save.Save;
 
 public class GameMenu extends VBox{
 	
 	private final static double MENU_BOX = 0.80 ;
 	private final static double BACK_BOX = 0.20 ;
+	private final static String SAVEFILE = "save.sav";
 	private BlockSize blockSize;
-	private Button save;
-	private Button load;
+	private Button saveButton;
+	private Button loadButton;
 	private Button menu;
 	private Button getBack;
 	private VBox menuBox;
 	private VBox backBox;
+	
+	private Save save;
 	
 	public GameMenu(Game game, BlockSize blockSize, GameBlock gameBlock, MenusBlock menusBlock) {
 		super();
@@ -28,6 +34,7 @@ public class GameMenu extends VBox{
 		initializeButtons();
 		initializeGetBackClick(gameBlock, menusBlock);
 		initializeMenuClick(menusBlock);
+		initializeSaveClick(game);
 		displayContent();
 		setAlignment(Pos.CENTER);
 	}
@@ -43,13 +50,13 @@ public class GameMenu extends VBox{
 	}
 	
 	public void initializeButtons() {
-		setSave(new Button());
-		setLoad(new Button());
+		setSaveButton(new Button());
+		setLoadButton(new Button());
 		setMenu(new Button());
 		setGetBack(new Button());
 		
-		getSave().setText("Save game");
-		getLoad().setText("Load game");
+		getSaveButton().setText("Save game");
+		getLoadButton().setText("Load game");
 		getMenu().setText("Back to menu");
 		getGetBack().setText("Back to game");
 		
@@ -60,13 +67,27 @@ public class GameMenu extends VBox{
 		getMenuBox().setAlignment(Pos.TOP_CENTER);
 		getBackBox().setAlignment(Pos.BOTTOM_CENTER);
 
-		getSave().setId("menu_bar_button");
-		getLoad().setId("menu_bar_button");
+		getSaveButton().setId("menu_bar_button");
+		getLoadButton().setId("menu_bar_button");
 		getMenu().setId("menu_bar_button");
 		getGetBack().setId("menu_bar_button");
 		
 		getBackBox().setId("spacing");
 		getMenuBox().setId("spacing");
+	}
+
+	public void initializeSaveClick(Game game) {
+		setSave(new Save(SAVEFILE));
+		getSaveButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				try {
+					getSave().saveGame(game);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	public void initializeMenuClick(MenusBlock menusBlock) {
@@ -78,8 +99,8 @@ public class GameMenu extends VBox{
 	}
 	
 	public void displayContent() {
-		getMenuBox().getChildren().add(getSave());
-		getMenuBox().getChildren().add(getLoad());
+		getMenuBox().getChildren().add(getSaveButton());
+		getMenuBox().getChildren().add(getLoadButton());
 		getMenuBox().getChildren().add(getMenu());
 		getBackBox().getChildren().add(getGetBack());
 		
@@ -111,22 +132,18 @@ public class GameMenu extends VBox{
 		this.backBox = backBox;
 	}
 
-	public Button getSave() {
-		return save;
+	public Button getSaveButton() {
+		return saveButton;
 	}
-
-	public void setSave(Button save) {
-		this.save = save;
+	public void setSaveButton(Button saveButton) {
+		this.saveButton = saveButton;
 	}
-
-	public Button getLoad() {
-		return load;
+	public Button getLoadButton() {
+		return loadButton;
 	}
-
-	public void setLoad(Button load) {
-		this.load = load;
+	public void setLoadButton(Button loadButton) {
+		this.loadButton = loadButton;
 	}
-
 	public Button getMenu() {
 		return menu;
 	}
@@ -141,5 +158,11 @@ public class GameMenu extends VBox{
 
 	public void setGetBack(Button getBack) {
 		this.getBack = getBack;
+	}
+	public Save getSave() {
+		return save;
+	}
+	public void setSave(Save save) {
+		this.save = save;
 	}
 }

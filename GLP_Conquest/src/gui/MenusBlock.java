@@ -1,6 +1,7 @@
 package gui;
 
 import data.Results;
+import game.Game;
 import gui_data.BlockSize;
 import javafx.scene.layout.StackPane;
 
@@ -26,7 +27,13 @@ public class MenusBlock extends StackPane {
 		
 		initializeStartMenu();
 	}
-	
+	public void loadGame(Game game) {
+		setPlayableBlock(new PlayableBlock(getScreenSize(), game, this));
+		getChildren().add(getPlayableBlock());
+		getPlayableBlock().toFront();
+		getPlayableBlock().setVisible(true);
+		getStartMenu().setVisible(false);
+	}
 	public void initializeStartMenu() {
 		setStartMenu(new StartMenu(getScreenSize(), this));
 		getChildren().add(getStartMenu());

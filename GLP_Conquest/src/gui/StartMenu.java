@@ -1,5 +1,10 @@
 package gui;
 
+import java.io.IOException;
+
+import exceptions.LeaderException;
+import exceptions.UnitException;
+import game.Game;
 import gui_data.BlockSize;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,8 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import save.Save;
 
 public class StartMenu extends VBox {
+
+	private final static String SAVEFILE = "save.sav";
 	
 	private BlockSize screenSize;
 
@@ -26,7 +34,7 @@ public class StartMenu extends VBox {
 		initializeLogo();
 		initializeButtons();
 		initializeNewGameClick(menusBlock);
-		initializeLoadGameClick();
+		initializeLoadGameClick(menusBlock);
 		displayContent();
 		setAlignment(Pos.CENTER);
 	}
@@ -54,8 +62,20 @@ public class StartMenu extends VBox {
 		});
 	}
 	
-	public void initializeLoadGameClick() {
-		
+	public void initializeLoadGameClick(MenusBlock menusBlock) {
+		getLoadGame().setOnMouseClicked(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent mouseEvent) {
+				Save save = new Save(SAVEFILE);
+				Game game = null;
+				try {
+					game = save.loadGame();
+				} catch (IOException | LeaderException | UnitException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				menusBlock.loadGame(game);
+			}
+		});
 	}
 	public void displayContent() {
 		getChildren().add(getLogo());
