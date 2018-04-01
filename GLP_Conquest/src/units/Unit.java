@@ -15,6 +15,7 @@ public abstract class Unit{
 	 * 6 = destroyer
 	 * 7 = Battleship
 	 * 8 = transport
+	 * 9 = transform
 	 */
 	
 	private float maxHealth;

@@ -14,7 +14,7 @@ public class Tank extends Unit{
 	private static final int DEFENSE = 65;
 	private static final float VISION = 4;
 	private static final int ATTRIBUTE = 3;
-	private static final int[] CROSSABLE = {1,2,3,5,6,7,8,9};
+	private static final int[] CROSSABLE = {0,1,2,3,5,6,7,8,9};
 	private static final int TYPE = 4;
 	private static final String NAME = "Tank";
 	/*

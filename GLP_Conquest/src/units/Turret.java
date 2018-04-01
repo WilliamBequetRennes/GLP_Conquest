@@ -15,7 +15,7 @@ public class Turret extends Unit{
 	private static final int DEFENSE = 45;
 	private static final float VISION = 4;
 	private static final int ATTRIBUTE = 3;
-	private static final int[] CROSSABLE = {1,2,3,5,6,7,8,9};
+	private static final int[] CROSSABLE = {0,1,2,3,5,6,7,8,9};
 	private static final int TYPE = 5;
 	private static final String NAME = "Turret";
 	/*
