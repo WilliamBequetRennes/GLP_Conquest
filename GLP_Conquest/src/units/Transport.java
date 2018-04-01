@@ -15,8 +15,8 @@ public class Transport extends Unit{
 	private static final int DEFENSE = 70;
 	private static final float VISION = 4;
 	private static final int ATTRIBUTE = 3;
-	private static final int[] CROSSABLE = {0};
-	private static final int TYPE = 8;
+	private static final int[] CROSSABLE = {0,1,2,3,4,5,6,7,8,9};
+	private static int TYPE = 8;
 	private static final String NAME = "Transport";
 	/*
 	* Cost definition

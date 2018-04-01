@@ -15,7 +15,7 @@ public class Assault extends Unit{
 	private static final int DEFENSE = 45;
 	private static final float VISION = 4;
 	private static final int ATTRIBUTE = 1;
-	private static final int[] CROSSABLE = {1,2,3,4,5,6,7,8,9};
+	private static final int[] CROSSABLE = {0,1,2,3,4,5,6,7,8,9};
 	private static final int TYPE = 0;
 	private static final String NAME = "Assault";
 	/*
