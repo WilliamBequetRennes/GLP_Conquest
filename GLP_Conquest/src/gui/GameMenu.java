@@ -15,7 +15,7 @@ public class GameMenu extends VBox{
 	
 	private final static double MENU_BOX = 0.80 ;
 	private final static double BACK_BOX = 0.20 ;
-	private final static String SAVEFILE = "save.sav";
+	private final static String SAVEFILE = "save";
 	private BlockSize blockSize;
 	private Button saveButton;
 	private Button loadButton;

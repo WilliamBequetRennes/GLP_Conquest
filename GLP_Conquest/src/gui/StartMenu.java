@@ -17,7 +17,7 @@ import save.Save;
 
 public class StartMenu extends VBox {
 
-	private final static String SAVEFILE = "save.sav";
+	private final static String SAVEFILE = "save";
 	
 	private BlockSize screenSize;
 
@@ -66,7 +66,7 @@ public class StartMenu extends VBox {
 		getLoadGame().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				Save save = new Save(SAVEFILE);
-				Game game = null;
+				Game game = new Game();
 				try {
 					game = save.loadGame();
 				} catch (IOException | LeaderException | UnitException e) {

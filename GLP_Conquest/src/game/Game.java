@@ -36,6 +36,9 @@ public class Game {
 	public Game(int playersNumber, int turnsNumber, int mapSize, Map map) {
 		this(1, turnsNumber, playersNumber, new Country[playersNumber], 1, mapSize, map, map.getSquares()[0][0], new HashMap<Position,Unit>());
 	}
+	public Game() {
+		this(1, 1, 2, new Country[2], 1, 0, null, null, new HashMap<Position,Unit>());
+	}
 	public int getCurrentTurn() {
 		return currentTurn;
 	}

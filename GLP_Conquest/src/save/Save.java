@@ -39,11 +39,12 @@ public class Save {
 			string += ".txt";
 		}
 		this.save = new File(string);
+		setGame(new Game());
 	}
 	
 	public Save(File file) {
 		setSave(file);
-		setGame(new Game(0,0,0,null));
+		setGame(new Game());
 	}
 	
 	public void saveGame(Game game) throws IOException {
@@ -52,27 +53,27 @@ public class Save {
 		int currentPlayer = getGame().getCurrentPlayer();
 		int playersNumber = getGame().getPlayersNumber();
 		writer.write("<");
-		writer.write(getGame().getCurrentTurn());
+		writer.write(getGame().getCurrentTurn()+"");
 		writer.write("#");
-		writer.write(getGame().getTurnsNumber());
+		writer.write(getGame().getTurnsNumber()+"");
 		writer.write("#");
-		writer.write(playersNumber);
+		writer.write(playersNumber+"");
 		writer.write("#");
 		//Get Map Code
 		//writer.write("#");
-		writer.write(getGame().getCurrentSquare().getPosition().getIPosition());
+		writer.write(getGame().getCurrentSquare().getPosition().getIPosition()+"");
 		writer.write("#");
-		writer.write(getGame().getCurrentSquare().getPosition().getJPosition());
+		writer.write(getGame().getCurrentSquare().getPosition().getJPosition()+"");
 		writer.write("#");
-		writer.write(currentPlayer);
+		writer.write(currentPlayer+"");
 		writer.write(">");
 
 		for (int i=0; i<playersNumber; i++) {
 			writer.write("<");
 			Country country = getGame().getPlayers()[i];
-			writer.write(i);
+			writer.write(i+"");
 			writer.write("#");
-			writer.write(country.getLeader().getNumber());
+			writer.write(country.getLeader().getNumber()+"");
 			writer.write("#");
 			writer.write(Float.toString(country.getResources().getMoney()));
 			writer.write("#");
@@ -98,7 +99,7 @@ public class Save {
 			writer.write("#");
 			writer.write(Float.toString(country.getSpents().getElectricity()));
 			writer.write("#");
-			writer.write(country.getSquareNumber());
+			writer.write(country.getSquareNumber()+"");
 			
 			HashMap<Position, Square> buildings = country.getBuildings();
 			Set<Entry<Position, Square>> buildingsSet = buildings.entrySet();
@@ -107,9 +108,9 @@ public class Save {
 				writer.write("#");
 				Entry<Position, Square> building = (Entry<Position, Square>) iteratorSquare.next();
 				Position position = (Position) building.getKey();
-				writer.write(position.getIPosition());
+				writer.write(position.getIPosition()+"");
 				writer.write("#");
-				writer.write(position.getJPosition());
+				writer.write(position.getJPosition()+"");
 			}
 			writer.write("&");
 			
@@ -120,11 +121,11 @@ public class Save {
 				Entry<Position, Unit> unit = (Entry<Position, Unit>) iteratorUnit.next();
 				Position position = (Position) unit.getKey();
 				Unit warResource = (Unit) unit.getValue();
-				writer.write(position.getIPosition());
+				writer.write(position.getIPosition()+"");
 				writer.write("#");
-				writer.write(position.getJPosition());
+				writer.write(position.getJPosition()+"");
 				writer.write("#");
-				writer.write(warResource.getType());
+				writer.write(warResource.getType()+"");
 				writer.write("#");
 				writer.write(Float.toString(warResource.getCurrentHealth()));
 				writer.write("#");
@@ -136,7 +137,7 @@ public class Save {
 		Map map = getGame().getMap();
 		for(int i = 0; i < getGame().getMapSize(); i++) {
 			for (int j = 0; j < getGame().getMapSize(); j++) {
-				writer.write(map.getSquares()[i][j].getFaction());
+				writer.write(map.getSquares()[i][j].getFaction()+"");
 			}
 		}
 		writer.newLine();
@@ -194,10 +195,11 @@ public class Save {
 		currentSquare.setJPosition(Integer.parseInt(storage));
 		storage="";
 		lastChar = (char)reader.read();
-		while(lastChar!='#') {
+		while(lastChar!='#' && lastChar!='>' && lastChar!='<') {
 			if (lastChar<='9' &&  lastChar>='0') {
 				storage += lastChar;
 			}
+			lastChar = (char) reader.read();
 			lastChar = (char) reader.read();
 		}
 		getGame().setCurrentPlayer(Integer.parseInt(storage));
@@ -218,6 +220,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.setPlayer(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -225,27 +228,29 @@ public class Save {
 				}
 				lastChar = (char) reader.read();
 			}
+			lastChar = (char) reader.read();
 			int leadersNumber = Integer.parseInt(storage);
 			switch(leadersNumber) {
-			case 0 : currentCountry.setLeader(new Leader("Captain Igloo", "The true captain's treasure",0));
+			case(0) : currentCountry.setLeader(new Leader("Captain Igloo", "The true captain's treasure",0));
 			break;
-			case 1 : currentCountry.setLeader(new Leader("Donald Trump", "It's black gold from Texas",1));
+			case(1) : currentCountry.setLeader(new Leader("Donald Trump", "It's black gold from Texas",1));
 			break;
-			case 2 : currentCountry.setLeader(new Leader("Francois Hollande", "Me, I'm a normal president",2));
+			case(2) : currentCountry.setLeader(new Leader("Francois Hollande", "Me, I'm a normal president",2));
 			break;
-			case 3 : currentCountry.setLeader(new Leader("Gordon Ramsay", "Command & Cooker",3));
+			case(3) : currentCountry.setLeader(new Leader("Gordon Ramsay", "Command & Cooker",3));
 			break;
-			case 4 : currentCountry.setLeader(new Leader("Governator", "Chill out, dickwad",4));
+			case(4) : currentCountry.setLeader(new Leader("Governator", "Chill out, dickwad",4));
 			break;
-			case 5 : currentCountry.setLeader(new Leader("Vladimir Putin", "Nuclear Winter",5));
+			case(5) : currentCountry.setLeader(new Leader("Vladimir Putin", "Nuclear Winter",5));
 			break;
 			default : 
-				LeaderException except = new LeaderException();
+				LeaderException except = new LeaderException(leadersNumber);
 				throw except;
 			}
 			currentCountry.setResources(new Resources(0,0,0,0));
 			currentCountry.setGains(new Resources(0,0,0,0));
 			currentCountry.setSpents(new Resources(0,0,0,0));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -254,6 +259,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getResources().setMoney(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -262,6 +268,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getResources().setFood(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -270,6 +277,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getResources().setOil(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -278,6 +286,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getResources().setElectricity(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -286,6 +295,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getGains().setMoney(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -294,6 +304,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getGains().setFood(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -302,6 +313,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getGains().setOil(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -310,6 +322,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getGains().setElectricity(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -318,6 +331,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getSpents().setMoney(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -326,6 +340,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getSpents().setFood(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -334,6 +349,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getSpents().setOil(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -342,6 +358,7 @@ public class Save {
 				lastChar = (char) reader.read();
 			}
 			currentCountry.getSpents().setElectricity(Integer.parseInt(storage));
+			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
 				if (lastChar<='9' &&  lastChar>='0') {
@@ -352,6 +369,7 @@ public class Save {
 			currentCountry.setSquareNumber(Integer.parseInt(storage));
 			currentCountry.setBuildings(new HashMap<Position, Square>());
 			while(lastChar != '&') {
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -360,6 +378,7 @@ public class Save {
 					lastChar = (char) reader.read();
 				}
 				int iPosition = Integer.parseInt(storage);
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -373,6 +392,7 @@ public class Save {
 			}
 			currentCountry.setUnits(new HashMap<Position, Unit>());
 			while(lastChar != '>') {
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -381,6 +401,7 @@ public class Save {
 					lastChar = (char) reader.read();
 				}
 				int iPosition = Integer.parseInt(storage);
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -390,6 +411,7 @@ public class Save {
 				}
 				Position position = new Position(iPosition, Integer.parseInt(storage));
 				Unit currentUnit;
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -421,6 +443,7 @@ public class Save {
 					UnitException except = new UnitException();
 					throw except;
 				}
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
@@ -429,6 +452,7 @@ public class Save {
 					lastChar = (char) reader.read();
 				}
 				currentUnit.setCurrentHealth(Integer.parseInt(storage));
+				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
 					if (lastChar<='9' &&  lastChar>='0') {
