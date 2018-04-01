@@ -95,17 +95,17 @@ public class Movement {
 		return adjacent; 
 	}
 	
-	public void availableMovement(Map map){
+	public ArrayList<IndexPosition> availableMovement(Map map){
 		
-		AreaScanner scanner = new AreaScanner();
-		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
-		for(Position convert : scanner.searchTargets(unit,map)) {
-			scan.add(convert.toIndexPosition());
-		}
+//		AreaScanner scanner = new AreaScanner();
+//		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
+//		for(Position convert : scanner.searchTargets(unit,map)) {
+//			scan.add(convert.toIndexPosition());
+//		}
 		//Iterator on the whole graph linked to the position 
 		
-		Iterator<IndexPosition> positionIterator0 = scan.iterator();
-		
+//		Iterator<IndexPosition> positionIterator0 = scan.iterator();
+		Iterator<IndexPosition> positionIterator0 = getGraph().getGraph().iterator();
 		//save the cost of the previous square
 		
 		float previousCost = 0;
@@ -262,6 +262,7 @@ public class Movement {
 			}
 		}
 		getGraph().setGraph(graphResult);
+		return graphResult;
 	}
 	
 	public int goTo(IndexPosition position, Map map, Game game) throws OutOfRangeException, AttributeException {
