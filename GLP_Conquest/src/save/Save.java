@@ -35,8 +35,8 @@ public class Save {
 	private Game game;
 	
 	public Save(String string) {
-		if(!string.endsWith(".sav")) {
-			string += ".sav";
+		if(!string.endsWith(".txt")) {
+			string += ".txt";
 		}
 		this.save = new File(string);
 	}

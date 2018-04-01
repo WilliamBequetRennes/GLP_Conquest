@@ -71,4 +71,5 @@ public class IndexPosition extends Position {
 		Position position = new Position(iPosition,jPosition);
 		return  position;
 	}
+	
 }

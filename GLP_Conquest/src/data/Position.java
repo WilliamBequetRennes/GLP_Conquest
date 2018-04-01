@@ -1,5 +1,7 @@
 package data;
 
+import movement.IndexPosition;
+
 public class Position {
 	private int jPosition;
 	private int iPosition;
@@ -52,6 +54,11 @@ public class Position {
 		if (jPosition != other.jPosition)
 			return false;
 		return true;
+	}
+	
+	public IndexPosition toIndexPosition() {
+		IndexPosition index = new IndexPosition(iPosition,jPosition);
+		return index;
 	}
 	
 }
