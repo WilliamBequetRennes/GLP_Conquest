@@ -15,6 +15,7 @@ import map.Map;
 import units.Transform;
 import units.Unit;
 import fight.AreaScanner;
+import fight.Damage;
 
 
 public class Movement {
@@ -264,72 +265,39 @@ public class Movement {
 		getGraph().setGraph(graphResult);
 		return graphResult;
 	}
-	
-	public int goTo(IndexPosition position, Map map, Game game) throws OutOfRangeException, AttributeException {
-		// Event : 
-		//0 : movement
-		//1 : battle
-		//2 : conquest
-		int event = 0;
-		
-		Position interPosition;
-		
-		Position testedPosition;
-		
-		if (getGraph().getGraph().contains(position)) {
-		
-			if (map.getSquareType(position).getFaction() != map.getSquareType(getUnit().getPosition()).getFaction()) {
-			
-				ArrayList<Position> localPath = position.getLocalPath();
-				
-				Iterator<Position> iterator = localPath.iterator();
-				
-				while (iterator.hasNext()) {
-				
-					interPosition = iterator.next();
-					
-					ArrayList<Position> adjacent = adjacentSquare(interPosition, map);
-					
-					Iterator<Position> interIterator = adjacent.iterator();
-					
-					while (interIterator.hasNext()) {
-					
-						testedPosition = interIterator.next();
-						
-						if (map.getSquareType(testedPosition).getFaction() != map.getSquareType(getUnit().getPosition()).getFaction()
-								&& !map.getSquareType(testedPosition).getUnit()) {
-							int enemyFaction = map.getSquareType(testedPosition).getFaction();
-							map.getSquareType(testedPosition).setFaction(getUnit().getFaction());
-							game.getPlayers()[game.getCurrentPlayer()].setSquareNumber(game.getPlayers()[game.getCurrentPlayer()].getSquareNumber()+1);
-							game.getPlayers()[enemyFaction-1].setSquareNumber(game.getPlayers()[enemyFaction-1].getSquareNumber()-1);
-						}
-					}
-				}
-				float movement = getUnit().getMovement()-position.getLocalCost();
-				getUnit().setMovement(movement);
-				unit.setPosition(position);
-				
-				if (map.getSquareType(position).getUnit()) {
-					event = 1;
-					Unit defenderUnit = game.getUnits().get(position);
-					fight(getUnit(), defenderUnit, game, map);
-					return event;
-				}
-				else {
-					event  = 2;
-					return event;
-				}
-			}
-			else {
-				getUnit().setPosition(position);
-				float movement = getUnit().getMovement()-position.getLocalCost();
-				getUnit().setMovement(movement);
-				return event;
+	public IndexPosition findIndexPosition(ArrayList<IndexPosition> positions, Position objective) {
+		IndexPosition result = new IndexPosition(objective);
+		for(IndexPosition current : positions) {
+			if(current.getIPosition() == objective.getIPosition() 
+					&& current.getJPosition() == objective.getJPosition()) {
+				result = current;
 			}
 		}
-		else {
-			OutOfRangeException except = new OutOfRangeException();
-			throw except; 
+		return result;
+	}
+	public void goTo(Position finalPosition, ArrayList<IndexPosition> moveList, Map map, Game game) {
+		//get the IndexPosition from moveList that correspond to the finalPosition
+		IndexPosition objective = findIndexPosition(moveList, finalPosition);
+		
+		if(moveList.contains(objective)) {
+			Unit movingUnit = game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getUnit().getPosition());
+			Position currentPosition = getUnit().getPosition();
+			int moveCost = 0;
+			for(Position current : objective.getLocalPath()) {
+				conquest(current, map, game);
+				moveCost += map.getSquares()[current.getIPosition()][current.getJPosition()].getMoveCost();
+			}
+			conquest(finalPosition, map, game);
+			moveCost += map.getSquares()[finalPosition.getIPosition()][finalPosition.getJPosition()].getMoveCost();
+			//Reduce the move points of the unit
+			movingUnit.setMovement(movingUnit.getMovement()-moveCost);
+			
+			//Move the unit
+			map.getSquares()[currentPosition.getIPosition()][currentPosition.getJPosition()].setUnit(false);
+			map.getSquares()[finalPosition.getIPosition()][finalPosition.getJPosition()].setUnit(true);
+			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().remove(finalPosition);
+			movingUnit.setPosition(finalPosition);
+			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().put(finalPosition, movingUnit);
 		}
 	}
 	
@@ -594,21 +562,20 @@ public class Movement {
 	}
 	
 	public void conquest(Position position, Map map, Game game) {
-		ArrayList<Position> adjacent = adjacentSquare(position,map);
-		for(Position check : adjacent) {
-			if(map.getSquareType(check).getFaction()== 0) {
-				game.getPlayers()[game.getCurrentPlayer()].setSquareNumber(game.getPlayers()[game.getCurrentPlayer()].getSquareNumber()+1);
-				map.getSquareType(check).setFaction(game.getCurrentPlayer()+1);
-			}
-			if(map.getSquareType(check).getFaction()!=game.getCurrentPlayer()) {
-				if(map.getSquareType(check).getType()<5 && !map.getSquareType(check).getUnit()) {
-					game.getPlayers()[map.getSquareType(check).getFaction()-1].setSquareNumber(
-							game.getPlayers()[map.getSquareType(check).getFaction()-1].getSquareNumber()-1);
-					game.getPlayers()[game.getCurrentPlayer()].setSquareNumber(game.getPlayers()[game.getCurrentPlayer()].getSquareNumber()+1);
-					
-				}
+		AreaScanner areaScanner = new AreaScanner();
+		ArrayList<Position> adjacent = areaScanner.aroundPositions(position, 1, map);
+		
+		for(Position current : adjacent) {
+			//if the square doesn't already belong to the player, if the square isn't a building and
+			//if there is no enemy unit on it
+			if(map.getSquares()[current.getIPosition()][current.getJPosition()].getFaction() != game.getCurrentPlayer()
+					&& map.getSquares()[current.getIPosition()][current.getJPosition()].getType() <= 4 
+						&& !map.getSquares()[current.getIPosition()][current.getJPosition()].getUnit()) {
+				
+					map.getSquares()[current.getIPosition()][current.getJPosition()].setFaction(game.getCurrentPlayer());
 			}
 		}
+		map.getSquares()[position.getIPosition()][position.getJPosition()].setFaction(game.getCurrentPlayer());
 	}
 	
 	public void setUnit(Unit unit) {
@@ -627,88 +594,4 @@ public class Movement {
 		return graph;
 	}
 	
-	public class Damage {
-		private float minAttackDamage;
-		private float maxAttackDamage;
-		private float minRevengeDamage;
-		private float maxRevengeDamage;
-		private float attackerMinRemainingHealth;
-		private float attackerMaxRemainingHealth;
-		private float defenderMinRemainingHealth;
-		private float defenderMaxRemainingHealth;
-		
-		public Damage(float minAttackDamage, float maxAttackDamage,  float minRevengeDamage,float maxRevengeDamage, 
-				float attackerMinRemainingHealth, float attackerMaxRemainingHealth, float defenderMinRemainingHealth, float defenderMaxRemainingHealth ) {
-			setMinAttackDamage(minAttackDamage);
-			setMaxAttackDamage(maxAttackDamage);
-			setMinRevengeDamage(minRevengeDamage);
-			setMaxRevengeDamage(maxRevengeDamage);
-			setAttackerMinRemainingHealth(attackerMinRemainingHealth);
-			setAttackerMaxRemainingHealth(attackerMaxRemainingHealth);
-			setDefenderMinRemainingHealth(defenderMinRemainingHealth);
-			setDefenderMaxRemainingHealth(defenderMaxRemainingHealth);
-		}
-		public Damage() {
-			this(0,0,0,0,0,0,0,0);
-		}
-		
-		public void setMinAttackDamage(float minAttackDamage) {
-			this.minAttackDamage = minAttackDamage;
-		}
-		
-		public float getMinAttackDamage() {
-			return this.minAttackDamage;
-		}
-		public void setMaxAttackDamage(float maxAttackDamage) {
-			this.maxAttackDamage = maxAttackDamage;
-		}
-		
-		public float getMaxAttackDamage() {
-			return this.maxAttackDamage;
-		}
-		public void setMinRevengeDamage(float minRevengeDamage) {
-			this.minRevengeDamage = minRevengeDamage;
-		}
-		
-		public float getMinRevengeDamage() {
-			return this.minRevengeDamage;
-		}
-		public void setMaxRevengeDamage(float maxRevengeDamage) {
-			this.maxRevengeDamage = maxRevengeDamage;
-		}
-		
-		public float getMaxRevengeDamage() {
-			return this.maxRevengeDamage;
-		}
-		public void setAttackerMinRemainingHealth(float attackerMinRemainingHealth) {
-			this.attackerMinRemainingHealth = attackerMinRemainingHealth;
-		}
-		
-		public float getAttackerMinRemainingHealth() {
-			return this.attackerMinRemainingHealth;
-		}
-		public void setAttackerMaxRemainingHealth(float attackerMaxRemainingHealth) {
-			this.attackerMaxRemainingHealth = attackerMaxRemainingHealth;
-		}
-		
-		public float getAttackerMaxRemainingHealth() {
-			return this.attackerMaxRemainingHealth;
-		}
-		public void setDefenderMinRemainingHealth(float defenderMinRemainingHealth) {
-			this.defenderMinRemainingHealth = defenderMinRemainingHealth;
-		}
-		
-		public float getDefenderMinRemainingHealth() {
-			return this.defenderMinRemainingHealth;
-		}
-		public void setDefenderMaxRemainingHealth(float defenderMaxRemainingHealth) {
-			this.defenderMaxRemainingHealth = defenderMaxRemainingHealth;
-		}
-		
-		public float getDefenderMaxRemainingHealth() {
-			return this.defenderMaxRemainingHealth;
-		}
-		
-		
-	}
 }

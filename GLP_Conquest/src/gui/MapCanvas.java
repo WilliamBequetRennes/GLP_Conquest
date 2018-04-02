@@ -49,6 +49,7 @@ public class MapCanvas extends Canvas{
 	
 	private Image possibleMoveSprite;
 	private ArrayList<Position> possibleMoves;
+	private ArrayList<IndexPosition> detectedMoves;
 	private Graph movesGraph;
 	private boolean moveAvailable;
 	private Unit movingUnit;
@@ -216,9 +217,10 @@ public class MapCanvas extends Canvas{
 				&& game.getCurrentSquare().getUnit()) {
 			setMovingUnit(game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getSelectedSquare()));
 			Movement move = new Movement(getMovingUnit());
-			setMovesGraph(move.scanArea(game.getMap()));
+			setDetectedMoves(move.availableMovement(game.getMap()));
+			
 			getPossibleMoves().clear();
-			for(IndexPosition current : getMovesGraph().getGraph()) {
+			for(IndexPosition current : getDetectedMoves()) {
 				getPossibleMoves().add(new Position(current.getJPosition(), current.getIPosition()));
 			}
 			setMoveAvailable(true);
@@ -226,25 +228,26 @@ public class MapCanvas extends Canvas{
 		//if a unit is moving and the square is empty, the unit can move on it
 		else if (isMoveAvailable() && !game.getCurrentSquare().getUnit() &&
 				getPossibleMoves().contains(getSelectedSquare())) {
-				Movement move = new Movement(getMovingUnit(), getMovesGraph());
-				try {
-					move.goTo(getMovesGraph().findIndexPosition(getSelectedSquare()), game.getMap(), game);
-				} catch (OutOfRangeException | AttributeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				Unit unit = game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getSelectedSquare());
-				move = new Movement(unit);
-				setMovesGraph(move.scanArea(game.getMap()));
+				Movement move = new Movement(getMovingUnit());
+				
+				move.goTo(getSelectedSquare(), getDetectedMoves(), game.getMap(), game);
+				
+				//update movingUnit with the new position of the unit
+				setMovingUnit(game.getPlayers()[game.getCurrentPlayer()-1].getUnits().get(getSelectedSquare()));
+				move = new Movement(getMovingUnit());
+				setDetectedMoves(move.availableMovement(game.getMap()));
+				
+				//update possibleMoves
 				getPossibleMoves().clear();
-				for(IndexPosition current : getMovesGraph().getGraph()) {
+				for(IndexPosition current : getDetectedMoves()) {
 					getPossibleMoves().add(new Position(current.getJPosition(), current.getIPosition()));
 				}
+				setMoveAvailable(true);
 			
 		}
 		//if a unit is moving and the square is occupied by an ennemy, the fight menu is opened
 		else if (isMoveAvailable() && game.getCurrentSquare().getUnit()) {
-			//afficher l'écran de prévisualisation de combat avec un bouton Attack
+			//afficher l'écran de prévisualisation de combat avec un boutton Attack
 			//pour lancer le combat
 		}
 		//if the square isn't occupied by a player's unit and the moving unit is to far
@@ -489,6 +492,14 @@ public class MapCanvas extends Canvas{
 
 	public void setPossibleAttackSprite(Image possibleAttackSprite) {
 		this.possibleAttackSprite = possibleAttackSprite;
+	}
+
+	public ArrayList<IndexPosition> getDetectedMoves() {
+		return detectedMoves;
+	}
+
+	public void setDetectedMoves(ArrayList<IndexPosition> detectedMoves) {
+		this.detectedMoves = detectedMoves;
 	}
 	
 }

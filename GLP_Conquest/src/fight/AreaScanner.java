@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import data.Position;
 import map.Map;
+import squares.Square;
 import units.Unit;
 
 public class AreaScanner {
@@ -13,38 +14,20 @@ public class AreaScanner {
 	
 	public AreaScanner() {
 		setTargets(new ArrayList<Position>());
+		setSquares(new ArrayList<Position>());
 	}
 	
 	public ArrayList<Position> searchTargets(Unit unit, Map map) {
 		getTargets().clear();
-		if(unit.getRange()<=1) {
+		int range = unit.getRange();
+		if(range<=1) {
 			return getTargets();
 		}
-		int range = unit.getRange();
-		int jPosition = unit.getPosition().getJPosition();
-		int iPosition = unit.getPosition().getIPosition();
-		for(int j = -range; j<=range; j++) {
-			//If we are in the map dimensions
-			if(jPosition + j >= 0 && jPosition + j < map.getDimensions()) {
-				//Soit [x] la partie entière de x
-				//Soit s le signe de jPosition tel que s = j/|j|
-				//Soit d le maximum de i et -d le minimum
-				//Alors, si jPosition % 2 == 0, d = range - [|j|/2]
-				//Sinon, d = range - [|j+1|/2]
-				//Donc, quelque soit la parité de jPosition on a :
-				//d = R - [ |j+(jPosition % 2)|/2 ]
-				//d = R - [ s*(j+(jPosition % 2)) / 2 ]
-				int s = j/Math.abs(j);
-				int d = range - (int)(s*(j+(jPosition%2))/2);
-				for(int i = -d; i <= d; i++) {
-					//If we are in the map dimensions
-					if(iPosition + i >= 0 && iPosition + i < map.getDimensions()) {
-						if(map.getSquares()[i][j].getUnit() && 
-								map.getSquares()[i][j].getFaction()!=unit.getFaction()) {
-							getTargets().add(new Position(i,j));
-						}
-					}
-				}
+		ArrayList<Position> reachableSquares = aroundPositions(unit.getPosition(), range, map);
+		for(Position current : reachableSquares) {
+			Square square = map.getSquares()[current.getIPosition()][current.getJPosition()];
+			if(square.getFaction()!=unit.getFaction() && square.getUnit()) {
+				getTargets().add(current);
 			}
 		}
 		return getTargets();
@@ -57,20 +40,33 @@ public class AreaScanner {
 		for(int j = -distance; j<=distance; j++) {
 			//If we are in the map dimensions
 			if(jPosition + j >= 0 && jPosition + j < map.getDimensions()) {
-				//Soit [x] la partie entière de x
-				//Soit s le signe de jPosition tel que s = j/|j|
-				//Soit d le maximum de i et -d le minimum
-				//Alors, si jPosition % 2 == 0, d = range - [|j|/2]
-				//Sinon, d = range - [|j+1|/2]
-				//Donc, quelque soit la parité de jPosition on a :
-				//d = R - [ |j+(jPosition % 2)|/2 ]
-				//d = R - [ s*(j+(jPosition % 2)) / 2 ]
-				int s = j/Math.abs(j);
-				int d = distance - (int)(s*(j+(jPosition%2))/2);
-				for(int i = -d; i <= d; i++) {
-					//If we are in the map dimensions
-					if(iPosition + i >= 0 && iPosition + i < map.getDimensions() && j!=0 && i!=0) {
-						getSquares().add(new Position(i,j));
+				if(j%2==0) {
+					int d = distance - (j/2);
+					for(int i = -d; i <= d; i++) {
+						//If we are in the map dimensions
+						if(iPosition + i >= 0 && iPosition + i < map.getDimensions() && (j!=0 || i!=0)) {
+							getSquares().add(new Position(i+iPosition,j+jPosition));
+						}
+					}
+				}
+				else {
+					int dMax = distance - ((Math.abs(j)-1)/2);
+					int dMin = distance - ((Math.abs(j)+1)/2);
+					if(jPosition%2!=0) {
+						for(int i = -dMin; i <= dMax; i++) {
+							//If we are in the map dimensions
+							if(iPosition + i >= 0 && iPosition + i < map.getDimensions() && (j!=0 || i!=0)) {
+								getSquares().add(new Position(i+iPosition,j+jPosition));
+							}
+						}
+					}
+					else {
+						for(int i = -dMax; i <= dMin; i++) {
+							//If we are in the map dimensions
+							if(iPosition + i >= 0 && iPosition + i < map.getDimensions() && (j!=0 || i!=0)) {
+								getSquares().add(new Position(i+iPosition,j+jPosition));
+							}
+						}
 					}
 				}
 			}
