@@ -147,7 +147,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			
 			if (adjacent1.contains(testedPosition0)) {
 			
-				if(Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())){
+				if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 					
 					//set data
 					
@@ -195,7 +195,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 						//if the movement cost is cheaper than thep revious one(default : 100)
 					
 						if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()
-								&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
+								&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 						
 							//set datas
 							
@@ -245,7 +245,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 								//verify it is the quickest
 								
 								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-										&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
+										&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 									
 									//and set datas if it is
 									
@@ -290,7 +290,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 										//verify it is the quickest
 										
 										if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-												&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
+												&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 											
 											//and set datas if it is
 											
@@ -618,6 +618,17 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			throw except;
 		}
 		return bonus;
+	}
+	
+	public boolean isCrossable(int type, Unit unit) {
+		boolean isCrossable = false;
+		int[] crossable = unit.getCrossable();
+		for(int i=0;i<crossable.length;i++) {
+			if(crossable[i]==type) {
+				isCrossable = true;
+			}
+		}
+		return isCrossable;
 	}
 	
 	public void conquest(Position position, Map map, Game game) {
