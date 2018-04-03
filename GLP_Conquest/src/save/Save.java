@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
+
 import countries.Country;
 import countries.Leader;
 import data.Position;
@@ -18,6 +21,7 @@ import exceptions.LeaderException;
 import exceptions.UnitException;
 import game.Game;
 import map.Map;
+import map.MapLoader;
 import squares.Square;
 import units.Assault;
 import units.Battleship;
@@ -53,6 +57,8 @@ public class Save {
 		int currentPlayer = getGame().getCurrentPlayer();
 		int playersNumber = getGame().getPlayersNumber();
 		writer.write("<");
+		writer.write(getGame().getMap().getNumber()+"");
+		writer.write("#");
 		writer.write(getGame().getCurrentTurn()+"");
 		writer.write("#");
 		writer.write(getGame().getTurnsNumber()+"");
@@ -60,7 +66,6 @@ public class Save {
 		writer.write(playersNumber+"");
 		writer.write("#");
 		//Get Map Code
-		//writer.write("#");
 		writer.write(getGame().getCurrentSquare().getPosition().getIPosition()+"");
 		writer.write("#");
 		writer.write(getGame().getCurrentSquare().getPosition().getJPosition()+"");
@@ -121,6 +126,7 @@ public class Save {
 				Entry<Position, Unit> unit = (Entry<Position, Unit>) iteratorUnit.next();
 				Position position = (Position) unit.getKey();
 				Unit warResource = (Unit) unit.getValue();
+				writer.write("#");
 				writer.write(position.getIPosition()+"");
 				writer.write("#");
 				writer.write(position.getJPosition()+"");
@@ -149,6 +155,16 @@ public class Save {
 		FileReader reader = new FileReader(getSave());
 		char lastChar = (char) reader.read();
 		String storage = "";
+		while(lastChar != '#'){
+			if (lastChar<='9' &&  lastChar>='0') {
+				storage += lastChar;
+			}
+			lastChar = (char) reader.read();
+		}
+		MapLoader mapLoader = new MapLoader();
+		getGame().setMap(mapLoader.load((Integer.parseInt(storage))));
+		storage="";
+		lastChar = (char)reader.read();
 		while(lastChar != '#'){
 			if (lastChar<='9' &&  lastChar>='0') {
 				storage += lastChar;
@@ -380,17 +396,21 @@ public class Save {
 				int iPosition = Integer.parseInt(storage);
 				lastChar = (char) reader.read();
 				storage="";
-				while(lastChar != '#'){
+				while(lastChar != '&'){
 					if (lastChar<='9' &&  lastChar>='0') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
 				}
-				Position position = new Position(iPosition, Integer.parseInt(storage));
-				Square square = getGame().getMap().getSquareType(position);
+				int jPosition = Integer.parseInt(storage);
+				Position position = new Position(iPosition, jPosition);
+				System.out.println(getGame().toString());
+				System.out.println(iPosition+" : "+jPosition);
+				Square square = getGame().getMap().getSquares()[position.getIPosition()][position.getJPosition()];
 				currentCountry.getBuildings().put(position,  square);
 			}
 			currentCountry.setUnits(new HashMap<Position, Unit>());
+			lastChar = (char) reader.read();
 			while(lastChar != '>') {
 				lastChar = (char) reader.read();
 				storage="";
@@ -409,7 +429,8 @@ public class Save {
 					}
 					lastChar = (char) reader.read();
 				}
-				Position position = new Position(iPosition, Integer.parseInt(storage));
+				int jPosition = Integer.parseInt(storage);
+				Position position = new Position(iPosition, jPosition);
 				Unit currentUnit;
 				lastChar = (char) reader.read();
 				storage="";
@@ -440,7 +461,7 @@ public class Save {
 				case 8 : currentUnit = new Transport(position, i);
 				break;
 				default : 
-					UnitException except = new UnitException();
+					UnitException except = new UnitException(unitsType);
 					throw except;
 				}
 				lastChar = (char) reader.read();

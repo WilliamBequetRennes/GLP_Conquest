@@ -510,7 +510,7 @@ public class Movement {
 		}
 		else {
 			if(map.getSquareType(unit.getPosition()).getType() != 0) {
-				UnitException except = new UnitException();
+				UnitException except = new UnitException(unit.getType());
 				throw except;
 			}
 		}

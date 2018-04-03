@@ -76,7 +76,7 @@ public class PlayableBlock extends GridPane{
 		setMapSize(game.getMapSize());
 		setPlayersNumber(game.getPlayersNumber());
 		setTurnsNumber(game.getTurnsNumber());
-		setScreenSize(getScreenSize());
+		setScreenSize(screenSize);
 
 		setTracking(new PositionDouble());
 		setMapGenerator(new MapGenerator());

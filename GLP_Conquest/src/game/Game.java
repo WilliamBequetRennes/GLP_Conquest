@@ -1,5 +1,6 @@
 package game;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import countries.Country;
@@ -9,6 +10,13 @@ import squares.Square;
 import units.Unit;
 
 public class Game {
+
+	@Override
+	public String toString() {
+		return "Game [currentTurn=" + currentTurn + ", turnsNumber=" + turnsNumber + ", playersNumber=" + playersNumber
+				+ ", players=" + Arrays.toString(players) + ", currentPlayer=" + currentPlayer + ", mapSize=" + mapSize
+				+ ", map=" + map + ", currentSquare=" + currentSquare + ", units=" + units + "]";
+	}
 
 	private int currentTurn;
 	private int turnsNumber;
