@@ -315,14 +315,12 @@ public class Movement {
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
 
-		ArrayList<IndexPosition> graphResult = new ArrayList<IndexPosition>();
-		for(IndexPosition current : getGraph().getGraph()) {
-			if (current.getLocalCost() <= movement) {
-				graphResult.add(current);
+		for(IndexPosition current : available) {
+			if (current.getLocalCost() > movement) {
+				available.remove(current);
 			}
 		}
-		getGraph().setGraph(graphResult);
-		return graphResult;
+		return available;
 	}
 	public IndexPosition findIndexPosition(ArrayList<IndexPosition> positions, Position objective) {
 		IndexPosition result = new IndexPosition(objective);
