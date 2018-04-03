@@ -1,6 +1,7 @@
 package movement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -104,7 +105,8 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		AreaScanner scanner = new AreaScanner();
 		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
 		int movement = (int) getUnit().getMovement();
-		for(Position convert : scanner.aroundPositions(position,movement,map)) {
+		ArrayList<Position> reachable = scanner.aroundPositions(position,movement,map);
+		for(Position convert : reachable) {
 			scan.add(convert.toIndexPosition());
 		}
 		//Iterator on the whole graph linked to the position 
