@@ -118,7 +118,7 @@ public class Movement {
 		
 		//save the previous path to the current position
 		
-		ArrayList<Position> previousPath = new ArrayList<Position>();		
+		ArrayList<IndexPosition> previousPath = new ArrayList<IndexPosition>();		
 		
 		//the starting position costs 0 to go to
 		
@@ -214,7 +214,7 @@ public class Movement {
 						
 						//the previous position is part of the path
 						
-						previousPath.add(testedPosition1);
+						previousPath.add(testedPosition1.toIndexPosition());
 						
 						//try last iteration
 						
@@ -259,7 +259,7 @@ public class Movement {
 								
 								//the previous position is part of the path
 								
-								previousPath.add(testedPosition2);
+								previousPath.add(testedPosition2.toIndexPosition());
 								
 								//try last iteration
 								
