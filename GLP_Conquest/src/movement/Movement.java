@@ -1,7 +1,6 @@
 package movement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -9,6 +8,7 @@ import java.util.Random;
 import countries.Country;
 import data.Position;
 import exceptions.AttributeException;
+import exceptions.OutOfRangeException;
 import exceptions.UnitException;
 import game.Game;
 import map.Map;
@@ -98,32 +98,34 @@ public class Movement {
 	
 	public ArrayList<IndexPosition> availableMovement(Map map){
 		
-		ArrayList<IndexPosition> available = new ArrayList<IndexPosition>();
-		IndexPosition position = new IndexPosition(getUnit().getPosition());
-		
-		AreaScanner scanner = new AreaScanner();
-		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
-		int movement = (int) getUnit().getMovement();
-		for(Position convert : scanner.aroundPositions(position,movement,map)) {
-			scan.add(convert.toIndexPosition());
-		}
+//		AreaScanner scanner = new AreaScanner();
+//		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
+//		for(Position convert : scanner.searchTargets(unit,map)) {
+//			scan.add(convert.toIndexPosition());
+//		}
 		//Iterator on the whole graph linked to the position 
 		
-		Iterator<IndexPosition> positionIterator0 = scan.iterator();
-//		Iterator<IndexPosition> positionIterator0 = getGraph().getGraph().iterator();
-		
+//		Iterator<IndexPosition> positionIterator0 = scan.iterator();
+		Iterator<IndexPosition> positionIterator0 = getGraph().getGraph().iterator();
 		//save the cost of the previous square
 		
 		float previousCost = 0;
 		
 		//save the previous path to the current position
 		
-		ArrayList<IndexPosition> previousPath = new ArrayList<IndexPosition>();		
+		ArrayList<Position> previousPath = new ArrayList<Position>();
+		
+		//position of the selected unit
+		
+		IndexPosition position = new IndexPosition(unit.getPosition());
+		
+		//remaining movement of the selected unit
+		
+		int movement = (int) unit.getMovement();
 		
 		//the starting position costs 0 to go to
 		
 		position.setLocalCost(0);		
-		available.add(position);
 		
 		//For each position of the whole graph
 		
@@ -145,17 +147,12 @@ public class Movement {
 			
 			if (adjacent1.contains(testedPosition0)) {
 			
-				if(Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())){
-					
-					//set data
-					
-					testedPosition0.setLocalCost(previousCost);
-					
-					testedPosition0.addLocalPath(testedPosition0);
-					
-					available.add(testedPosition0);
-
-				}			
+				//set data
+				
+				testedPosition0.setLocalCost(previousCost);
+				
+				testedPosition0.addLocalPath(testedPosition0);
+			
 			}
 			
 			//if it is not next to the unit's position
@@ -192,8 +189,7 @@ public class Movement {
 						
 						//if the movement cost is cheaper than thep revious one(default : 100)
 					
-						if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()
-								&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
+						if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
 						
 							//set datas
 							
@@ -202,9 +198,6 @@ public class Movement {
 							testedPosition0.setLocalPath(previousPath);
 							
 							testedPosition0.addLocalPath(testedPosition0);
-							
-							available.add(testedPosition0);
-
 						}
 					}
 					
@@ -214,7 +207,7 @@ public class Movement {
 						
 						//the previous position is part of the path
 						
-						previousPath.add(testedPosition1.toIndexPosition());
+						previousPath.add(testedPosition1);
 						
 						//try last iteration
 						
@@ -242,67 +235,15 @@ public class Movement {
 								
 								//verify it is the quickest
 								
-								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-										&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
+								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
 									
 									//and set datas if it is
 									
 									testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
 									testedPosition0.setLocalPath(previousPath);
 									testedPosition0.addLocalPath(testedPosition0);
-									available.add(testedPosition0);
-
 									
 								}
-							}
-							else {
-								
-								//the previous position is part of the path
-								
-								previousPath.add(testedPosition2.toIndexPosition());
-								
-								//try last iteration
-								
-								Iterator<Position> positionIterator3 = adjacent3.iterator();
-								
-								// For each adjacent position
-								
-								while (positionIterator3.hasNext()) {
-									
-									//save the last position in range and check
-									
-									Position testedPosition3 = positionIterator3.next();
-									
-									//update movement cost
-									
-									previousCost += map.getSquareType(testedPosition3).getMoveCost();
-									
-									//check one last time
-									
-									ArrayList<Position> adjacent4 = adjacentSquare(testedPosition0, map);
-									
-									//and if you finally find it
-								
-									if (adjacent4.contains(testedPosition0)) {
-										
-										//verify it is the quickest
-										
-										if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-												&& Arrays.asList(getUnit().getCrossable()).contains(map.getSquareType(testedPosition0).getType())) {
-											
-											//and set datas if it is
-											
-											testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
-											testedPosition0.setLocalPath(previousPath);
-											testedPosition0.addLocalPath(testedPosition0);
-											available.add(testedPosition0);
-
-											
-										}
-									}
-									previousCost -= map.getSquareType(testedPosition3).getMoveCost();
-								}
-								previousPath.remove(testedPosition2);
 							}
 							previousCost -= map.getSquareType(testedPosition2).getMoveCost();
 						}
@@ -315,12 +256,14 @@ public class Movement {
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
 
-		for(IndexPosition current : available) {
-			if (current.getLocalCost() > movement) {
-				available.remove(current);
+		ArrayList<IndexPosition> graphResult = new ArrayList<IndexPosition>();
+		for(IndexPosition current : getGraph().getGraph()) {
+			if (current.getLocalCost() <= movement) {
+				graphResult.add(current);
 			}
 		}
-		return available;
+		getGraph().setGraph(graphResult);
+		return graphResult;
 	}
 	public IndexPosition findIndexPosition(ArrayList<IndexPosition> positions, Position objective) {
 		IndexPosition result = new IndexPosition(objective);
