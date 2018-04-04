@@ -316,8 +316,9 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			}
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
-
-		for(IndexPosition current : available) {
+		ArrayList<IndexPosition> copy = new ArrayList<IndexPosition>();
+		copy.addAll(available);
+		for(IndexPosition current : copy) {
 			if (current.getLocalCost() > movement) {
 				available.remove(current);
 			}

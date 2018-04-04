@@ -13,8 +13,16 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 
+import com.sun.javafx.sg.prism.GrowableDataBuffer;
+
+import countries.CaptainIgloo;
 import countries.Country;
+import countries.DonaldTrump;
+import countries.FrancoisHollande;
+import countries.GordonRamsay;
+import countries.Governator;
 import countries.Leader;
+import countries.VladimirPutin;
 import data.Position;
 import data.Resources;
 import exceptions.LeaderException;
@@ -247,17 +255,17 @@ public class Save {
 			lastChar = (char) reader.read();
 			int leadersNumber = Integer.parseInt(storage);
 			switch(leadersNumber) {
-			case(0) : currentCountry.setLeader(new Leader("Captain Igloo", "The true captain's treasure",0));
+			case(0) : currentCountry.setLeader(new CaptainIgloo());
 			break;
-			case(1) : currentCountry.setLeader(new Leader("Donald Trump", "It's black gold from Texas",1));
+			case(1) : currentCountry.setLeader(new DonaldTrump());
 			break;
-			case(2) : currentCountry.setLeader(new Leader("Francois Hollande", "Me, I'm a normal president",2));
+			case(2) : currentCountry.setLeader(new FrancoisHollande());
 			break;
-			case(3) : currentCountry.setLeader(new Leader("Gordon Ramsay", "Command & Cooker",3));
+			case(3) : currentCountry.setLeader(new GordonRamsay());
 			break;
-			case(4) : currentCountry.setLeader(new Leader("Governator", "Chill out, dickwad",4));
+			case(4) : currentCountry.setLeader(new Governator());
 			break;
-			case(5) : currentCountry.setLeader(new Leader("Vladimir Putin", "Nuclear Winter",5));
+			case(5) : currentCountry.setLeader(new VladimirPutin());
 			break;
 			default : 
 				LeaderException except = new LeaderException(leadersNumber);

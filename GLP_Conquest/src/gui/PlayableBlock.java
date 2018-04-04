@@ -1,7 +1,13 @@
 package gui;
 
+import countries.CaptainIgloo;
 import countries.Country;
+import countries.DonaldTrump;
+import countries.FrancoisHollande;
+import countries.GordonRamsay;
+import countries.Governator;
 import countries.Leader;
+import countries.VladimirPutin;
 import data.Position;
 import exceptions.InvalidMapSizeNumberException;
 import game.Game;
@@ -152,7 +158,22 @@ public class PlayableBlock extends GridPane{
 
 		Country[] players = new Country[getGame().getPlayersNumber()];
 		for(int i = 0; i < players.length; i++) {
-			players[i] = new Country(new Leader("name", "ability", number[i]), i+1);
+			Leader leader = null;
+			switch(number[i]) {
+			case(0):leader = new CaptainIgloo();
+			break;
+			case(1):leader = new DonaldTrump();
+			break;
+			case(2):leader = new FrancoisHollande();
+			break;
+			case(3):leader = new GordonRamsay();
+			break;
+			case(4):leader = new Governator();
+			break;
+			case(5):leader = new VladimirPutin();
+			break;
+			}
+			players[i] = new Country(leader, i+1);
 		}
 		if(getMapSize()==0) {
 			switch(getGame().getPlayersNumber()) {
