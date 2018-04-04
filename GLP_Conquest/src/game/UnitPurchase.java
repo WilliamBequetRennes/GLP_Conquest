@@ -45,6 +45,22 @@ public class UnitPurchase {
 		break;
 		default:throw new InvalidUnitNumberException(type);
 		}
+		
+		float attackCoeff = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getAttackCoeff()[unit.getType()];
+		float defenseCoeff= game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getDefenseCoeff()[unit.getType()];
+		float costCoeff = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getCostCoeff()[unit.getType()];
+		int rangeChanger = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getRangeChanger()[unit.getType()];
+		int movementChanger = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getMovementChanger()[unit.getType()];
+		
+		unit.setAttack((int)(unit.getAttack()*attackCoeff));
+		unit.setDefense((int)(unit.getAttack()*defenseCoeff));
+		unit.getCost().setMoney(unit.getCost().getMoney()*costCoeff);
+		unit.getCost().setFood(unit.getCost().getFood()*costCoeff);
+		unit.getCost().setOil(unit.getCost().getOil()*costCoeff);
+		unit.getCost().setElectricity(unit.getCost().getElectricity()*costCoeff);
+		unit.setRange(unit.getRange()+rangeChanger);
+		unit.setMaxMovement(unit.getMaxMovement()+movementChanger);
+		
 		boolean buyable = true;
 		if(money < unit.getCost().getMoney()) {
 			buyable = false;
@@ -61,10 +77,10 @@ public class UnitPurchase {
 		//if the country has enough money to buy the unit
 		if(buyable) {
 			//Reduce the country's resources by the unit's cost
-			money-=unit.getCost().getMoney();
-			food-=unit.getCost().getFood();
-			oil-=unit.getCost().getOil();
-			electricity-=unit.getCost().getElectricity();
+			money-=(unit.getCost().getMoney());
+			food-=(unit.getCost().getFood());
+			oil-=(unit.getCost().getOil());
+			electricity-=(unit.getCost().getElectricity());
 			
 			Resources resources = new Resources(money, food, oil, electricity);
 			game.getPlayers()[game.getCurrentPlayer()-1].setResources(resources);

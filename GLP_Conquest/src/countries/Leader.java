@@ -6,7 +6,6 @@ public abstract class Leader {
 	private float attackCoeff[];
 	private float defenseCoeff[];
 	private float costCoeff[];
-	private float resourcesCoeff;
 	private float foodCoeff;
 	private float oilCoeff;
 	private float electricityCoeff;
@@ -55,14 +54,6 @@ public abstract class Leader {
 
 	public void setCostCoeff(float[] costCoeff) {
 		this.costCoeff = costCoeff;
-	}
-
-	public float getResourcesCoeff() {
-		return resourcesCoeff;
-	}
-
-	public void setResourcesCoeff(float resourcesCoeff) {
-		this.resourcesCoeff = resourcesCoeff;
 	}
 
 	public float getFoodCoeff() {

@@ -195,7 +195,7 @@ public class MapCanvas extends Canvas{
 		if (game.getCurrentSquare().getFaction() == game.getCurrentPlayer()
 				&& game.getCurrentSquare().getUnit()) {
 			if(getMovingUnit().getMovement()==getMovingUnit().getMaxMovement()) {
-				setPossibleAttacks(getAreaScanner().searchTargets(getMovingUnit(), game.getMap()));
+				setPossibleAttacks(getAreaScanner().searchTargets(getMovingUnit(), game.getMap(), game));
 				for(Position current : getPossibleAttacks()) {
 					if (getPossibleMoves().contains(current)) {
 						getPossibleMoves().remove(current);

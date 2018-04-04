@@ -105,11 +105,12 @@ public class MenuBar extends HBox{
 				}
 				clearMenus(centralBlock.getGameBlock());
 				refreshUsualRightMenu(centralBlock.getGameBlock().getRightMenu().getUsualRightMenu(), game);
-				int playerNumber = centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().getPlayerNumber();
-				if(playerNumber==0) {
-					playerNumber++;
-				}
-				centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
+				
+				centralBlock.getGameBlock().getCentralMenu().getMapCanvas().setVisible(true);
+				centralBlock.getGameBlock().getCentralMenu().getMapCanvas().toFront();
+				centralBlock.getGameBlock().getCentralMenu().getPlayerMenu().setVisible(false);
+				centralBlock.getGameBlock().getCentralMenu().getLeaderMenu().setVisible(false);
+				
 				reinitializeUsualLeftMenu(centralBlock.getGameBlock().getLeftMenu().getUsualLeftMenu(), game);
 				reinitializeMapCanvas(centralBlock.getGameBlock().getCentralMenu().getMapCanvas(), game);
 			}

@@ -89,7 +89,6 @@ public class Turn {
 		}
 		game.getPlayers()[game.getCurrentPlayer()-1].setResources(resources);
 		
-		//Function not over yet, it has to take in count that the country can don't have the resources to upkeep its units
 	}
 	
 	public void updateGains(Game game) {
@@ -105,6 +104,9 @@ public class Turn {
 				gains.setOil(gains.getOil()+current.getResources().getOil());
 				gains.setElectricity(gains.getElectricity()+current.getResources().getElectricity());
 			}
+			gains.setFood(gains.getFood()*game.getPlayers()[i].getLeader().getFoodCoeff());
+			gains.setOil(gains.getOil()*game.getPlayers()[i].getLeader().getOilCoeff());
+			gains.setElectricity(gains.getElectricity()*game.getPlayers()[i].getLeader().getElectricityCoeff());
 			game.getPlayers()[i].setGains(gains);	
 		}
 	}
@@ -117,10 +119,10 @@ public class Turn {
 
 			Resources spents = new Resources();
 			for(Unit current : units) {
-				spents.setMoney(spents.getMoney()+current.getCost().getMoney());
-				spents.setFood(spents.getFood()+current.getCost().getFood());
-				spents.setOil(spents.getOil()+current.getCost().getOil());
-				spents.setElectricity(spents.getElectricity()+current.getCost().getElectricity());
+				spents.setMoney(spents.getMoney()+current.getUpkeep().getMoney());
+				spents.setFood(spents.getFood()+current.getUpkeep().getFood());
+				spents.setOil(spents.getOil()+current.getUpkeep().getOil());
+				spents.setElectricity(spents.getElectricity()+current.getUpkeep().getElectricity());
 			}
 			game.getPlayers()[i].setSpents(spents);
 		}

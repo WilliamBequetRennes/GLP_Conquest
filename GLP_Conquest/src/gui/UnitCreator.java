@@ -141,10 +141,17 @@ public class UnitCreator extends VBox{
 			}
 		});
 	}
-	public void update(int[] types, String unitType) throws InvalidUnitNumberException{
+	public void update(int[] types, String unitType, Game game) throws InvalidUnitNumberException{
 		setTypes(types);
 		getUnitType().setText(unitType);
 		Unit[] units = new Unit[getUnitsNumber()];
+		
+		float[] attackCoeff = new float[getUnitsNumber()];
+		float[]  defenseCoeff= new float[getUnitsNumber()];
+		float[]  costCoeff = new float[getUnitsNumber()];
+		int[]  rangeChanger = new int[getUnitsNumber()];
+		int[]  movementChanger = new int[getUnitsNumber()];
+		
 		for(int i = 0; i<units.length; i++) {
 			switch(getTypes()[i]) {
 			case(0):units[i] = new Assault(null, 0);
@@ -165,6 +172,22 @@ public class UnitCreator extends VBox{
 			break;
 			default:throw new InvalidUnitNumberException(types[i]);
 			}
+			
+			attackCoeff[i] = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getAttackCoeff()[units[i].getType()];
+			defenseCoeff[i] = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getDefenseCoeff()[units[i].getType()];
+			costCoeff[i] = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getCostCoeff()[units[i].getType()];
+			rangeChanger[i] = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getRangeChanger()[units[i].getType()];
+			movementChanger[i] = game.getPlayers()[game.getCurrentPlayer()-1].getLeader().getMovementChanger()[units[i].getType()];
+			
+			units[i].setAttack((int)(units[i].getAttack()*attackCoeff[i]));
+			units[i].setDefense((int)(units[i].getAttack()*defenseCoeff[i]));
+			units[i].getCost().setMoney(units[i].getCost().getMoney()*costCoeff[i]);
+			units[i].getCost().setFood(units[i].getCost().getFood()*costCoeff[i]);
+			units[i].getCost().setOil(units[i].getCost().getOil()*costCoeff[i]);
+			units[i].getCost().setElectricity(units[i].getCost().getElectricity()*costCoeff[i]);
+			units[i].setRange(units[i].getRange()+rangeChanger[i]);
+			units[i].setMaxMovement(units[i].getMaxMovement()+movementChanger[i]);
+			
 			getName()[i].setText(units[i].getName());
 			getAtk()[i].setText("ATK : "+units[i].getAttack());
 			getDef()[i].setText("DEF : "+units[i].getDefense());
@@ -206,6 +229,7 @@ public class UnitCreator extends VBox{
 							gameBlock.getCentralMenu().getPlayerMenu().update(game.getPlayers()[playerNumber-1]);
 							gameBlock.getRightMenu().getUsualRightMenu().setVisible(true);
 							gameBlock.getRightMenu().getUsualRightMenu().toFront();
+							gameBlock.getRightMenu().getUsualRightMenu().update(game);
 							gameBlock.getRightMenu().getUsualRightMenu().getCreateUnit().setVisible(false);
 							gameBlock.getRightMenu().getUnitCreator().setVisible(false);
 							gameBlock.getLeftMenu().getUsualLeftMenu().update(game);

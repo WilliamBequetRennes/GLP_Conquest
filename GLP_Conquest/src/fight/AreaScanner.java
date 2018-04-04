@@ -3,6 +3,7 @@ package fight;
 import java.util.ArrayList;
 
 import data.Position;
+import game.Game;
 import map.Map;
 import squares.Square;
 import units.Unit;
@@ -17,7 +18,7 @@ public class AreaScanner {
 		setSquares(new ArrayList<Position>());
 	}
 	
-	public ArrayList<Position> searchTargets(Unit unit, Map map) {
+	public ArrayList<Position> searchTargets(Unit unit, Map map, Game game) {
 		getTargets().clear();
 		int range = unit.getRange();
 		if(range<=1) {

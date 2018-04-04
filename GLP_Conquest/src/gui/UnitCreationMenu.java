@@ -39,7 +39,7 @@ public class UnitCreationMenu extends VBox{
 		initializeBoxes();
 		
 		initializeGetBackClick(rightMenu);
-		initializeCreationClick(rightMenu);
+		initializeCreationClick(rightMenu, game);
 		
 		displayContent();
 		setAlignment(Pos.TOP_CENTER);
@@ -93,11 +93,11 @@ public class UnitCreationMenu extends VBox{
 		getChildren().add(getBackBox());
 	}
 	
-	public void initializeCreationClick(RightMenu rightMenu) {
+	public void initializeCreationClick(RightMenu rightMenu, Game game) {
 		getInfantry().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				try {
-					rightMenu.getUnitCreator().update(INFANTRY, "Infantry");
+					rightMenu.getUnitCreator().update(INFANTRY, "Infantry", game);
 				} catch (InvalidUnitNumberException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -110,7 +110,7 @@ public class UnitCreationMenu extends VBox{
 		getArmored().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				try {
-					rightMenu.getUnitCreator().update(ARMORED, "Armored");
+					rightMenu.getUnitCreator().update(ARMORED, "Armored", game);
 				} catch (InvalidUnitNumberException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -123,7 +123,7 @@ public class UnitCreationMenu extends VBox{
 		getRobot().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				try {
-					rightMenu.getUnitCreator().update(ROBOT, "Robot");
+					rightMenu.getUnitCreator().update(ROBOT, "Robot", game);
 				} catch (InvalidUnitNumberException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -136,7 +136,7 @@ public class UnitCreationMenu extends VBox{
 		getShip().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				try {
-					rightMenu.getUnitCreator().update(SHIP, "Ship");
+					rightMenu.getUnitCreator().update(SHIP, "Ship", game);
 				} catch (InvalidUnitNumberException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
