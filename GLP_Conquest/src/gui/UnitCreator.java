@@ -37,9 +37,11 @@ public class UnitCreator extends VBox{
 	private Label[] def;
 	private Label[] mov;
 	private Label[] range;
+	private Label[] cost;
 	private Label[] moneyCost;
 	private Label[] resourceCost;
 	private Label[] upkeep;
+	private Label[] upkeepResources;
 	private GridPane[] grid;
 	private Button getBack;
 	private UnitPurchase unitPurchase;
@@ -76,9 +78,11 @@ public class UnitCreator extends VBox{
 		setDef(new Label[getUnitsNumber()]);
 		setMov(new Label[getUnitsNumber()]);
 		setRange(new Label[getUnitsNumber()]);
+		setCost(new Label[getUnitsNumber()]);
 		setMoneyCost(new Label[getUnitsNumber()]);
 		setResourceCost(new Label[getUnitsNumber()]);
 		setUpkeep(new Label[getUnitsNumber()]);
+		setUpkeepResources(new Label[getUnitsNumber()]);
 		setGrid(new GridPane[getUnitsNumber()]);
 		
 		for(int i = 0; i<getUnitsNumber(); i++) {
@@ -88,22 +92,40 @@ public class UnitCreator extends VBox{
 			getDef()[i] = new Label();
 			getMov()[i] = new Label();
 			getRange()[i] = new Label();
+			getCost()[i] = new Label();
 			getMoneyCost()[i] = new Label();
 			getResourceCost()[i] = new Label();
 			getUpkeep()[i] = new Label();
+			getUpkeepResources()[i] = new Label();
 			getGrid()[i] = new GridPane();
 			
 			getName()[i].setId("type");
 			getCreate()[i].setText("Create");
 			getCreate()[i].setId("menu_bar_button");
+			getCost()[i].setText("Cost :");
+			getUpkeep()[i].setText("Upkeep :");
+			
+
+			getName()[i].setWrapText(true);
+			getAtk()[i].setWrapText(true);
+			getDef()[i].setWrapText(true);
+			getMov()[i].setWrapText(true);
+			getRange()[i].setWrapText(true);
+			getCost()[i].setWrapText(true);
+			getMoneyCost()[i].setWrapText(true);
+			getResourceCost()[i].setWrapText(true);
+			getUpkeep()[i].setWrapText(true);
+			getUpkeepResources()[i].setWrapText(true);
 			
 			getGrid()[i].add(getAtk()[i], 0, 0);
 			getGrid()[i].add(getDef()[i], 1, 0);
 			getGrid()[i].add(getMov()[i], 0, 1);
 			getGrid()[i].add(getRange()[i], 1, 1);
-			getGrid()[i].add(getMoneyCost()[i], 0, 2);
-			getGrid()[i].add(getResourceCost()[i], 1, 2);
-			getGrid()[i].add(getUpkeep()[i], 0, 3);
+			getGrid()[i].add(getCost()[i], 0, 2);
+			getGrid()[i].add(getUpkeep()[i], 1, 2);
+			getGrid()[i].add(getMoneyCost()[i], 0, 3);
+			getGrid()[i].add(getUpkeepResources()[i], 1, 3);
+			getGrid()[i].add(getResourceCost()[i], 0, 4);
 			getGrid()[i].setAlignment(Pos.CENTER);
 		}
 	}
@@ -193,22 +215,22 @@ public class UnitCreator extends VBox{
 			getDef()[i].setText("DEF : "+units[i].getDefense());
 			getMov()[i].setText("MOV : "+units[i].getMaxMovement());
 			getRange()[i].setText("Range : "+units[i].getRange());
-			getMoneyCost()[i].setText("Cost : "+units[i].getCost().getMoney()+" money");
+			getMoneyCost()[i].setText(units[i].getCost().getMoney()+" money");
 			if(units[i].getType()==0 || units[i].getType()==1) {
 				getResourceCost()[i].setText(units[i].getCost().getFood()+" food");
-				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getFood()+" food");
+				getUpkeepResources()[i].setText(units[i].getUpkeep().getFood()+" food");
 			}
 			if(units[i].getType()==2 || units[i].getType()==3) {
 				getResourceCost()[i].setText(units[i].getCost().getElectricity()+" elec");
-				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getElectricity()+" elec");
+				getUpkeepResources()[i].setText(units[i].getUpkeep().getElectricity()+" elec");
 			}
 			if(units[i].getType()==4 || units[i].getType()==5) {
 				getResourceCost()[i].setText(units[i].getCost().getOil()+" oil");
-				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getOil()+" oil");
+				getUpkeepResources()[i].setText(units[i].getUpkeep().getOil()+" oil");
 			}
 			if(units[i].getType()==6 || units[i].getType()==7) {
 				getResourceCost()[i].setText(units[i].getCost().getOil()+" oil");
-				getUpkeep()[i].setText("Upkeep : "+units[i].getUpkeep().getOil()+" oil");
+				getUpkeepResources()[i].setText(units[i].getUpkeep().getOil()+" oil");
 			}
 		}
 	}
@@ -385,6 +407,22 @@ public class UnitCreator extends VBox{
 
 	public void setResourceCost(Label[] resourceCost) {
 		this.resourceCost = resourceCost;
+	}
+
+	public Label[] getCost() {
+		return cost;
+	}
+
+	public void setCost(Label[] cost) {
+		this.cost = cost;
+	}
+
+	public Label[] getUpkeepResources() {
+		return upkeepResources;
+	}
+
+	public void setUpkeepResources(Label[] upkeepResources) {
+		this.upkeepResources = upkeepResources;
 	}
 	
 }

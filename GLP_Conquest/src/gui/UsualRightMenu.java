@@ -87,6 +87,7 @@ public class UsualRightMenu extends VBox{
 	public void initializeNumberOfSquares(Game game) {
 		setNumberOfSquares(new Label());
 		getNumberOfSquares().setText("Number of squares : "+game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber());
+		getNumberOfSquares().setWrapText(true);
 	}
 	
 	public void initializeResources(Game game) {
@@ -99,6 +100,11 @@ public class UsualRightMenu extends VBox{
 		getFood().setText("Food : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getFood());
 		getOil().setText("Oil : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getOil());
 		getElectricity().setText("Electricity : "+game.getPlayers()[game.getCurrentPlayer()-1].getResources().getElectricity());
+		
+		getMoney().setWrapText(true);
+		getFood().setWrapText(true);
+		getOil().setWrapText(true);
+		getElectricity().setWrapText(true);
 	}
 	
 	public void initializeCreateUnitButton(Game game, RightMenu rightMenu) {

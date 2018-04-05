@@ -49,6 +49,7 @@ public class UnitCreationMenu extends VBox{
 		setUnitsCreation(new Label());
 		getUnitsCreation().setText("Unit Creation");
 		getUnitsCreation().setId("creation_menu");
+		getUnitsCreation().setWrapText(true);
 		
 		setInfantry(new Button());
 		setArmored(new Button());
