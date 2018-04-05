@@ -150,10 +150,10 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 				if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 					
 					//set data
-					
-					testedPosition0.setLocalCost(previousCost);
-					
+										
 					testedPosition0.addLocalPath(testedPosition0);
+					
+					testedPosition0.calculateLocalCost(map);
 					
 					available.add(testedPosition0);
 
@@ -198,12 +198,12 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 								&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
 						
 							//set datas
-							
-							testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
-							
+														
 							testedPosition0.setLocalPath(previousPath);
 							
 							testedPosition0.addLocalPath(testedPosition0);
+							
+							testedPosition0.calculateLocalCost(map);
 							
 							available.add(testedPosition0);
 
@@ -249,9 +249,9 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 									
 									//and set datas if it is
 									
-									testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
 									testedPosition0.setLocalPath(previousPath);
 									testedPosition0.addLocalPath(testedPosition0);
+									testedPosition0.calculateLocalCost(map);
 									available.add(testedPosition0);
 
 									
@@ -294,9 +294,9 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 											
 											//and set datas if it is
 											
-											testedPosition0.setLocalCost(map.getSquareType(testedPosition0).getMoveCost()+previousCost);
 											testedPosition0.setLocalPath(previousPath);
 											testedPosition0.addLocalPath(testedPosition0);
+											testedPosition0.calculateLocalCost(map);
 											available.add(testedPosition0);
 
 											

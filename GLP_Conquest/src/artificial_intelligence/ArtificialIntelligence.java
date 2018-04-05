@@ -10,12 +10,18 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import countries.Country;
 import data.Position;
+import data.Resources;
 import exceptions.AttributeException;
+import exceptions.InvalidUnitNumberException;
 import exceptions.OutOfRangeException;
+import fight.Damage;
 import game.Game;
+import game.LevelUp;
+import game.UnitPurchase;
 import movement.Graph;
 import movement.IndexPosition;
 import movement.Movement;
+import squares.Square;
 import units.Unit;
 
 public class ArtificialIntelligence {
@@ -32,7 +38,7 @@ public class ArtificialIntelligence {
 	}
 	
 	//Mettre à jour avec les modifications du package movement
-	/*public void unitsManagement() throws AttributeException, OutOfRangeException {
+	public void unitsManagement() throws AttributeException, OutOfRangeException {
 		HashMap<Position,Unit> units = this.country.getUnits();
 		Set<Entry<Position,Unit>> unitsSet = units.entrySet();
 		Iterator<Entry<Position,Unit>> unitsIterator = unitsSet.iterator();
@@ -41,14 +47,14 @@ public class ArtificialIntelligence {
 		Movement movement;
 		Graph graph;
 		IndexPosition position;
-		float[] preview;
+		Damage preview;
 		HashMap<IndexPosition, Integer> priority = new HashMap<IndexPosition, Integer>();
 		HashMap<Position,Unit> alone = new HashMap<Position, Unit>();
 		while(unitsIterator.hasNext()) {
 			unit = (Unit) unitsIterator.next();
-			movement = new Movement(unit,game);
+			movement = new Movement(unit);
 			graph = movement.getGraph();
-			ArrayList<IndexPosition> buildings = graph.containsBuilding();
+			ArrayList<IndexPosition> buildings = graph.containsBuilding(getGame().getMap());
 			Iterator<IndexPosition> buildingsIterator = buildings.iterator();
 			int weight = 0;
 			while(buildingsIterator.hasNext()) {
@@ -60,11 +66,11 @@ public class ArtificialIntelligence {
 					}
 				}
 				else {
-					preview = movement.calculate(unit, game.getUnits().get(position));
-					if(preview[2] == 0) {
+					preview = movement.calculate(unit, game.getUnits().get(position),getGame().getMap());
+					if(preview.getDefenderMaxRemainingHealth() == 0) {
 						weight = 11;
 					}
-					if (preview[1] > 0) {
+					if (preview.getMinRevengeDamage() > 0) {
 						weight = 9;
 					}
 					else {
@@ -73,16 +79,16 @@ public class ArtificialIntelligence {
 				}
 				priority.put(position, weight);
 			}
-			ArrayList<Unit> enemyUnits = graph.containsUnit();
+			ArrayList<Unit> enemyUnits = graph.containsUnit(getGame().getMap(),getGame());
 			Iterator<Unit> enemyUnitsIterator = enemyUnits.iterator();
 			while(enemyUnitsIterator.hasNext()) {
 				enemyUnit = enemyUnitsIterator.next();
 				if(!priority.containsKey(enemyUnit.getPosition())) {
-					preview = movement.calculate(unit, enemyUnit);
-					if(preview[2] == 0) {
+					preview = movement.calculate(unit, enemyUnit,getGame().getMap());
+					if(preview.getDefenderMaxRemainingHealth() == 0) {
 						weight = 8;
 					}
-					if (preview[1] > 0) {
+					if (preview.getMinRevengeDamage() > 0) {
 						weight = 5;
 					}
 					else {
@@ -96,16 +102,17 @@ public class ArtificialIntelligence {
 			}
 			else {
 				IndexPosition[] choice = max3(priority);
-				Movement move = new Movement(unit, game);
+				Movement move = new Movement(unit);
 				int randomNum = ThreadLocalRandom.current().nextInt(1, 101);
 				if (randomNum<75) {
-					move.goTo(choice[0]);
+					
+					move.goTo(choice[0],choice[0].getLocalPath(),getGame().getMap(),getGame());
 				}
 				else if(randomNum>=75 && randomNum<95) {
-					move.goTo(choice[1]);
+					move.goTo(choice[1],choice[1].getLocalPath(),getGame().getMap(),getGame());
 				}
 				else {
-					move.goTo(choice[2]);
+					move.goTo(choice[2],choice[2].getLocalPath(),getGame().getMap(),getGame());
 				}
 			}
 		}
@@ -114,7 +121,7 @@ public class ArtificialIntelligence {
 		while(aloneIterator.hasNext()) {
 			Map.Entry<Position, Unit> lostUnits = aloneIterator.next();
 			Unit lostUnit = lostUnits.getValue();
-			Graph looking4Aim = new Graph(new IndexPosition(lostUnit.getPosition().getIPosition(),lostUnit.getPosition().getJPosition()),game.getMap(),game);
+			Graph looking4Aim = new Graph(new IndexPosition(lostUnit.getPosition().getIPosition(),lostUnit.getPosition().getJPosition()));
 			ArrayList<IndexPosition> aim = looking4Aim.getGraph();
 			Iterator<IndexPosition> lostIterator = aim.iterator();
 			boolean foundAim = false;
@@ -123,13 +130,13 @@ public class ArtificialIntelligence {
 				lostPosition = lostIterator.next();
 				if (game.getMap().getSquareType(lostPosition).getFaction() != lostUnit.getFaction()) {
 					foundAim = true;
-					Movement move = new Movement(lostUnit,game);
-					move.goTo(lostPosition);
+					Movement move = new Movement(lostUnit);
+					move.goTo(lostPosition,lostPosition.getLocalPath(),getGame().getMap(),getGame());
 				}
 			}
 			if (foundAim == false) {
-				Movement move = new Movement(lostUnit,game);
-				move.goTo(lostPosition);
+				Movement move = new Movement(lostUnit);
+				move.goTo(lostPosition,lostPosition.getLocalPath(),getGame().getMap(),getGame());
 			}
 		}
 	}
@@ -208,7 +215,40 @@ public class ArtificialIntelligence {
 			}
 		}
 		return optimize;
-	}*/
+	}
+	
+	public void buildingManagement(Game game) {
+		HashMap<Position,Square> buildings = getCountry().getBuildings();
+		Set<Entry<Position,Square>> buildingsSet = buildings.entrySet();
+		LevelUp up = new LevelUp();
+		for(Entry<Position,Square> building : buildingsSet) {
+			if(building.getValue().getLevel()<up.getMaxLevel()) {
+				float money = getCountry().getResources().getMoney();
+				float neededMoney = up.getCostLevel()[building.getValue().getLevel()];
+				if(neededMoney<money) {
+					game.setCurrentSquare(building.getValue());
+					up.up(game);
+				}
+			}
+		}	
+	}
+	
+	public void unitsCreator(Game game) throws InvalidUnitNumberException {
+		HashMap<Position,Square> buildings = getCountry().getBuildings();
+		Set<Entry<Position,Square>> buildingsSet = buildings.entrySet();
+		ArrayList<Square> cities = new ArrayList<Square>();
+		UnitPurchase purchase = new UnitPurchase();
+		for(Entry<Position,Square> building : buildingsSet) {
+			if(building.getValue().getType() == 9) {
+				cities.add(building.getValue());
+			}
+		}
+		for(Square city : cities) {
+			game.setCurrentSquare(city);
+			int randomNum = ThreadLocalRandom.current().nextInt(0, 6);
+			purchase.purchase(game, randomNum);			
+		}
+	}
 	
 	public void setWaiting(HashMap<Position, Unit> hashMap) {
 		this.waiting = hashMap;

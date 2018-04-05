@@ -65,4 +65,12 @@ public class LevelUp {
 		}
 		game.getPlayers()[player].setGains(gains);
 	}
+	
+	public int getMaxLevel() {
+		return LEVEL_MAX;
+	}
+	
+	public int[] getCostLevel() {
+		return COST_LEVEL;
+	}
 }
