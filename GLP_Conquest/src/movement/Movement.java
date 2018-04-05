@@ -355,7 +355,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			//Move the unit
 			map.getSquares()[currentPosition.getIPosition()][currentPosition.getJPosition()].setUnit(false);
 			map.getSquares()[finalPosition.getIPosition()][finalPosition.getJPosition()].setUnit(true);
-			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().remove(finalPosition);
+			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().remove(movingUnit.getPosition());
 			movingUnit.setPosition(finalPosition);
 			game.getPlayers()[game.getCurrentPlayer()-1].getUnits().put(finalPosition, movingUnit);
 		}

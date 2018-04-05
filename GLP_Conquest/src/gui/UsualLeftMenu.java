@@ -84,6 +84,11 @@ public class UsualLeftMenu extends VBox{
 		getDefenseBoost().setVisible(false);
 		getSquareLevel().setVisible(false);
 		
+		getSquareType().setWrapText(true);
+		getAttackBoost().setWrapText(true);
+		getDefenseBoost().setWrapText(true);
+		getSquareLevel().setWrapText(true);
+		
 		getSquareType().setId("type");
 	}
 	public void initializeLevelUpButton(Game game, GameBlock gameBlock) {
@@ -126,6 +131,14 @@ public class UsualLeftMenu extends VBox{
 		getMovePoints().setVisible(false);
 		getRange().setVisible(false);
 		getUpkeep().setVisible(false);
+
+		getUnitType().setWrapText(true);
+		getAttack().setWrapText(true);
+		getDefense().setWrapText(true);
+		getHealthPoints().setWrapText(true);
+		getMovePoints().setWrapText(true);
+		getRange().setWrapText(true);
+		getUpkeep().setWrapText(true);
 		
 		getUnitType().setId("type");
 		getUnitData().setAlignment(Pos.CENTER);
