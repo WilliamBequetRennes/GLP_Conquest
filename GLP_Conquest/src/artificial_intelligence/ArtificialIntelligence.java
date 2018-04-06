@@ -250,6 +250,12 @@ public class ArtificialIntelligence {
 		}
 	}
 	
+	public void turnOrder(Game game) throws AttributeException, OutOfRangeException, InvalidUnitNumberException {
+		unitsManagement();
+		buildingManagement(game);
+		unitsCreator(game);
+	}
+	
 	public void setWaiting(HashMap<Position, Unit> hashMap) {
 		this.waiting = hashMap;
 	}
