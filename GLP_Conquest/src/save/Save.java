@@ -59,7 +59,7 @@ public class Save {
 		setGame(new Game());
 	}
 	
-	public void saveGame(Game game) throws IOException {
+	public void saveGame(Game game, Map map) throws IOException {
 		setGame(game);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(this.save));
 		int currentPlayer = getGame().getCurrentPlayer();
@@ -148,7 +148,6 @@ public class Save {
 			writer.write(">");
 		}
 		writer.write("<");
-		Map map = getGame().getMap();
 		for(int i = 0; i < getGame().getMapSize(); i++) {
 			for (int j = 0; j < getGame().getMapSize(); j++) {
 				writer.write(map.getSquares()[i][j].getFaction()+"");
@@ -164,7 +163,7 @@ public class Save {
 		char lastChar = (char) reader.read();
 		String storage = "";
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -174,7 +173,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -183,7 +182,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -192,7 +191,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -201,7 +200,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -211,7 +210,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar != '#'){
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -220,7 +219,7 @@ public class Save {
 		storage="";
 		lastChar = (char)reader.read();
 		while(lastChar!='#' && lastChar!='>' && lastChar!='<') {
-			if (lastChar<='9' &&  lastChar>='0') {
+			if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 				storage += lastChar;
 			}
 			lastChar = (char) reader.read();
@@ -238,7 +237,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -247,7 +246,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -277,7 +276,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -286,7 +285,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -295,7 +294,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -304,7 +303,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -313,7 +312,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -322,7 +321,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -331,7 +330,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -340,7 +339,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -349,7 +348,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -358,7 +357,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -367,7 +366,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -376,7 +375,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -385,7 +384,7 @@ public class Save {
 			lastChar = (char) reader.read();
 			storage="";
 			while(lastChar != '#'){
-				if (lastChar<='9' &&  lastChar>='0') {
+				if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 					storage += lastChar;
 				}
 				lastChar = (char) reader.read();
@@ -396,7 +395,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -405,7 +404,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '&'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -423,7 +422,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -432,7 +431,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -443,7 +442,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -475,7 +474,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
@@ -484,7 +483,7 @@ public class Save {
 				lastChar = (char) reader.read();
 				storage="";
 				while(lastChar != '#'){
-					if (lastChar<='9' &&  lastChar>='0') {
+					if (lastChar<='9' &&  lastChar>='0' || lastChar=='.') {
 						storage += lastChar;
 					}
 					lastChar = (char) reader.read();
