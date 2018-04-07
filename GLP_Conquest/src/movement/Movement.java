@@ -637,16 +637,41 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		ArrayList<Position> adjacent = areaScanner.aroundPositions(position, 1, map);
 		
 		for(Position current : adjacent) {
+			int faction = map.getSquares()[current.getIPosition()][current.getJPosition()].getFaction();
+			
 			//if the square doesn't already belong to the player, if the square isn't a building and
 			//if there is no enemy unit on it
-			if(map.getSquares()[current.getIPosition()][current.getJPosition()].getFaction() != game.getCurrentPlayer()
-					&& map.getSquares()[current.getIPosition()][current.getJPosition()].getType() <= 4 
-						&& !map.getSquares()[current.getIPosition()][current.getJPosition()].getUnit()) {
-				
+			if(faction != game.getCurrentPlayer() && 
+					map.getSquares()[current.getIPosition()][current.getJPosition()].getType() <= 4 && 
+					!map.getSquares()[current.getIPosition()][current.getJPosition()].getUnit()) {
+					
+					//if the square was owned by an other player
+					if(faction > 0) {
+						int squaresOfEnemy = game.getPlayers()[faction-1].getSquareNumber();
+						game.getPlayers()[faction-1].setSquareNumber(squaresOfEnemy-1);
+					}
 					map.getSquares()[current.getIPosition()][current.getJPosition()].setFaction(game.getCurrentPlayer());
+					int numberOfSquares = game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber();
+					game.getPlayers()[game.getCurrentPlayer()-1].setSquareNumber(numberOfSquares+1);
 			}
 		}
+		int faction = map.getSquares()[position.getIPosition()][position.getJPosition()].getFaction();
+		
+		//if the square was owned by an other player
+		if(faction>0) {
+			int squaresOfEnemy = game.getPlayers()[faction-1].getSquareNumber();
+			game.getPlayers()[faction-1].setSquareNumber(squaresOfEnemy-1);
+			if (map.getSquares()[position.getIPosition()][position.getJPosition()].getType()>4) {
+				game.getPlayers()[faction-1].getBuildings().remove(position);
+			}
+		}
+		
 		map.getSquares()[position.getIPosition()][position.getJPosition()].setFaction(game.getCurrentPlayer());
+		int numberOfSquares = game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber();
+		game.getPlayers()[game.getCurrentPlayer()-1].setSquareNumber(numberOfSquares+1);
+		if (map.getSquares()[position.getIPosition()][position.getJPosition()].getType()>4) {
+			game.getPlayers()[game.getCurrentPlayer()-1].getBuildings().put(position,map.getSquares()[position.getIPosition()][position.getJPosition()]);
+		}
 	}
 	
 	public void setUnit(Unit unit) {
