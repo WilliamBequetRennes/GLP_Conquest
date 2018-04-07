@@ -11,13 +11,6 @@ import units.Unit;
 
 public class Game {
 
-	@Override
-	public String toString() {
-		return "Game [currentTurn=" + currentTurn + ", turnsNumber=" + turnsNumber + ", playersNumber=" + playersNumber
-				+ ", players=" + Arrays.toString(players) + ", currentPlayer=" + currentPlayer + ", mapSize=" + mapSize
-				+ ", map=" + map + ", currentSquare=" + currentSquare + ", units=" + units + "]";
-	}
-
 	private int currentTurn;
 	private int turnsNumber;
 	private int playersNumber;
@@ -26,7 +19,6 @@ public class Game {
 	private int mapSize;
 	private Map map;
 	private Square currentSquare;
-	private HashMap<Position,Unit> units;
 	
 	public Game(int currentTurn, int turnsNumber, int playersNumber, Country[] players, int currentPlayer, int mapSize,
 			Map map, Square currentSquare, HashMap<Position,Unit> units) {
@@ -38,7 +30,6 @@ public class Game {
 		setMapSize(mapSize);
 		setMap(map);
 		setCurrentSquare(currentSquare);
-		setUnits(units);
 	}
 	
 	public Game(int playersNumber, int turnsNumber, int mapSize, Map map) {
@@ -92,20 +83,18 @@ public class Game {
 		this.currentSquare = currentSquare;
 	}
 
-	public HashMap<Position, Unit> getUnits() {
-		return units;
-	}
-
-	public void setUnits(HashMap<Position, Unit> units) {
-		this.units = units;
-	}
-
 	public int getTurnsNumber() {
 		return turnsNumber;
 	}
 
 	public void setTurnsNumber(int turnsNumber) {
 		this.turnsNumber = turnsNumber;
+	}
+	@Override
+	public String toString() {
+		return "Game [currentTurn=" + currentTurn + ", turnsNumber=" + turnsNumber + ", playersNumber=" + playersNumber
+				+ ", players=" + Arrays.toString(players) + ", currentPlayer=" + currentPlayer + ", mapSize=" + mapSize
+				+ ", map=" + map + ", currentSquare=" + currentSquare +"]";
 	}
 	
 }
