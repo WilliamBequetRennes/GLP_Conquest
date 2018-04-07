@@ -66,7 +66,8 @@ public class ArtificialIntelligence {
 					}
 				}
 				else {
-					preview = movement.calculate(unit, game.getUnits().get(position),getGame().getMap());
+					int faction = game.getMap().getSquares()[position.getIPosition()][position.getJPosition()].getFaction();
+					preview = movement.calculate(unit, game.getPlayers()[faction-1].getUnits().get(position),getGame().getMap());
 					if(preview.getDefenderMaxRemainingHealth() == 0) {
 						weight = 11;
 					}

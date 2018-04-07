@@ -552,8 +552,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		if (unit.getType()<6) {
 			if(map.getSquareType(unit.getPosition()).getType() == 0) {
 				Transform transform = new Transform(unit.getPosition(),unit.getFaction(),unit);
-				game.getUnits().remove(unit.getPosition(),unit);
-				game.getUnits().put(transform.getPosition(),transform);
 				game.getPlayers()[unit.getFaction()].getUnits().remove(unit.getPosition(),unit);
 				game.getPlayers()[unit.getFaction()].getUnits().put(transform.getPosition(),transform);
 			}
@@ -561,8 +559,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		else if (unit.getType()==9) {
 			if(map.getSquareType(unit.getPosition()).getType() != 0) {
 				Transform transform = (Transform) unit;
-				game.getUnits().remove(unit.getPosition(),unit);
-				game.getUnits().put(transform.getPosition(),transform.getUnit());
 				game.getPlayers()[unit.getFaction()].getUnits().remove(unit.getPosition(),unit);
 				game.getPlayers()[unit.getFaction()].getUnits().put(transform.getPosition(),transform.getUnit());
 				

@@ -214,7 +214,8 @@ public class Graph {
 		while(graphIterator.hasNext()) {
 			position = graphIterator.next();
 			if (map.getSquareType(position).getUnit()) {
-				unit.add(game.getUnits().get(position));
+				int faction = game.getMap().getSquares()[position.getIPosition()][position.getJPosition()].getFaction();
+				unit.add(game.getPlayers()[faction-1].getUnits().get(position));
 			}
 		}
 		return unit;
