@@ -81,7 +81,7 @@ public class GameMenu extends VBox{
 		getSaveButton().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				try {
-					getSave().saveGame(game,game.getMap());
+					getSave().saveGame(game, game.getMap());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
