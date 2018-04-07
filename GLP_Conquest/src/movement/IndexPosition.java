@@ -3,6 +3,7 @@ package movement;
 import java.util.ArrayList;
 
 import data.Position;
+import map.Map;
 
 public class IndexPosition extends Position {
 	private int jPosition;
@@ -45,6 +46,15 @@ public class IndexPosition extends Position {
 	
 	public void setLocalCost(float localCost) {
 		this.localCost = localCost;
+	}
+	
+	public void calculateLocalCost(Map map) {
+		ArrayList<IndexPosition> path = getLocalPath();
+		float movementCost = 0;
+		for(IndexPosition current : path) {
+			movementCost += map.getSquareType(current.toPosition()).getMoveCost();
+		}
+		setLocalCost(movementCost);
 	}
 	
 	public float getLocalCost() {
