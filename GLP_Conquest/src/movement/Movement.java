@@ -428,8 +428,8 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 				if(defenseUnit.getType()==3 || defenseUnit.getType()==2) {
 					attackerBonus = map.getSquareType(attackUnit.getPosition()).getBonus().getDefense(); 
 					defenderBonus = map.getSquareType(defenseUnit.getPosition()).getBonus().getAttack();
-					minRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderHealth/100*1.8- attackerDefense*/*attackerBoost**/attackerBonus;
-					maxRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderHealth/100*2.2 - attackerDefense*/*attackerBoost**/attackerBonus;
+					minRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderMinHealth/100*1.8- attackerDefense*/*attackerBoost**/attackerBonus;
+					maxRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderMaxHealth/100*2.2 - attackerDefense*/*attackerBoost**/attackerBonus;
 
 					minRevengeDamage = minRevengeDamage*1/attributeBonus;
 					maxRevengeDamage = maxRevengeDamage*1/attributeBonus;
@@ -440,8 +440,8 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 				else {
 					attackerBonus = map.getSquareType(attackUnit.getPosition()).getBonus().getDefense(); 
 					defenderBonus = map.getSquareType(defenseUnit.getPosition()).getBonus().getAttack();
-					 minRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderHealth/100*1.9 - attackerDefense*/*attackerBoost**/attackerBonus;
-					maxRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderHealth/100*2.1 - attackerDefense*/*attackerBoost**/attackerBonus;
+					 minRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderMinHealth/100*1.9 - attackerDefense*/*attackerBoost**/attackerBonus;
+					maxRevengeDamage = defenderAttack*/*defenderBoost**/defenderBonus*defenderMaxHealth/100*2.1 - attackerDefense*/*attackerBoost**/attackerBonus;
 
 					minRevengeDamage = minRevengeDamage*1/attributeBonus;
 					maxRevengeDamage = maxRevengeDamage*1/attributeBonus;
