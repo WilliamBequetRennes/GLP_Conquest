@@ -477,8 +477,8 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 				conquest(current, map, game);
 				moveCost += map.getSquares()[current.getIPosition()][current.getJPosition()].getMoveCost();
 			}
-			conquest(finalPosition, map, game);
-			moveCost += map.getSquares()[finalPosition.getIPosition()][finalPosition.getJPosition()].getMoveCost();
+			//conquest(finalPosition, map, game);
+			//moveCost += map.getSquares()[finalPosition.getIPosition()][finalPosition.getJPosition()].getMoveCost();
 			//Reduce the move points of the unit
 			movingUnit.setMovement(movingUnit.getMovement()-moveCost);
 			

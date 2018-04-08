@@ -212,7 +212,8 @@ public class MapCanvas extends Canvas{
 				getPossibleAttacks().clear();
 				if(getMovingUnit().getRange()<=1){
 					for(Position position : getPossibleMoves()) {
-						if(game.getMap().getSquares()[position.getIPosition()][position.getJPosition()].getUnit()) {
+						Square square = game.getMap().getSquares()[position.getIPosition()][position.getJPosition()];
+						if(square.getUnit() && square.getFaction()!=game.getCurrentPlayer()) {
 							getPossibleAttacks().add(position);
 						}
 					}
