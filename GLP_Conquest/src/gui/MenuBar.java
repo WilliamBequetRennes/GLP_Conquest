@@ -26,6 +26,7 @@ public class MenuBar extends HBox{
 	
 	Turn turn;
 	private boolean menuClicked;
+	private boolean fighting;
 	
 	public MenuBar(BlockSize blockSize, Game game, CentralBlock centralBlock, MenusBlock menusBlock) {
 		super();
@@ -43,14 +44,22 @@ public class MenuBar extends HBox{
 		getMenu().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				if(!isMenuClicked()) {
+					setFighting(gameBlock.getLeftMenu().getFightForsights().isVisible());
 					gameBlock.getLeftMenu().getGameMenu().setVisible(true);
 					gameBlock.getLeftMenu().getGameMenu().toFront();
 					gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
+					gameBlock.getLeftMenu().getFightForsights().setVisible(false);
 					setMenuClicked(true);
 				}
-				else {
+				else if(!isFighting()){
 					gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 					gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
+					gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+					setMenuClicked(false);
+				}
+				else {
+					gameBlock.getLeftMenu().getFightForsights().setVisible(true);
+					gameBlock.getLeftMenu().getFightForsights().toFront();
 					gameBlock.getLeftMenu().getGameMenu().setVisible(false);
 					setMenuClicked(false);
 				}
@@ -77,6 +86,7 @@ public class MenuBar extends HBox{
 		getLeftSide().getChildren().add(getMenu());
 		getMenu().setId("switch_button");
 		setMenuClicked(false);
+		setFighting(false);
 	}
 	public void initializeMapNumber(Game game) {
 		setTurnNumber(new Label());
@@ -122,6 +132,8 @@ public class MenuBar extends HBox{
 	
 	public void reinitializeMapCanvas(MapCanvas map, Game game) {
 		map.setSelectedSquare(new Position());
+		map.getPossibleAttacks().clear();
+		map.getPossibleMoves().clear();
 	}
 	public void reinitializeUsualLeftMenu(UsualLeftMenu menu, Game game) {
 		menu.getSquareType().setVisible(false);
@@ -150,6 +162,7 @@ public class MenuBar extends HBox{
 		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+		gameBlock.getLeftMenu().getFightForsights().setVisible(false);
 		setMenuClicked(false);
 
 		//reset left menu
@@ -228,5 +241,13 @@ public class MenuBar extends HBox{
 
 	public void setTurn(Turn turn) {
 		this.turn = turn;
+	}
+
+	public boolean isFighting() {
+		return fighting;
+	}
+
+	public void setFighting(boolean fighting) {
+		this.fighting = fighting;
 	}
 }

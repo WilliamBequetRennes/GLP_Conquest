@@ -21,17 +21,17 @@ public class Bfgninethousand extends Unit{
 	/*
 	* Cost definition
 	*/
-	private static final int MONEY_COST = 0;
+	private static final int MONEY_COST = 1000;
 	private static final int FOOD_COST = 0;
 	private static final int OIL_COST = 0;
-	private static final int ELECTRICTY_COST = 0;
+	private static final int ELECTRICTY_COST = 1200;
 	/*
 	* Upkeep definition
 	*/
 	private static final int MONEY_UPKEEP = 0;
 	private static final int FOOD_UPKEEP = 0;
 	private static final int OIL_UPKEEP = 0;
-	private static final int ELECTRICTY_UPKEEP = 0;
+	private static final int ELECTRICTY_UPKEEP = 300;
 
 	/*
 	* Default constructor

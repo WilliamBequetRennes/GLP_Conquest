@@ -20,16 +20,16 @@ public class Destroyer extends Unit{
 	/*
 	* Cost definition
 	*/
-	private static final int MONEY_COST = 0;
+	private static final int MONEY_COST = 1500;
 	private static final int FOOD_COST = 0;
-	private static final int OIL_COST = 0;
+	private static final int OIL_COST = 1500;
 	private static final int ELECTRICTY_COST = 0;
 	/*
 	* Upkeep definition
 	*/
-	private static final int MONEY_UPKEEP = 0;
+	private static final int MONEY_UPKEEP = 250;
 	private static final int FOOD_UPKEEP = 0;
-	private static final int OIL_UPKEEP = 0;
+	private static final int OIL_UPKEEP = 400;
 	private static final int ELECTRICTY_UPKEEP = 0;
 
 	/*

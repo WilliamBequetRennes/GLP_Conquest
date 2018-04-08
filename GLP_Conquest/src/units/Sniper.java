@@ -21,15 +21,15 @@ public class Sniper extends Unit{
 	/*
 	* Cost definition
 	*/
-	private static final int MONEY_COST = 0;
-	private static final int FOOD_COST = 0;
+	private static final int MONEY_COST = 900;
+	private static final int FOOD_COST = 900;
 	private static final int OIL_COST = 0;
 	private static final int ELECTRICTY_COST = 0;
 	/*
 	* Upkeep definition
 	*/
 	private static final int MONEY_UPKEEP = 0;
-	private static final int FOOD_UPKEEP = 0;
+	private static final int FOOD_UPKEEP = 200;
 	private static final int OIL_UPKEEP = 0;
 	private static final int ELECTRICTY_UPKEEP = 0;
 

@@ -10,11 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import countries.Country;
 import data.Position;
-import data.Resources;
 import exceptions.AttributeException;
 import exceptions.InvalidUnitNumberException;
 import exceptions.OutOfRangeException;
 import fight.Damage;
+import fight.Fight;
 import game.Game;
 import game.LevelUp;
 import game.UnitPurchase;
@@ -67,7 +67,8 @@ public class ArtificialIntelligence {
 				}
 				else {
 					int faction = game.getMap().getSquares()[position.getIPosition()][position.getJPosition()].getFaction();
-					preview = movement.calculate(unit, game.getPlayers()[faction-1].getUnits().get(position),getGame().getMap());
+					Fight fight = new Fight();
+					preview = fight.calculate(unit, game.getPlayers()[faction-1].getUnits().get(position),getGame().getMap());
 					if(preview.getDefenderMaxRemainingHealth() == 0) {
 						weight = 11;
 					}
@@ -85,7 +86,8 @@ public class ArtificialIntelligence {
 			while(enemyUnitsIterator.hasNext()) {
 				enemyUnit = enemyUnitsIterator.next();
 				if(!priority.containsKey(enemyUnit.getPosition())) {
-					preview = movement.calculate(unit, enemyUnit,getGame().getMap());
+					Fight fight = new Fight();
+					preview = fight.calculate(unit, enemyUnit,getGame().getMap());
 					if(preview.getDefenderMaxRemainingHealth() == 0) {
 						weight = 8;
 					}

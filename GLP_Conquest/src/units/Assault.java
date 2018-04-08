@@ -28,8 +28,8 @@ public class Assault extends Unit{
 	/*
 	* Upkeep definition
 	*/
-	private static final int MONEY_UPKEEP = 200;
-	private static final int FOOD_UPKEEP = 200;
+	private static final int MONEY_UPKEEP = 0;
+	private static final int FOOD_UPKEEP = 150;
 	private static final int OIL_UPKEEP = 0;
 	private static final int ELECTRICTY_UPKEEP = 0;
 
