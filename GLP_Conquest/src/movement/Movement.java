@@ -442,6 +442,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 					}
 					previousPath.remove(testedPosition0);
 				}
+				
 			}
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
