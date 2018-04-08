@@ -251,12 +251,29 @@ public class ArtificialIntelligence {
 		}
 	}
 	
-	public void turnOrder(Game game) throws AttributeException, OutOfRangeException, InvalidUnitNumberException {
+	public void ecoTurnOrder(Game game) throws AttributeException, OutOfRangeException, InvalidUnitNumberException {
 		unitsManagement();
 		buildingManagement(game);
 		unitsCreator(game);
 	}
+	public void aggroTurnOrder(Game game) throws AttributeException, OutOfRangeException, InvalidUnitNumberException {
+		unitsManagement();
+		unitsCreator(game);
+		buildingManagement(game);
+	}
+	public void unknownTurnOrder(Game game) throws AttributeException, OutOfRangeException, InvalidUnitNumberException {
+		unitsManagement();
+		int randomNum = ThreadLocalRandom.current().nextInt(1, 2);
+		if(randomNum==1) {
+			buildingManagement(game);
+			unitsCreator(game);
+		}
+		else {
+			unitsCreator(game);
+			buildingManagement(game);
 	
+		}
+	}
 	public void setWaiting(HashMap<Position, Unit> hashMap) {
 		this.waiting = hashMap;
 	}
