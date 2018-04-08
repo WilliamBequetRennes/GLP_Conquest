@@ -6,19 +6,19 @@ import data.Position;
 import map.Map;
 
 public class IndexPosition extends Position {
-	private int jPosition;
 	private int iPosition;
+	private int jPosition;
 	private float localCost;
 	private ArrayList<IndexPosition> localPath;
 	
-	public IndexPosition(int jPosition, int iPosition) {
-		setJPosition(jPosition);
-		setIPosition(iPosition);
+	public IndexPosition(int iPosition, int jPosition) {
+		setJPosition(iPosition);
+		setIPosition(jPosition);
 		setDefaultCost();
 		setLocalPath(new ArrayList<IndexPosition>());
 	}
 	public IndexPosition(Position position) {
-		super(position.getJPosition(), position.getIPosition());
+		super(position.getIPosition(), position.getJPosition());
 	}
 	public IndexPosition() {
 		this(0,0);
