@@ -133,7 +133,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		//the starting position costs 0 to go to
 		
 		position.setLocalCost(0);		
-		available.add(position);
 		
 		//For each position of the whole graph
 		
@@ -443,6 +442,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 					}
 					previousPath.remove(testedPosition0);
 				}
+				
 			}
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
