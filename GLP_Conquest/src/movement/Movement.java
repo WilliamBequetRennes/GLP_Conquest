@@ -114,6 +114,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		int movement = (int) getUnit().getMovement();
 		ArrayList<Position> reachable = scanner.aroundPositions(position,movement,map);
 		for(Position convert : reachable) {
+			System.out.println(convert.getIPosition()+" : "+convert.getJPosition());
 			scan.add(convert.toIndexPosition());
 		}
 		//Iterator on the whole graph linked to the position 

@@ -42,7 +42,7 @@ public class AreaScanner {
 			//If we are in the map dimensions
 			if(jPosition + j >= 0 && jPosition + j < map.getDimensions()) {
 				if(j%2==0) {
-					int d = distance - (j/2);
+					int d = distance - (Math.abs(j)/2);
 					for(int i = -d; i <= d; i++) {
 						//If we are in the map dimensions
 						if(iPosition + i >= 0 && iPosition + i < map.getDimensions() && (j!=0 || i!=0)) {
