@@ -101,7 +101,9 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		
 		ArrayList<IndexPosition> available = new ArrayList<IndexPosition>();
 		IndexPosition position = new IndexPosition(getUnit().getPosition());
-		
+		ArrayList<Position> adjacent1 = new ArrayList<Position>();
+		ArrayList<Position> adjacent2 = new ArrayList<Position>();
+		ArrayList<Position> adjacent3 = new ArrayList<Position>();
 		AreaScanner scanner = new AreaScanner();
 		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
 		int movement = (int) getUnit().getMovement();
@@ -130,25 +132,23 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		//For each position of the whole graph
 		
 		while (positionIterator0.hasNext()) {
-			
-			//we test the position
-			
-			IndexPosition testedPosition0 = positionIterator0.next();
-			
-			//set the movement cost to reach the selected position
-			
-			previousCost += map.getSquareType(testedPosition0).getMoveCost();
 
-			//select the adjacent positions			
-			
-			ArrayList<Position> adjacent1 = adjacentSquare(position, map);
-			
-			//if it is next to the unit's position
-			
-			if (adjacent1.contains(testedPosition0)) {
-			
-				if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
-					
+			IndexPosition testedPosition0 = positionIterator0.next();
+
+			if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {				
+				
+				//set the movement cost to reach the selected position
+				
+				previousCost += map.getSquareType(testedPosition0).getMoveCost();
+	
+				//select the adjacent positions			
+				
+				adjacent1 = adjacentSquare(position, map);
+				
+				//if it is next to the unit's position
+				
+				if (adjacent1.contains(testedPosition0)) {
+						
 					//set data
 										
 					testedPosition0.addLocalPath(testedPosition0);
@@ -156,163 +156,173 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 					testedPosition0.calculateLocalCost(map);
 					
 					available.add(testedPosition0);
-
-				}			
+		
+				}
 			}
-			
 			//if it is not next to the unit's position
 			
 			else {
-				
-				//the previous position is part of the path
-				
-				previousPath.add(testedPosition0);
-				
-				//we test all of the adjacent position of the tested position
-
-				Iterator<Position>positionIterator1 = adjacent1.iterator();
-				
-				// For each adjacent position
-				
-				while (positionIterator1.hasNext()) {
+				if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())){
 					
-					//test if the current position is next to the position we aim
+					//the previous position is part of the path
 					
-					Position testedPosition1 = positionIterator1.next();
+					previousPath.add(testedPosition0);
 					
-					//refresh the movement cost to the aimed square
+					//we test all of the adjacent position of the tested position
+	
+					Iterator<Position>positionIterator1 = adjacent1.iterator();
 					
-					previousCost += map.getSquareType(testedPosition1).getMoveCost();
+					// For each adjacent position
 					
-					//select the adjacent position
-					
-					ArrayList<Position> adjacent2 = adjacentSquare(testedPosition1, map);
-					
-					//if the adjacent position contains the aimed position
-					
-					if (adjacent2.contains(testedPosition0)) {
+					while (positionIterator1.hasNext()) {
 						
-						//if the movement cost is cheaper than thep revious one(default : 100)
-					
-						if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()
-								&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
+						//test if the current position is next to the position we aim
 						
-							//set datas
-														
-							testedPosition0.setLocalPath(previousPath);
-							
-							testedPosition0.addLocalPath(testedPosition0);
-							
-							testedPosition0.calculateLocalCost(map);
-							
-							available.add(testedPosition0);
-
-						}
-					}
-					
-					//last iteration
-					
-					else {
+						Position testedPosition1 = positionIterator1.next();
 						
-						//the previous position is part of the path
+						if(isCrossable(map.getSquareType(testedPosition1).getType(),getUnit())){
 						
-						previousPath.add(testedPosition1.toIndexPosition());
-						
-						//try last iteration
-						
-						Iterator<Position> positionIterator2 = adjacent2.iterator();
-						
-						// For each adjacent position
-						
-						while (positionIterator2.hasNext()) {
+							//refresh the movement cost to the aimed square
 							
-							//save the last position in range and check
+							previousCost += map.getSquareType(testedPosition1).getMoveCost();
 							
-							Position testedPosition2 = positionIterator2.next();
+							//select the adjacent position
 							
-							//update movement cost
+							adjacent2 = adjacentSquare(testedPosition1, map);
 							
-							previousCost += map.getSquareType(testedPosition2).getMoveCost();
+							//if the adjacent position contains the aimed position
 							
-							//check one last time
-							
-							ArrayList<Position> adjacent3 = adjacentSquare(testedPosition0, map);
-							
-							//and if you finally find it
-						
-							if (adjacent3.contains(testedPosition0)) {
+							if (adjacent2.contains(testedPosition0)) {
 								
-								//verify it is the quickest
+								//if the movement cost is cheaper than thep revious one(default : 100)
+							
+								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
 								
-								if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-										&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
-									
-									//and set datas if it is
-									
+									//set datas
+																
 									testedPosition0.setLocalPath(previousPath);
-									testedPosition0.addLocalPath(testedPosition0);
-									testedPosition0.calculateLocalCost(map);
-									available.add(testedPosition0);
-
 									
+									testedPosition0.addLocalPath(testedPosition0);
+									
+									testedPosition0.calculateLocalCost(map);
+									
+									available.add(testedPosition0);
+		
 								}
 							}
+							
+							//last iteration
+							
 							else {
 								
-								//the previous position is part of the path
+								if(isCrossable(map.getSquareType(testedPosition1).getType(),getUnit())){
 								
-								previousPath.add(testedPosition2.toIndexPosition());
-								
-								//try last iteration
-								
-								Iterator<Position> positionIterator3 = adjacent3.iterator();
-								
-								// For each adjacent position
-								
-								while (positionIterator3.hasNext()) {
+									//the previous position is part of the path
 									
-									//save the last position in range and check
+									previousPath.add(testedPosition1.toIndexPosition());
 									
-									Position testedPosition3 = positionIterator3.next();
+									//try last iteration
 									
-									//update movement cost
+									Iterator<Position> positionIterator2 = adjacent2.iterator();
 									
-									previousCost += map.getSquareType(testedPosition3).getMoveCost();
+									// For each adjacent position
 									
-									//check one last time
-									
-									ArrayList<Position> adjacent4 = adjacentSquare(testedPosition0, map);
-									
-									//and if you finally find it
-								
-									if (adjacent4.contains(testedPosition0)) {
+									while (positionIterator2.hasNext()) {
 										
-										//verify it is the quickest
+										//save the last position in range and check
 										
-										if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost() 
-												&& isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {
+										Position testedPosition2 = positionIterator2.next();
+										
+										if(isCrossable(map.getSquareType(testedPosition2).getType(),getUnit())){
+										
+											//update movement cost
+										
+											previousCost += map.getSquareType(testedPosition2).getMoveCost();
 											
-											//and set datas if it is
+											//check one last time
 											
-											testedPosition0.setLocalPath(previousPath);
-											testedPosition0.addLocalPath(testedPosition0);
-											testedPosition0.calculateLocalCost(map);
-											available.add(testedPosition0);
-
+											adjacent3 = adjacentSquare(testedPosition0, map);
 											
+											//and if you finally find it
+										
+											if (adjacent3.contains(testedPosition0)) {
+											
+												//verify it is the quickest
+											
+												if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
+												
+													//and set datas if it is
+													
+													testedPosition0.setLocalPath(previousPath);
+													testedPosition0.addLocalPath(testedPosition0);
+													testedPosition0.calculateLocalCost(map);
+													available.add(testedPosition0);
+			
+												}
+											}
 										}
+										else {
+											
+											if(isCrossable(map.getSquareType(testedPosition2).getType(),getUnit())){
+											
+												//the previous position is part of the path
+											
+												previousPath.add(testedPosition2.toIndexPosition());
+												
+												//try last iteration
+												
+												Iterator<Position> positionIterator3 = adjacent3.iterator();
+												
+												// For each adjacent position
+												
+												while (positionIterator3.hasNext()) {
+													
+													//save the last position in range and check
+													
+													Position testedPosition3 = positionIterator3.next();
+													
+													//update movement cost
+													
+													previousCost += map.getSquareType(testedPosition3).getMoveCost();
+													
+													//check one last time
+													
+													ArrayList<Position> adjacent4 = adjacentSquare(testedPosition0, map);
+													
+													//and if you finally find it
+												
+													if (adjacent4.contains(testedPosition0)) {
+														
+														//verify it is the quickest
+														
+														if(map.getSquareType(testedPosition0).getMoveCost()+previousCost<testedPosition0.getLocalCost()) {
+															
+															//and set datas if it is
+															
+															testedPosition0.setLocalPath(previousPath);
+															testedPosition0.addLocalPath(testedPosition0);
+															testedPosition0.calculateLocalCost(map);
+															available.add(testedPosition0);
+				
+															
+															}
+														}
+														previousCost -= map.getSquareType(testedPosition3).getMoveCost();
+												}
+												previousPath.remove(testedPosition2);
+											
+											}
+										}
+										previousCost -= map.getSquareType(testedPosition2).getMoveCost();
 									}
-									previousCost -= map.getSquareType(testedPosition3).getMoveCost();
 								}
-								previousPath.remove(testedPosition2);
+								previousPath.remove(testedPosition1);
 							}
-							previousCost -= map.getSquareType(testedPosition2).getMoveCost();
+							previousCost -= map.getSquareType(testedPosition1).getMoveCost();
 						}
-						previousPath.remove(testedPosition1);
 					}
-					previousCost -= map.getSquareType(testedPosition1).getMoveCost();
+					previousPath.remove(testedPosition0);
 				}
-				previousPath.remove(testedPosition0);
 			}
 			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
