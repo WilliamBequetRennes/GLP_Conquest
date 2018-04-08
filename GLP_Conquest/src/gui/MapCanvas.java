@@ -6,8 +6,11 @@ import java.util.HashMap;
 import data.Position;
 import exceptions.AttributeException;
 import exceptions.InvalidMapSizeNumberException;
+import exceptions.InvalidUnitNumberException;
 import exceptions.OutOfRangeException;
 import fight.AreaScanner;
+import fight.Damage;
+import fight.Fight;
 import game.Game;
 import gui_data.BlockSize;
 import gui_data.PositionDouble;
@@ -180,7 +183,7 @@ public class MapCanvas extends Canvas{
 						Square clicked = game.getMap().getSquares()[current.getI()][current.getJ()];
 						game.setCurrentSquare(clicked);
 						setSelectedSquare(clicked.getPosition());
-						movement(game);
+						movement(game, gameBlock);
 						attacks(game);
 						gameBlock.getLeftMenu().getUsualLeftMenu().update(game);
 						changeVisibility(game, gameBlock);
@@ -191,10 +194,11 @@ public class MapCanvas extends Canvas{
 	}
 	
 	public void attacks(Game game) {
-		//If the unit is controled by the player and have all its move points, it can attack
+		//If the unit is controled by the player
 		if (game.getCurrentSquare().getFaction() == game.getCurrentPlayer()
 				&& game.getCurrentSquare().getUnit()) {
-			if(getMovingUnit().getMovement()==getMovingUnit().getMaxMovement()) {
+			// if the unit is a long range unit and have all its move points, it can attack
+			if(getMovingUnit().getMovement()==getMovingUnit().getMaxMovement() && getMovingUnit().getRange()>1) {
 				setPossibleAttacks(getAreaScanner().searchTargets(getMovingUnit(), game.getMap(), game));
 				for(Position current : getPossibleAttacks()) {
 					if (getPossibleMoves().contains(current)) {
@@ -202,8 +206,20 @@ public class MapCanvas extends Canvas{
 					}
 				}
 			}
+			// else if the unit is a hand-to-hand unit and can move,
+			// it can attack enemies on accessible squares
 			else {
 				getPossibleAttacks().clear();
+				if(getMovingUnit().getRange()<=1){
+					for(Position position : getPossibleMoves()) {
+						if(game.getMap().getSquares()[position.getIPosition()][position.getJPosition()].getUnit()) {
+							getPossibleAttacks().add(position);
+						}
+					}
+					for(Position position : getPossibleAttacks()) {
+						getPossibleMoves().remove(position);
+					}
+				}
 			}
 		}
 		else {
@@ -211,7 +227,7 @@ public class MapCanvas extends Canvas{
 		}
 	}
 	
-	public void movement(Game game) {
+	public void movement(Game game, GameBlock gameBlock) {
 		//If the unit is controled by the player it can be moved
 		if (game.getCurrentSquare().getFaction() == game.getCurrentPlayer()
 				&& game.getCurrentSquare().getUnit()) {
@@ -247,8 +263,21 @@ public class MapCanvas extends Canvas{
 		}
 		//if a unit is moving and the square is occupied by an ennemy, the fight menu is opened
 		else if (isMoveAvailable() && game.getCurrentSquare().getUnit()) {
-			//afficher l'écran de prévisualisation de combat avec un boutton Attack
-			//pour lancer le combat
+			Fight fight = new Fight();
+			int faction = game.getCurrentSquare().getFaction();
+			try {
+				Damage forsights = new Damage();
+				//Damage forsights = fight.calculate(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), game.getMap());
+				gameBlock.getLeftMenu().getFightForsights().update(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), forsights);
+				gameBlock.getLeftMenu().getFightForsights().toFront();
+				gameBlock.getLeftMenu().getFightForsights().setVisible(true);
+				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
+				getPossibleMoves().clear();
+				getPossibleAttacks().clear();
+			} catch (InvalidUnitNumberException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		//if the square isn't occupied by a player's unit and the moving unit is to far
 		//or if there is no moving unit, there is no possible action
@@ -272,6 +301,7 @@ public class MapCanvas extends Canvas{
 		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
+		gameBlock.getLeftMenu().getFightForsights().setVisible(false);
 		menusBlock.getPlayableBlock().getCentralBlock().getMenuBar().setMenuClicked(false);
 
 		//reset left menu

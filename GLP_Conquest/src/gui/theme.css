@@ -165,7 +165,7 @@ Label{
 	
 	/* G A M E */
 	
-	#creation_menu{
+	#creation_menu, #vs{
 		-fx-font-size: 20pt;
 		-fx-font-weight: bold;
 		-fx-text-fill:rgb(220,220,220);
