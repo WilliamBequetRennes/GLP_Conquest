@@ -268,10 +268,10 @@ public class MapCanvas extends Canvas{
 			int faction = game.getCurrentSquare().getFaction();
 			try {
 				Damage forsights = new Damage();
-				//Damage forsights = fight.calculate(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), game.getMap());
-				gameBlock.getLeftMenu().getFightForsights().update(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), forsights);
-				gameBlock.getLeftMenu().getFightForsights().toFront();
-				gameBlock.getLeftMenu().getFightForsights().setVisible(true);
+				//Damage forecast = fight.calculate(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), game.getMap());
+				gameBlock.getLeftMenu().getFightForecasts().update(getMovingUnit(), game.getPlayers()[faction-1].getUnits().get(getSelectedSquare()), forsights);
+				gameBlock.getLeftMenu().getFightForecasts().toFront();
+				gameBlock.getLeftMenu().getFightForecasts().setVisible(true);
 				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
 				getPossibleMoves().clear();
 				getPossibleAttacks().clear();
@@ -302,7 +302,7 @@ public class MapCanvas extends Canvas{
 		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
-		gameBlock.getLeftMenu().getFightForsights().setVisible(false);
+		gameBlock.getLeftMenu().getFightForecasts().setVisible(false);
 		menusBlock.getPlayableBlock().getCentralBlock().getMenuBar().setMenuClicked(false);
 
 		//reset left menu

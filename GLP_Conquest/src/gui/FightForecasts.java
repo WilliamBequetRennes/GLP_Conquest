@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import units.Unit;
 
-public class FightForsights extends VBox{
+public class FightForecasts extends VBox{
 
 	private final static double FORSIGHT_BOX = 0.80 ;
 	private final static double BACK_BOX = 0.20 ;
@@ -34,7 +34,7 @@ public class FightForsights extends VBox{
 	private VBox forsightBox;
 	private VBox backBox;
 	
-	public FightForsights(Game game, BlockSize blockSize, GameBlock gameBlock) {
+	public FightForecasts(Game game, BlockSize blockSize, GameBlock gameBlock) {
 		super();
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
@@ -114,7 +114,7 @@ public class FightForsights extends VBox{
 			public void handle(MouseEvent mouseEvent) {
 				gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 				gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
-				gameBlock.getLeftMenu().getFightForsights().setVisible(false);
+				gameBlock.getLeftMenu().getFightForecasts().setVisible(false);
 			}
 		});
 	}

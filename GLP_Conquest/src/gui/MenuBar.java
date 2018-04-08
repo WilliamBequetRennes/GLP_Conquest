@@ -44,11 +44,11 @@ public class MenuBar extends HBox{
 		getMenu().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent mouseEvent) {
 				if(!isMenuClicked()) {
-					setFighting(gameBlock.getLeftMenu().getFightForsights().isVisible());
+					setFighting(gameBlock.getLeftMenu().getFightForecasts().isVisible());
 					gameBlock.getLeftMenu().getGameMenu().setVisible(true);
 					gameBlock.getLeftMenu().getGameMenu().toFront();
 					gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(false);
-					gameBlock.getLeftMenu().getFightForsights().setVisible(false);
+					gameBlock.getLeftMenu().getFightForecasts().setVisible(false);
 					setMenuClicked(true);
 				}
 				else if(!isFighting()){
@@ -58,8 +58,8 @@ public class MenuBar extends HBox{
 					setMenuClicked(false);
 				}
 				else {
-					gameBlock.getLeftMenu().getFightForsights().setVisible(true);
-					gameBlock.getLeftMenu().getFightForsights().toFront();
+					gameBlock.getLeftMenu().getFightForecasts().setVisible(true);
+					gameBlock.getLeftMenu().getFightForecasts().toFront();
 					gameBlock.getLeftMenu().getGameMenu().setVisible(false);
 					setMenuClicked(false);
 				}
@@ -162,7 +162,7 @@ public class MenuBar extends HBox{
 		gameBlock.getLeftMenu().getUsualLeftMenu().setVisible(true);
 		gameBlock.getLeftMenu().getUsualLeftMenu().toFront();
 		gameBlock.getLeftMenu().getGameMenu().setVisible(false);
-		gameBlock.getLeftMenu().getFightForsights().setVisible(false);
+		gameBlock.getLeftMenu().getFightForecasts().setVisible(false);
 		setMenuClicked(false);
 
 		//reset left menu

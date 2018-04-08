@@ -8,7 +8,7 @@ public class LeftMenu extends StackPane{
 	
 	private BlockSize blockSize;
 	private GameMenu gameMenu;
-	private FightForsights fightForsights;
+	private FightForecasts fightForecasts;
 	private UsualLeftMenu usualLeftMenu;
 	
 	public LeftMenu(BlockSize blockSize, Game game, GameBlock gameBlock, MenusBlock menusBlock){
@@ -16,7 +16,7 @@ public class LeftMenu extends StackPane{
 		setBlockSize(blockSize);
 		setPrefSize(getBlockSize().getWidth(), getBlockSize().getHeight());
 		setGameMenu(new GameMenu(game, getBlockSize(), gameBlock, menusBlock));
-		setFightForsights(new FightForsights(game, blockSize, gameBlock));
+		setFightForecasts(new FightForecasts(game, blockSize, gameBlock));
 		setUsualLeftMenu(new UsualLeftMenu(game, gameBlock));
 		displayContent();
 		
@@ -26,10 +26,10 @@ public class LeftMenu extends StackPane{
 	
 	public void displayContent() {
 		getChildren().add(getGameMenu());
-		getChildren().add(getFightForsights());
+		getChildren().add(getFightForecasts());
 		getChildren().add(getUsualLeftMenu());
 		getGameMenu().setVisible(false);
-		getFightForsights().setVisible(false);
+		getFightForecasts().setVisible(false);
 		getUsualLeftMenu().setVisible(true);
 	}
 	
@@ -59,12 +59,12 @@ public class LeftMenu extends StackPane{
 		this.gameMenu = gameMenu;
 	}
 
-	public FightForsights getFightForsights() {
-		return fightForsights;
+	public FightForecasts getFightForecasts() {
+		return fightForecasts;
 	}
 
-	public void setFightForsights(FightForsights fightForsights) {
-		this.fightForsights = fightForsights;
+	public void setFightForecasts(FightForecasts fightForecasts) {
+		this.fightForecasts = fightForecasts;
 	}
 
 }
