@@ -240,6 +240,15 @@ public class MapCanvas extends Canvas{
 			for(IndexPosition current : getDetectedMoves()) {
 				getPossibleMoves().add(new Position(current.getJPosition(), current.getIPosition()));
 			}
+			ArrayList<Position> temporaryPossibleMoves = getPossibleMoves();
+			for(Position current : temporaryPossibleMoves) {
+				boolean isUnit = game.getMap().getSquares()[current.getIPosition()][current.getJPosition()].getUnit();
+				int faction = game.getMap().getSquares()[current.getIPosition()][current.getJPosition()].getFaction();
+				int player = getMovingUnit().getFaction();
+				if(isUnit && faction==player) {
+					getPossibleMoves().remove(current);
+				}
+			}
 			setMoveAvailable(true);
 		}
 		//if a unit is moving and the square is empty, the unit can move on it
