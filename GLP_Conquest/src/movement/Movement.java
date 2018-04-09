@@ -510,8 +510,8 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 	}
 	
 	public void conquest(Position position, Map map, Game game) {
-//		AreaScanner areaScanner = new AreaScanner();
-		ArrayList<IndexPosition> adjacent = adjacentSquare(position, map);
+		AreaScanner areaScanner = new AreaScanner();
+		ArrayList<Position> adjacent = areaScanner.aroundPositions(position, 1, map);
 		
 		for(Position current : adjacent) {
 			int faction = map.getSquares()[current.getIPosition()][current.getJPosition()].getFaction();
@@ -541,8 +541,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			if (map.getSquares()[position.getIPosition()][position.getJPosition()].getType()>4) {
 				game.getPlayers()[faction-1].getBuildings().remove(position);
 			}
-		}
-		
+		}		
 		map.getSquares()[position.getIPosition()][position.getJPosition()].setFaction(game.getCurrentPlayer());
 		int numberOfSquares = game.getPlayers()[game.getCurrentPlayer()-1].getSquareNumber();
 		game.getPlayers()[game.getCurrentPlayer()-1].setSquareNumber(numberOfSquares+1);
