@@ -405,13 +405,12 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 						previousPath.remove(testedPosition0);
 					}
 				}
-				
 			}
 		}
 		ArrayList<IndexPosition> copy = new ArrayList<IndexPosition>();
 		copy.addAll(available);
 		for(IndexPosition current : copy) {
-			if (current.getLocalCost() > getUnit().getMovement() /*|| !isCrossable(map.getSquareType(current.toPosition()).getType(),getUnit())*/) {
+			if (current.getLocalCost() > getUnit().getMovement() || !isCrossable(map.getSquareType(current.toPosition()).getType(),getUnit())) {
 				available.remove(current);
 			}
 		}	
