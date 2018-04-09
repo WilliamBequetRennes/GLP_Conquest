@@ -42,46 +42,46 @@ public class Movement {
 		return test;	
 	}
 	
-	public ArrayList<Position> adjacentSquare(Position interPosition, Map map){
-		ArrayList<Position> adjacent = new ArrayList<Position>();
+	public ArrayList<IndexPosition> adjacentSquare(Position interPosition, Map map){
+		ArrayList<IndexPosition> adjacent = new ArrayList<IndexPosition>();
 		int jPosition = interPosition.getJPosition();
 		int iPosition = interPosition.getIPosition();
 		if (parity(interPosition.getJPosition())){
-			if(jPosition > 0) {
+			if(iPosition > 0) {
 				adjacent.add(new IndexPosition(iPosition-1,jPosition));
-				if (iPosition > 0) {
+				if (jPosition > 0) {
 					adjacent.add(new IndexPosition(iPosition-1, jPosition-1));
 				}
-				if (iPosition < map.getDimensions()) {
+				if (jPosition < map.getDimensions()) {
 					adjacent.add(new IndexPosition(iPosition-1,jPosition+1));
 				}
 			}
-			if (iPosition > 0) {
+			if (jPosition > 0) {
 				adjacent.add(new IndexPosition(iPosition, jPosition-1));
 			}
-			if (iPosition < map.getDimensions()) {
+			if (jPosition < map.getDimensions()) {
 				adjacent.add(new IndexPosition(iPosition,jPosition+1));
 			}
-			if (jPosition < map.getDimensions()) {
+			if (iPosition < map.getDimensions()) {
 				adjacent.add(new IndexPosition(iPosition+1,jPosition));
 			}
 		}
 		else {
-			if(jPosition > 0) {
+			if(iPosition > 0) {
 				adjacent.add(new IndexPosition(iPosition-1,jPosition));
 			}
-			if (iPosition > 0) {
+			if (jPosition > 0) {
 				adjacent.add(new IndexPosition(iPosition, jPosition-1));
 			}
-			if (iPosition < map.getDimensions()) {
+			if (jPosition < map.getDimensions()) {
 				adjacent.add(new IndexPosition(iPosition,jPosition+1));
 			}
-			if (jPosition < map.getDimensions()) {
+			if (iPosition < map.getDimensions()) {
 				adjacent.add(new IndexPosition(iPosition+1,jPosition));
-				if (iPosition > 0) {
+				if (jPosition > 0) {
 					adjacent.add(new IndexPosition(iPosition+1, jPosition-1));
 				}
-				if (iPosition < map.getDimensions()) {
+				if (jPosition < map.getDimensions()) {
 					adjacent.add(new IndexPosition(iPosition+1,jPosition+1));
 				}
 			}
@@ -97,28 +97,25 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 		
 		float costPreview = 0;
 		
-		ArrayList<Position> adjacent1 = new ArrayList<Position>();
-		ArrayList<Position> adjacent2 = new ArrayList<Position>();
-		ArrayList<Position> adjacent3 = new ArrayList<Position>();
-		ArrayList<Position> adjacent4 = new ArrayList<Position>();
-		ArrayList<Position> adjacent5 = new ArrayList<Position>();
+		ArrayList<IndexPosition> adjacent1 = new ArrayList<IndexPosition>();
+		ArrayList<IndexPosition> adjacent2 = new ArrayList<IndexPosition>();
+		ArrayList<IndexPosition> adjacent3 = new ArrayList<IndexPosition>();
+		ArrayList<IndexPosition> adjacent4 = new ArrayList<IndexPosition>();
+		ArrayList<IndexPosition> adjacent5 = new ArrayList<IndexPosition>();
 		
 		AreaScanner scanner = new AreaScanner();
 		ArrayList<IndexPosition> scan = new ArrayList<IndexPosition>();
 		int movement = (int) getUnit().getMovement();
 		ArrayList<Position> reachable = scanner.aroundPositions(position,movement,map);
 		for(Position convert : reachable) {
+			if(isCrossable(map.getSquareType(convert).getType(),getUnit())) {
 			scan.add(convert.toIndexPosition());
+			}
 		}
 		//Iterator on the whole graph linked to the position 
 		
 		Iterator<IndexPosition> positionIterator0 = scan.iterator();
-//		Iterator<IndexPosition> positionIterator0 = getGraph().getGraph().iterator();
-		
-		//save the cost of the previous square
-		
-		float previousCost = 0;
-		
+				
 		//save the previous path to the current position
 		
 		ArrayList<IndexPosition> previousPath = new ArrayList<IndexPosition>();		
@@ -134,11 +131,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 			IndexPosition testedPosition0 = positionIterator0.next();
 
 			if(isCrossable(map.getSquareType(testedPosition0).getType(),getUnit())) {				
-				
-				//set the movement cost to reach the selected position
-				
-				previousCost += map.getSquareType(testedPosition0).getMoveCost();
-	
+					
 				//select the adjacent positions			
 				
 				adjacent1 = adjacentSquare(position, map);
@@ -168,7 +161,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 						
 						//we test all of the adjacent position of the tested position
 		
-						Iterator<Position>positionIterator1 = adjacent1.iterator();
+						Iterator<IndexPosition>positionIterator1 = adjacent1.iterator();
 						
 						// For each adjacent position
 						
@@ -179,10 +172,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 							Position testedPosition1 = positionIterator1.next();
 							
 							if(isCrossable(map.getSquareType(testedPosition1).getType(),getUnit())){
-							
-								//refresh the movement cost to the aimed square
-								
-								previousCost += map.getSquareType(testedPosition1).getMoveCost();
 								
 								//select the adjacent position
 								
@@ -221,7 +210,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 										
 										//try last iteration
 										
-										Iterator<Position> positionIterator2 = adjacent2.iterator();
+										Iterator<IndexPosition> positionIterator2 = adjacent2.iterator();
 										
 										// For each adjacent position
 										
@@ -232,10 +221,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 											Position testedPosition2 = positionIterator2.next();
 											
 											if(isCrossable(map.getSquareType(testedPosition2).getType(),getUnit())){
-											
-												//update movement cost
-											
-												previousCost += map.getSquareType(testedPosition2).getMoveCost();
 												
 												//check one last time
 												
@@ -270,7 +255,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 														
 														//try last iteration
 														
-														Iterator<Position> positionIterator3 = adjacent3.iterator();
+														Iterator<IndexPosition> positionIterator3 = adjacent3.iterator();
 														
 														// For each adjacent position
 														
@@ -281,11 +266,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 															Position testedPosition3 = positionIterator3.next();
 															
 															if(isCrossable(map.getSquareType(testedPosition3).getType(),getUnit())){
-															
-																//update movement cost
-																
-																previousCost += map.getSquareType(testedPosition3).getMoveCost();
-																
+
 																//check one last time
 																
 																adjacent4 = adjacentSquare(testedPosition0, map);
@@ -320,7 +301,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 																		
 																		//try last iteration
 																		
-																		Iterator<Position> positionIterator4 = adjacent4.iterator();
+																		Iterator<IndexPosition> positionIterator4 = adjacent4.iterator();
 																		
 																		// For each adjacent position
 																		
@@ -331,10 +312,6 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 																			Position testedPosition4 = positionIterator4.next();
 																			
 																			if(isCrossable(map.getSquareType(testedPosition4).getType(),getUnit())){
-																			
-																				//update movement cost
-																				
-																				previousCost += map.getSquareType(testedPosition4).getMoveCost();
 																				
 																				//check one last time
 																				
@@ -370,7 +347,7 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 																						
 																						//try last iteration
 																						
-																						Iterator<Position> positionIterator5 = adjacent5.iterator();
+																						Iterator<IndexPosition> positionIterator5 = adjacent5.iterator();
 																						
 																						// For each adjacent position
 																						
@@ -381,14 +358,10 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 																							Position testedPosition5 = positionIterator5.next();
 																							
 																							if(isCrossable(map.getSquareType(testedPosition5).getType(),getUnit())){
-																							
-																								//update movement cost
-																								
-																								previousCost += map.getSquareType(testedPosition5).getMoveCost();
-																								
+							
 																								//check one last time
 																								
-																								ArrayList<Position> adjacent6 = adjacentSquare(testedPosition0, map);
+																								ArrayList<IndexPosition> adjacent6 = adjacentSquare(testedPosition0, map);
 																								
 																								//and if you finally find it
 																							
@@ -405,36 +378,28 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 																										testedPosition0.addLocalPath(testedPosition0);
 																										testedPosition0.calculateLocalCost(map);
 																										available.add(testedPosition0);
-															
-																										
-																									}
-																								
-																								}
-																								previousCost -= map.getSquareType(testedPosition5).getMoveCost();
+																									}	
+																								}																							
 																							}
 																						}
 																						previousPath.remove(testedPosition4);
 																					}
 																				}
-																				previousCost -= map.getSquareType(testedPosition4).getMoveCost();
 																			}
 																		}
 																		previousPath.remove(testedPosition3);
 																	}
 																}
-																previousCost -= map.getSquareType(testedPosition3).getMoveCost();
 															}
 														}
 														previousPath.remove(testedPosition2);
 													}
 												}
-												previousCost -= map.getSquareType(testedPosition2).getMoveCost();
 											}
 										}
 										previousPath.remove(testedPosition1);
 									}	
 								}
-								previousCost -= map.getSquareType(testedPosition1).getMoveCost();
 							}
 						}
 						previousPath.remove(testedPosition0);
@@ -442,17 +407,33 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 				}
 				
 			}
-			previousCost -= map.getSquareType(testedPosition0).getMoveCost();
 		}
 		ArrayList<IndexPosition> copy = new ArrayList<IndexPosition>();
 		copy.addAll(available);
 		for(IndexPosition current : copy) {
-			if (current.getLocalCost() > movement) {
+			if (current.getLocalCost() > getUnit().getMovement() /*|| !isCrossable(map.getSquareType(current.toPosition()).getType(),getUnit())*/) {
 				available.remove(current);
 			}
-		}
+		}	
+
 		return available;
 	}
+
+//	public ArrayList<IndexPosition> availableMovement(Map map){
+//		ArrayList<IndexPosition> adjacent = adjacentSquare(getUnit().getPosition(),map);
+//		ArrayList<IndexPosition> available = new ArrayList<IndexPosition>();
+//		
+//		for(IndexPosition current : adjacent) {
+//			if(map.getSquares()[current.getIPosition()][current.getJPosition()].getMoveCost()<getUnit().getMovement() 
+//					&& isCrossable(map.getSquares()[current.getIPosition()][current.getJPosition()].getType(),getUnit())){
+//				current.addLocalPath(current);
+//				current.calculateLocalCost(map);
+//				available.add(current);
+//			}
+//		}
+//		return available;
+//	}
+
 	public IndexPosition findIndexPosition(ArrayList<IndexPosition> positions, Position objective) {
 		IndexPosition result = new IndexPosition(objective);
 		for(IndexPosition current : positions) {
@@ -519,17 +500,19 @@ public ArrayList<IndexPosition> availableMovement(Map map){
 	public boolean isCrossable(int type, Unit unit) {
 		boolean isCrossable = false;
 		int[] crossable = unit.getCrossable();
+		ArrayList<Integer> cross = new ArrayList<Integer>();
 		for(int i=0;i<crossable.length;i++) {
-			if(crossable[i]==type) {
-				isCrossable = true;
-			}
+			cross.add(crossable[i]);
+		}
+		if(cross.contains(type)) {
+			isCrossable=true;
 		}
 		return isCrossable;
 	}
 	
 	public void conquest(Position position, Map map, Game game) {
-		AreaScanner areaScanner = new AreaScanner();
-		ArrayList<Position> adjacent = areaScanner.aroundPositions(position, 1, map);
+//		AreaScanner areaScanner = new AreaScanner();
+		ArrayList<IndexPosition> adjacent = adjacentSquare(position, map);
 		
 		for(Position current : adjacent) {
 			int faction = map.getSquares()[current.getIPosition()][current.getJPosition()].getFaction();

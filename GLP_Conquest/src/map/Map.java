@@ -50,7 +50,7 @@ public class Map {
 	public Square getSquareType(Position position) {
 		int jPosition = position.getJPosition();
 		int iPosition = position.getIPosition();
-		return squares[iPosition][jPosition];
+		return getSquares()[iPosition][jPosition];
 	}
 
 	public int getNumber() {
